@@ -239,7 +239,7 @@ export default function TradeTransactions() {
         : "bg-blue-500 text-white/80 hover:bg-blue-600"
               }`}
             >
-              {type}
+                {type === "roi" ? "Rent" : type}
             </button>
           ))}
         </div>

@@ -161,7 +161,7 @@ export default function AdminRewards() {
         {loading ? (
           <Loader />
         ) : (
-          <div className="flow-root w-full mt-4 text-gray-100 bg-black">
+          <div className="flow-root w-full mt-4 bg-gradient-to-r from-blue-900 to-blue-700 p-4 border-b border-blue-500 text-gray-300">
             <div className="overflow-x-auto">
               <div className="min-w-full">
                 <table className="min-w-full border divide-y divide-gray-700">

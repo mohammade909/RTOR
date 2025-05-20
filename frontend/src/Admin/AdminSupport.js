@@ -141,7 +141,7 @@ export default function AdminSupport() {
         <div className="overflow-x-auto">
           <div className="inline-block min-w-full py-2 align-middle">
             <table className="min-w-full text-left border-collapse table-auto whitespace-nowrap">
-              <thead className="text-base leading-6 border-r border-gray-100 text-gray-100 bg-black">
+              <thead className="text-base leading-6 border-r border-gray-100 bg-gradient-to-r from-blue-900 to-blue-700 p-4 border-b border-blue-500 text-gray-300">
                 <tr>
                   <th className="py-2 pl-4 font-medium border border-gray-400 sm:pl-6 lg:pl-8">ID</th>
                   <th className="py-2 pl-2 pr-4 font-medium border border-gray-400 sm:table-cell sm:pr-8">Email</th>

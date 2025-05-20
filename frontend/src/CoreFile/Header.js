@@ -36,8 +36,8 @@ const Header = () => {
         }`}
       >
         <nav
-          aria-label="Global"
-          className="mx-auto flex  justify-between items-center py-3 max-w-7xl  lg:px-0 px-5"
+          aria-label="Globle"
+          className="mx-auto flex  justify-between items-center py-3 max-w-7xl  lg:px-4 px-5"
         >
           {/* Logo */}
           <div className="flex item-center  gap-20">
@@ -215,7 +215,7 @@ const Header = () => {
                     Log in
                   </Link>
                   <Link
-                    href="/register"
+                    to="/register"
                     className="block text-center w-full rounded-md bg-gradient-to-r from-yellow-600 to-yellow-700
                     px-3 py-2.5 text-base text-white shadow-sm hover:from-orange-500 hover:to-yellow-800"
                   >

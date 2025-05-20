@@ -116,7 +116,7 @@ const AdminQrLink = () => {
                       QR Link History
                     </h1>
                     <table className="z-10 w-full mt-6 text-left whitespace-nowrap">
-                      <thead className="text-base leading-6 border-b text-gray-100 bg-black">
+                      <thead className="text-base leading-6 border-b bg-gradient-to-r from-blue-900 to-blue-700 p-4 border-b border-blue-500 text-gray-300">
                         <tr>
                           <th
                             scope="col"

@@ -45,7 +45,7 @@ export default function UserEntryFeeConfirmation({isclose,user_id}) {
       <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
         <DialogPanel
           transition
-          className="relative transform overflow-hidden rounded-lg bg-black px-4 pb-4 pt-5 text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-lg sm:p-6 data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
+          className="relative transform   overflow-hidden rounded-lg bg-black px-4 pb-4 pt-5 text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-sm sm:p-6 data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
         >
           <div>
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
@@ -56,11 +56,11 @@ export default function UserEntryFeeConfirmation({isclose,user_id}) {
                 as="h3"
                 className="text-base font-semibold leading-6 text-gray-200"
               >
-                Entry Bot Plan
+                Purchase Agreement
               </DialogTitle>
               <div className="mt-2">
                 <p className="text-sm text-gray-200">
-                  Are You Sure? Want to start this Plan..
+                  Are You Sure? Want to start this Agreement
                 </p>
               </div>
             </div>
@@ -73,12 +73,12 @@ export default function UserEntryFeeConfirmation({isclose,user_id}) {
                 onClick={()=>handleSaveChanges()}
                 className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:col-start-2"
               >
-                Start
+                Buy Now
               </button>
               <button
                 type="button"
                 onClick={isclose}
-                className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:col-start-1 sm:mt-0"
+                className="mt-3 inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-red-700 sm:col-start-1 sm:mt-0"
               >
                 Cancel
               </button>

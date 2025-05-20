@@ -89,8 +89,8 @@ export default function AboutSection() {
                 <p className="text-gray-600 leading-relaxed text-lg">
                  At R2R Globle, we bring you real investment opportunities in operational hotels that generate steady income. With our platform, you don’t just invest—you become a stakeholder in a growing hospitality business. Every booking made by guests turns into earnings for you.
                 </p>
-                <p className="text-gray-600 leading-relaxed mt-4">
-                  Our process is clear, secure, and built for global investors. Whether you're starting small or scaling up, your investment is backed by transparency and trust. Join a global network of investors and watch your money work—automatically and consistently.
+                <p className="text-gray-600 leading-relaxed text-lg mt-4">
+                  Our process is clear, secure, and built for globle investors. Whether you're starting small or scaling up, your investment is backed by transparency and trust. Join a globle network of investors and watch your money work—automatically and consistently.
                 </p>
               </div>
             </div>

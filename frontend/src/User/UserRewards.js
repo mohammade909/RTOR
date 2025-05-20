@@ -13,6 +13,7 @@ import {
   fetchUserRewards,
   fetchUserBusiness,
   claimReward,
+  updateRewardStatus,
 } from "../redux/rewardSlice";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -122,9 +123,11 @@ const RewardLevelCard = ({
   currentBusiness,
   threshold,
   isActive,
+  isForwarded,
   title,
   businessData,
   onClaimReward,
+  handleCarryForward,
   rewardId,
 }) => {
   const qualifies = businessData?.qualifies;
@@ -148,8 +151,13 @@ const RewardLevelCard = ({
           ACTIVE
         </div>
       )}
+      {isForwarded && (
+        <div className="absolute -top-2 -right-2 bg-blue-400 text-blue-900 text-xs font-bold px-2 py-1 rounded-full shadow-md">
+          Forwarded
+        </div>
+      )}
 
-      <div className="flex items-start space-x-5">
+      <div className="sm:flex items-start sm:space-x-5 space-y-5">
         <div className="relative">
           <div
             className={`w-16 h-16 rounded-full flex items-center justify-center ${
@@ -207,27 +215,47 @@ const RewardLevelCard = ({
                 ))}
               </div>
 
-              <div className="mt-4 flex justify-between items-center">
+              <div className="mt-4 sm:flex justify-between items-center">
                 <div
-                  className={`text-sm font-medium ${
+                  className={`text-sm font-medium mb-4 ${
                     qualifies ? "text-green-600" : "text-orange-600"
                   }`}
                 >
                   {qualifies ? "Qualifies for reward" : "Not qualified yet"}
                 </div>
 
-                {qualifies && !isCompleted && (
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      onClaimReward(rewardId, rewardAmount);
-                    }}
-                    className="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors flex items-center"
-                  >
-                    Claim Reward
-                    <ChevronRight className="w-4 h-4 ml-1" />
-                  </button>
-                )}
+                { qualifies &&
+                  <div className="sm:flex justify-center items-center gap-4 sm:space-y-0 space-y-4">
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onClaimReward(rewardId, rewardAmount);
+                      }}
+                      class="overflow-hidden text-sm relative w-full sm:w-32 p-2 h-10 bg-green-600 text-white border-none rounded-md  font-semibold cursor-pointer  z-10 group"
+                    >
+                      Claim Reward
+                      <span class="absolute w-36 h-28 -top-8 -left-2 bg-green-400 rotate-12 transform scale-x-0 group-hover:scale-x-100 transition-transform group-hover:duration-500 duration-1000 origin-left"></span>
+                      <span class="absolute w-36 h-28 -top-8 -left-2 bg-green-500 rotate-12 transform scale-x-0 group-hover:scale-x-100 transition-transform group-hover:duration-700 duration-700 origin-left"></span>
+                      <span class="absolute w-36 h-28 -top-8 -left-2 bg-green-600 rotate-12 transform scale-x-0 group-hover:scale-x-50 transition-transform group-hover:duration-1000 duration-500 origin-left"></span>
+                      <span class="group-hover:opacity-100 text-sm group-hover:duration-1000 duration-100 opacity-0 absolute top-2.5 left-6 z-10">
+                        Reward Now
+                      </span>
+                    </button>
+                    <button
+                      onClick={() => handleCarryForward(totalBusiness)}
+                      class="overflow-hidden w-full sm:w-32 p-2 h-10 bg-blue-600 text-white border-none rounded-md text-sm font-semibold cursor-pointer relative z-10 group"
+                    >
+                      Carry Forward
+                      <span class="absolute w-36 h-32 -top-8 -left-2 bg-blue-400 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform group-hover:duration-500 duration-1000 origin-bottom"></span>
+                      <span class="absolute w-36 h-32 -top-8 -left-2 bg-blue-500 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform group-hover:duration-700 duration-700 origin-bottom"></span>
+                      <span class="absolute w-36 h-32 -top-8 -left-2 bg-blue-600 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform group-hover:duration-1000 duration-500 origin-bottom"></span>
+                      <span class="group-hover:opacity-100 text-sm group-hover:duration-1000 duration-100 opacity-0 absolute top-2.5 left-3 z-10">
+                        {" "}
+                        Carry Forward
+                      </span>
+                    </button>
+                  </div>
+                }
               </div>
             </div>
           )}
@@ -243,7 +271,7 @@ const RewardLevelCard = ({
                 </div>
               )}
 
-              {endDate && <CountdownTimer endDate={endDate} />}
+              {/* {endDate && <CountdownTimer endDate={endDate} />} */}
             </div>
           )}
         </div>
@@ -261,10 +289,9 @@ const UserRewardsComponent = ({
   onCloseModal,
 }) => {
   const dispatch = useDispatch();
-
+  const userId = user?.id;
   const handleClaimReward = (rewardId, amount) => {
     // Get user ID from the auth state
-    const userId = user?.id;
 
     // Store the claimed amount in localStorage for persistence
     localStorage.setItem("claimedRewardAmount", amount);
@@ -272,6 +299,9 @@ const UserRewardsComponent = ({
 
     // Pass both user ID and reward ID to the claim function
     dispatch(claimReward(userId));
+  };
+  const handleCarryForward = (business) => {
+    dispatch(updateRewardStatus({ id: userId, data: { business } }));
   };
 
   return (
@@ -336,8 +366,10 @@ const UserRewardsComponent = ({
               currentBusiness={reward.current_business}
               threshold={reward.threshold}
               isActive={reward.is_active == 1}
+              isForwarded={reward.forworded == 1}
               businessData={reward.is_active == 1 ? businessData : null}
               onClaimReward={handleClaimReward}
+              handleCarryForward={handleCarryForward}
             />
           ))}
         </div>

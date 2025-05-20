@@ -180,7 +180,7 @@ export default function UserTopup() {
       {message && <SuccessAlert message={message} />}
       {error && <ErrorAlert error={error} />}
       <Loader isLoading={loading}/>
-      <div className="p-4 m-3  bg-white">
+      <div className=" bg-white">
         <div className="flex-col w-full mb-3 ">
           <div className="">
             <h3 className="text-lg  font-semibold text-slate-800">
@@ -220,7 +220,7 @@ export default function UserTopup() {
               <button
                 type="button"
                 onClick={() => setOpenModel(true)}
-                className="px-3 py-2 text-base font-semibold text-center w-[100px] rounded shadow-sm text-gray-100 bg-[#197860f3] hover:bg-[#111c54c7] hover:text-[#ffeded] focus:outline-none"
+                className="px-3 py-2 sm:text-base text-sm font-semibold text-center w-[150px] rounded shadow-sm text-gray-100 bg-[#197860f3] hover:bg-[#111c54c7] hover:text-[#ffeded] focus:outline-none"
               >
                 Top-Up 
               </button>

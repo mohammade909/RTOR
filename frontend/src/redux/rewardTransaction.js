@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8000/api/v1"; // Base URL for all API endpoints
+const BASE_URL = "https://api.r2rgloble.com/api/v1"; // Base URL for all API endpoints
 
 // Fetch transactions with filters and pagination
 export const fetchTransactions = createAsyncThunk(

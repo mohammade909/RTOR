@@ -34,10 +34,10 @@ const ContactInfoSection = () => (
         <h2 className="text-base font-semibold text-yellow-600 tracking-wide uppercase">
           Contact Information
         </h2>
-        <p className="mt-1 text-4xl font-extrabold text-gray-900 sm:text-5xl sm:tracking-tight">
+        <p className="mt-1 sm:text-4xl font-extrabold text-gray-900 text-3xl sm:tracking-tight">
           We’d Love to Hear From You
         </p>
-        <p className="max-w-xl mt-5 mx-auto text-xl text-gray-500">
+        <p className="max-w-xl mt-5 mx-auto  text-base sm:text-xl text-gray-500">
           Have questions, suggestions, or partnership ideas? Just drop us a
           message. Our team typically responds within 24 hours on business days.
         </p>
@@ -172,10 +172,10 @@ const ContactForm = () => (
         <h2 className="text-base font-semibold text-yellow-600 tracking-wide uppercase">
           Contact Form
         </h2>
-        <p className="mt-1 text-4xl font-extrabold text-gray-900 sm:text-5xl sm:tracking-tight">
+        <p className="mt-1 sm:text-4xl font-extrabold text-gray-900 text-2xl sm:tracking-tight">
           Send Us a Message
         </p>
-        <p className="max-w-xl mt-5 mx-auto text-xl text-gray-500">
+        <p className="max-w-xl mt-5 mx-auto text-base sm:text-xl text-gray-500">
           Fill out the form below, and our team will get back to you shortly.
           Please provide as much detail as possible so we can assist you
           effectively.

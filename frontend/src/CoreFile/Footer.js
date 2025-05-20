@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram, FaTelegram } from "react-icons/fa";
+import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram, FaTelegram, FaYoutube } from "react-icons/fa";
 import { IoIosCall } from "react-icons/io";
 import { MdEmail } from "react-icons/md";
 import { GiPositionMarker } from "react-icons/gi";
@@ -8,51 +8,52 @@ import { useState } from "react";
  
 const usefulLinks = [
   { name: "Home", href: "/" },
-  { name: "About", href: "/about" },
+  { name: "About", href: "/about-us" },
   { name: "Services", href: "/services" },
-  { name: "Contact us", href: "/contact" },
+  { name: "Contact us", href: "/contact-us" },
+ 
 ];
  
 const ourServices = [
   { name: "Privacy", href: "/privacy" },
   { name: "Terms & Conditions", href: "/terms" },
-  { name: "Our Team", href: "/team" },
-  { name: "FAQ", href: "/faq" },
+   { name: "Our Team", href: "/Ourteam" },
+  { name: "FAQ", href: "/" },
 ];
  
 const contactDetails = [
   {
     icon: <MdEmail className="w-6 h-6" />,
     text: (
-      <a href="mailto:info@r2rglobal.com" className="hover:text-yellow-400 transition-colors">
-        info@r2rglobal.com
+      <a href="mailto:info@globle.com" className="hover:text-yellow-400 transition-colors">
+        info@r2rgloble.com
       </a>
     ),
   },
-  {
-    icon: <IoIosCall className="w-6 h-6" />,
-    text: (
-      <a href="tel:+1234567890" className="hover:text-yellow-400 transition-colors">
-        +1 (234) 567-890
-      </a>
-    ),
-  },
+  // {
+  //   icon: <IoIosCall className="w-6 h-6" />,
+  //   text: (
+  //     <a href="tel:+1234567890" className="hover:text-yellow-400 transition-colors">
+  //       +16462254510
+  //     </a>
+  //   ),
+  // },
   {
     icon: <GiPositionMarker className="w-6 h-6" />,
     text: (
       <span className="hover:text-yellow-400 transition-colors">
-        123 Luxury Avenue, Aspen, USA
+       Weberstrasse 11, 8004 Zurich (Switzerland)
       </span>
     ),
   },
 ];
  
 const socialLinks = [
-  { icon: <FaFacebookF className="w-5 h-5" />, href: "https://facebook.com/r2rglobal" },
-  { icon: <FaTwitter className="w-5 h-5" />, href: "https://twitter.com/r2rglobal" },
-  { icon: <FaLinkedinIn className="w-5 h-5" />, href: "https://linkedin.com/company/r2rglobal" },
-  { icon: <FaInstagram className="w-5 h-5" />, href: "https://instagram.com/r2rglobal" },
-  { icon: <FaTelegram className="w-5 h-5" />, href: "https://t.me/r2rglobal" },
+  { icon: <FaFacebookF className="w-5 h-5" />, href: "https://www.facebook.com/profile.php?id=61575942577722" },
+  { icon: <FaTwitter className="w-5 h-5" />, href: "https://x.com/r2rgloble" },
+  { icon: <FaInstagram className="w-5 h-5" />, href: "https://www.instagram.com/r2rgloble/" },
+  { icon: <FaTelegram className="w-5 h-5" />, href: "https://t.me/r2rgloble" },
+  { icon: <FaYoutube className="w-5 h-5" />, href: "https://www.youtube.com/@R2RGloble" },
 ];
  
 const fadeIn = {
@@ -126,7 +127,7 @@ export default function Footer() {
             >
               <Link to="/">
                  <img
-                  alt="R2R Global Logo"
+                  alt="R2R globle Logo"
                    src="/r2rblue.png"
                   className="w-auto h-20"
                  />

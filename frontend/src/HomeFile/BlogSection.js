@@ -21,7 +21,7 @@ export default function ForexBrokerReviews() {
       },
       {
         id: 2,
-        name: 'Global Markets Pro',
+        name: 'Globle Markets Pro',
         logo: 'https://pixner.net/html/tradexy/tradexy/assets/images/broker/robofores.png',
         rating: 4.6,
         minDeposit: 200,
@@ -42,7 +42,7 @@ export default function ForexBrokerReviews() {
         leverage: '1:300',
         platforms: ['MT5', 'WebTrader', 'Proprietary'],
         regulation: ['ASIC', 'FCA', 'FINMA'],
-        description: 'Fast execution and reliable trading conditions with global regulatory coverage.',
+        description: 'Fast execution and reliable trading conditions with globle regulatory coverage.',
         promotions: 'Free VPS hosting for accounts over $2,000'
       }
     ],

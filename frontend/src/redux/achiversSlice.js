@@ -6,7 +6,7 @@ export const addAchivers = createAsyncThunk(
   "Achiver/addAchivers",
   async (formData, thunkAPI) => {
     try {
-      const response = await fetch('http://localhost:8000/api/v1/achivers/add', {
+      const response = await fetch('https://api.r2rgloble.com/api/v1/achivers/add', {
         method: 'POST',
         body: formData,
       });
@@ -27,7 +27,7 @@ export const getAllAchivers = createAsyncThunk(
   "staff/getAllAchivers",
   async (_, thunkAPI) => {
     try {
-      const response = await fetch("http://localhost:8000/api/v1/achivers/list");
+      const response = await fetch("https://api.r2rgloble.com/api/v1/achivers/list");
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -48,7 +48,7 @@ export const deleteAchivers = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       // Your asynchronous logic to delete student here
-      const response = await fetch(`http://localhost:8000/api/v1/achivers/${id}`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/achivers/${id}`, {
         method: "DELETE",
       });
 

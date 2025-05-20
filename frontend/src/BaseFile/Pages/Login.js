@@ -77,7 +77,6 @@ export default function Login() {
     console.log(forgotData);
     dispatch(sendForgotLink(forgotData));
   };
-  console.log(Err);
   return (
     <>
       <Header />
@@ -197,7 +196,7 @@ export default function Login() {
               <div className="mt-6 text-center text-sm">
                 <span>Don't have an account? </span>
                 <Link
-                  to="/registration"
+                  to="/register"
                   className="text-pink-300 hover:text-white font-semibold transition-colors"
                 >
                   Sign up

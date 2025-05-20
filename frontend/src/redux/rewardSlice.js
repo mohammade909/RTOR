@@ -1,18 +1,22 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8000/api/v1/rewards"; // Change to your API URL
+const BASE_URL = "https://api.r2rgloble.com/api/v1/rewards"; // Change to your API URL
 
 // Initialize User Rewards
 export const initializeRewards = createAsyncThunk(
   "rewards/initialize",
   async (userId, { rejectWithValue }) => {
-    console.log(userId)
+    console.log(userId);
     try {
-      const response = await axios.post(`${BASE_URL}/initialize`, { user_id: userId });
+      const response = await axios.post(`${BASE_URL}/initialize`, {
+        user_id: userId,
+      });
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Error initializing rewards");
+      return rejectWithValue(
+        error.response?.data || "Error initializing rewards"
+      );
     }
   }
 );
@@ -31,71 +35,85 @@ export const fetchUserRewards = createAsyncThunk(
 );
 
 export const fetchRewards = createAsyncThunk(
-  'rewards/fetchRewards',
+  "rewards/fetchRewards",
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${BASE_URL}/`);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data || 'Failed to fetch rewards');
+      return rejectWithValue(error.response?.data || "Failed to fetch rewards");
     }
   }
 );
 export const fetchUserBusiness = createAsyncThunk(
-  'rewards/fetchUserBusiness',
+  "rewards/fetchUserBusiness",
   async (id, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${BASE_URL}/user/business/${id}`);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data || 'Failed to fetch rewards');
+      return rejectWithValue(error.response?.data || "Failed to fetch rewards");
     }
   }
 );
 export const claimReward = createAsyncThunk(
-  'rewards/claimReward',
+  "rewards/claimReward",
   async (id, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${BASE_URL}/user/claim/${id}`);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data || 'Failed to fetch rewards');
+      return rejectWithValue(error.response?.data || "Failed to fetch rewards");
     }
   }
 );
 
 export const createReward = createAsyncThunk(
-  'rewards/createReward',
+  "rewards/createReward",
   async (rewardData, { rejectWithValue }) => {
     try {
       const response = await axios.post(`${BASE_URL}/`, rewardData);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data || 'Failed to create reward');
+      return rejectWithValue(error.response?.data || "Failed to create reward");
     }
   }
 );
 
 export const updateReward = createAsyncThunk(
-  'rewards/updateReward',
+  "rewards/updateReward",
   async ({ id, data }, { rejectWithValue }) => {
     try {
       const response = await axios.put(`${BASE_URL}/${id}`, data);
       return { ...response.data, id, updatedData: data };
     } catch (error) {
-      return rejectWithValue(error.response?.data || 'Failed to update reward');
+      return rejectWithValue(error.response?.data || "Failed to update reward");
+    }
+  }
+);
+
+export const updateRewardStatus = createAsyncThunk(
+  "rewards/updateRewardStatus",
+  async ({ id, data }, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(`${BASE_URL}/carry-forward/${id}`, {
+        data,
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Failed to update reward");
     }
   }
 );
 
 export const deleteReward = createAsyncThunk(
-  'rewards/deleteReward',
+  "rewards/deleteReward",
   async (id, { rejectWithValue }) => {
     try {
       const response = await axios.delete(`${BASE_URL}/${id}`);
       return { ...response.data, id };
     } catch (error) {
-      return rejectWithValue(error.response?.data || 'Failed to delete reward');
+      return rejectWithValue(error.response?.data || "Failed to delete reward");
     }
   }
 );
@@ -107,7 +125,7 @@ const rewardsSlice = createSlice({
     loading: false,
     error: null,
     successMessage: null,
-    totalBusiness:null
+    totalBusiness: null,
   },
   reducers: {
     clearMessages: (state) => {
@@ -119,7 +137,7 @@ const rewardsSlice = createSlice({
     },
     clearSelectedReward: (state) => {
       state.selectedReward = null;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -181,13 +199,13 @@ const rewardsSlice = createSlice({
       .addCase(claimReward.fulfilled, (state, action) => {
         state.loading = false;
         state.success = true;
-        state.successMessage ='Reward Claimed successfull!'
+        state.successMessage = "Reward Claimed successfull!";
       })
       .addCase(claimReward.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
-      
+
       // Create reward
       .addCase(createReward.pending, (state) => {
         state.loading = true;
@@ -199,7 +217,7 @@ const rewardsSlice = createSlice({
         if (action.payload.reward_id) {
           const newReward = {
             id: action.payload.reward_id,
-            ...action.meta.arg
+            ...action.meta.arg,
           };
           state.rewards.push(newReward);
         }
@@ -209,7 +227,7 @@ const rewardsSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      
+
       // Update reward
       .addCase(updateReward.pending, (state) => {
         state.loading = true;
@@ -218,11 +236,13 @@ const rewardsSlice = createSlice({
       .addCase(updateReward.fulfilled, (state, action) => {
         state.loading = false;
         // Update the reward in the array
-        const index = state.rewards.findIndex(reward => reward.id === action.payload.id);
+        const index = state.rewards.findIndex(
+          (reward) => reward.id === action.payload.id
+        );
         if (index !== -1) {
           state.rewards[index] = {
             ...state.rewards[index],
-            ...action.payload.updatedData
+            ...action.payload.updatedData,
           };
         }
         state.success = true;
@@ -231,7 +251,7 @@ const rewardsSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      
+
       // Delete reward
       .addCase(deleteReward.pending, (state) => {
         state.loading = true;
@@ -240,20 +260,36 @@ const rewardsSlice = createSlice({
       .addCase(deleteReward.fulfilled, (state, action) => {
         state.loading = false;
         // Remove the deleted reward from the array
-        state.rewards = state.rewards.filter(reward => reward.id !== action.payload.id);
+        state.rewards = state.rewards.filter(
+          (reward) => reward.id !== action.payload.id
+        );
         state.success = true;
       })
       .addCase(deleteReward.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      // Delete reward
+      .addCase(updateRewardStatus.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateRewardStatus.fulfilled, (state, action) => {
+        state.loading = false;
+        state.message = "Carry forword successfull";
+        state.success = true;
+      })
+      .addCase(updateRewardStatus.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
   },
 });
 
-export const { 
-  clearError, 
-  clearSuccess, 
-  setSelectedReward, 
-  clearSelectedReward 
+export const {
+  clearError,
+  clearSuccess,
+  setSelectedReward,
+  clearSelectedReward,
 } = rewardsSlice.actions;
 export default rewardsSlice.reducer;

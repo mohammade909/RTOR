@@ -10,6 +10,7 @@ const {
   deleteReward,
   calculateUserBusinessForReward,
   rewardForSingleUser,
+  updateRewardStatus,
 } = require("../controllers/rewardController");
 
 router.get("/", getAllRewards);
@@ -21,5 +22,6 @@ router.post("/initialize", initializeRewardsForUser);
 router.get("/user/:user_id", getUserRewards);
 router.get("/user/business/:userId", calculateUserBusinessForReward);
 router.get("/user/claim/:userId", rewardForSingleUser);
+router.put('/update-status/:id',updateRewardStatus);
 
 module.exports = router;

@@ -10,8 +10,8 @@ const nodemailer = require("nodemailer");
 const transporter =  nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'info.earn4u@gmail.com',
-      pass: 'uqbw pffv ipot kfks'
+      user: "testyou659@gmail.com",
+      pass: "iivn mtvy bcgk nmpf",
   }
 })
 
@@ -37,9 +37,9 @@ exports.sendOTP = async (req, res) => {
       // Send OTP via email
       try {
         await transporter.sendMail({
-            from: 'info.earn4u@gmail.com',
+            from: 'testyou659@gmail.com',
             to: email,
-            subject: 'Welcome to Earn 4 You!',
+            subject: 'Welcome to TestingYou!',
           text: `Your OTP code is ${otp}. It will expire in 5 minutes.`,
         });
 

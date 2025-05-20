@@ -62,7 +62,7 @@ export default function AdminUserCheck() {
         ) : (
           <>
             <div className="my-4 ">
-              <div className="max-w-7xl bg-blue-900/50 text-white overflow-hidden">
+              <div className="max-w-7xl bg-gradient-to-r from-blue-900 to-blue-700 p-4 border-b border-blue-500 text-gray-300 text-white overflow-hidden">
                 <div className="px-6 py-4">
                 {message && <SuccessAlert message={message} />}
                 {error && <ErrorAlert error={error} />}
@@ -196,7 +196,7 @@ export default function AdminUserCheck() {
               </div>
             </div>
             <div className="h-[2px] bg-green-600 w-full " />
-            <div className="bg-blue-900/50 mb-4">
+            <div className="bg-gradient-to-r from-blue-900 to-blue-700 p-4 border-b border-blue-500 text-gray-300 mb-4">
               <div className="max-w-7xl mx-auto rounded shadow overflow-hidden">
               {message && <SuccessAlert message={message} />}
               {error && <ErrorAlert error={error} />}

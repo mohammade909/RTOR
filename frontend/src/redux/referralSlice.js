@@ -7,7 +7,7 @@ export const getReferralTree = createAsyncThunk(
   "staff/getReferralTree",
   async (referral_code, thunkAPI) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/referral/list/${referral_code}`);
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/referral/list/${referral_code}`);
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -25,7 +25,7 @@ export const getTreeData = createAsyncThunk(
   "staff/getTreeData",
   async (referral_code, thunkAPI) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/referral/full/${referral_code}`);
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/referral/full/${referral_code}`);
 
       if (!response.ok) {
         const errorData = await response.json();

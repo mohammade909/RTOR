@@ -157,7 +157,7 @@ export default function AdminUserList() {
             <div className="overflow-x-auto">
               <div className="py-2">
                 <table className="w-full border border-gray-300 divide-y divide-gray-700">
-                  <thead className="text-base leading-6 border-b border-white/10 text-gray-100 bg-black">
+                  <thead className="text-base leading-6 border-b border-white/10 bg-gradient-to-r from-blue-900 to-blue-700 p-4 border-b border-blue-500 text-gray-300">
                     <tr>
                       <th className="px-2 ml-4 font-medium text-left border border-gray-300">
                         S.No
@@ -274,9 +274,9 @@ export default function AdminUserList() {
                             <Link to={`/admin/check/profile/${item?.id}`}>
                               <GrView className="text-indigo-600" />
                             </Link>
-                            <button onClick={() => handleDelete(item?.id)}>
+                            {/* <button onClick={() => handleDelete(item?.id)}>
                               <AiFillDelete className="text-red-600" />
-                            </button>
+                            </button> */}
                           </div>
                         </td>
                       </tr>

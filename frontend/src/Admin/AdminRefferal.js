@@ -42,7 +42,7 @@ export default function AdminRefferal() {
     setSearchQuery(e.target.value);
   };
   return (
-    <div className="bg-gray-900 pt-3">
+    <div className="bg-white pt-3">
       <div className="px-8 pt-5">
         <label htmlFor="email" className="sr-only">
           Search
@@ -54,7 +54,7 @@ export default function AdminRefferal() {
           onChange={(e) => handleSearch(e)}
           type="text"
           placeholder="search here . . ."
-          className="block w-[50vh] px-2 py-1 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-lg sm:leading-6"
+          className="block w-[50vh] px-2 py-1 rounded-md border border-gray-200 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-lg sm:leading-6"
         />
       </div>
       <table className="z-10 mt-6 w-full whitespace-nowrap text-left">
@@ -65,7 +65,7 @@ export default function AdminRefferal() {
           <col className="lg:w-1/12" />
           <col className="lg:w-1/12" />
         </colgroup>
-        <thead className="border-b border-white/10 text-lg leading-6 text-white">
+        <thead className="bg-gradient-to-r from-blue-900 to-blue-700 p-4 border-b border-blue-500 text-gray-300">
           <tr>
             <th
               scope="col"

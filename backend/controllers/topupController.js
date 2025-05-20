@@ -537,19 +537,19 @@ exports.entryActivate = catchAsyncErrors(async (request, response, next) => {
             if (result.affectedRows > 0) {
               response.status(200).json({
                 success: true,
-                message: "Entry activated successfully",
+                message: "Agreement Purchase successfully",
               });
             } else {
               return response.status(400).json({
                 success: false,
-                message: "Entry could not be activated",
+                message: "Agreement Purchase could not be activated",
               });
             }
           });
         } else {
           return response
             .status(400)
-            .json({ success: false, message: "Entry could not be activated" });
+            .json({ success: false, message: "Agreement Purchase could not be activated" });
         }
       });
     });
@@ -588,7 +588,7 @@ exports.entryActivate = catchAsyncErrors(async (request, response, next) => {
         level_status = 'open',
         roi_status = 'open', 
         is_active = 'active',
-        max = 4,
+        max = 3,
         status = 'unblock' 
         WHERE id = ${id}`;
       
@@ -604,11 +604,11 @@ exports.entryActivate = catchAsyncErrors(async (request, response, next) => {
           
           return response
             .status(200)
-            .json({ success: true, message: "Entry activated successfully" });
+            .json({ success: true, message: "Purchase activated successfully" });
         } else {
           return response
             .status(400)
-            .json({ success: false, message: "Entry could not be activated" });
+            .json({ success: false, message: "Purchase could not be activated" });
         }
       } catch (error) {
         console.error("Error during entry activation:", error);

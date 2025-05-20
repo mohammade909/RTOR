@@ -119,7 +119,7 @@ export default function AdminReport() {
           <div className="flow-root mt-4">
             <div className="inline-block min-w-full">
               <table className="min-w-full overflow-hidden  divide-y divide-gray-700">
-                <thead className="text-lg leading-6 border border-b  text-gray-100 bg-black ">
+                <thead className="text-lg leading-6 border border-b bg-gradient-to-r from-blue-900 to-blue-700 p-4 border-b border-blue-500 text-gray-300">
                   <tr>
                     <th className="py-2 pl-2 pr-8 font-medium text-base border-r  sm:pl-6 lg:pl-8">
                       Name

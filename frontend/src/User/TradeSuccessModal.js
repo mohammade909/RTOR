@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { makeTrade } from "../redux/tradeSlice";
 import { ArrowRight, X, Clock, TrendingUp, Zap, Coins, Wallet } from "lucide-react";
 import axios from "axios";
-
+import { FaHome } from "react-icons/fa";
 export function TradeSuccessModal({
   isOpen,
   onClose,
@@ -31,7 +31,7 @@ export function TradeSuccessModal({
 
   if (!isVisible) return null;
 
-  const defaultMessage = "Your trade was executed successfully!";
+  const defaultMessage = "Congratulations! Your share of the hotel income has been credited!";
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-70 backdrop-blur-sm">
@@ -52,14 +52,14 @@ export function TradeSuccessModal({
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-full blur-md opacity-75 animate-pulse"></div>
               <div className="relative rounded-full bg-gradient-to-r from-blue-500 to-emerald-500 p-3 shadow-lg">
-                <TrendingUp className="h-10 w-10 text-white" strokeWidth={2} />
+                <FaHome className="h-10 w-10 text-white" strokeWidth={2} />
               </div>
             </div>
           </div>
 
           {/* Heading */}
           <h3 className="text-2xl font-bold text-white mb-2">
-            Trade Executed!
+           Rent Collected Successfully! !
           </h3>
 
           {/* Message */}
@@ -68,20 +68,7 @@ export function TradeSuccessModal({
           </p>
 
           {/* Trade details card */}
-          {/* <div className="bg-gray-800/50 rounded-lg p-4 mb-6 border border-gray-700">
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-gray-400">Asset</span>
-              <span className="font-medium text-white">{coinSymbol}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-400">Amount</span>
-              <span className="font-medium text-emerald-400">
-                {typeof tradeAmount === 'number' 
-                  ? `$${tradeAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-                  : tradeAmount}
-              </span>
-            </div>
-          </div> */}
+ 
 
           {/* Additional info */}
           <div className="flex items-center justify-center text-sm text-gray-400 mb-6">

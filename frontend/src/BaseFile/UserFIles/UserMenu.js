@@ -14,6 +14,7 @@ import {
   ScaleIcon,
   UserGroupIcon,
 } from "@heroicons/react/24/outline";
+import { BsCurrencyDollar } from "react-icons/bs";
 import { FaChartBar } from "react-icons/fa";
 import { FaDirections } from "react-icons/fa";
 import { TbListDetails } from "react-icons/tb";
@@ -37,8 +38,12 @@ import { defaulterNotification, getUser } from "../../redux/userSlice";
 import NotificationPopup from "../../User/NotificationPopup";
 import RewardNotification from "../../User/RewardNotification";
 import { FaRegUser } from "react-icons/fa";
+import { CiWallet } from "react-icons/ci";
+import { MdFitScreen } from "react-icons/md";
 import {
   ChevronRightIcon,
+  ChevronDown,
+  ChevronUp,
   Trophy,
   HandCoins,
   Users,
@@ -49,14 +54,16 @@ import {
   ChartCandlestick,
   TrophyIcon,
   BarChart,
+  DollarSign,
 } from "lucide-react";
+import { PiHandDeposit } from "react-icons/pi";
 export default function UserMenu({ Children, PageName }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("Dashboard");
   const location = useLocation();
   const activeTabs = location.pathname;
-
+  const [showWallets, setShowWallets] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -229,6 +236,26 @@ export default function UserMenu({ Children, PageName }) {
     { name: "Detail", to: "/user/income", icon: TbListDetails, submenu: [] },
   ];
   const wallet = [];
+  const deposit = [
+    {
+      name: "Pay With Scanner",
+      to: "/user/PaywithScreener",
+      icon: MdFitScreen,
+      submenu: [],
+    },
+    {
+      name: "Connect Wallet",
+      to: "/user/connectWallet",
+      icon: CiWallet,
+      submenu: [],
+    },
+    {
+      name: "Deposit",
+      to: "/user/deposit",
+      icon: PiHandDeposit,
+      submenu: [],
+    },
+  ];
   const menus = [
     {
       name: "Dashboard",
@@ -238,23 +265,23 @@ export default function UserMenu({ Children, PageName }) {
     },
     {
       name: "Deposit",
-      to: "/user/deposit",
+      // to: "/user/deposit",
       icon: PiHandDepositFill,
-      submenu: [],
+      submenu: deposit,
     },
     {
-      name: "Tree",
-      to: "/user/refferral-tree",
+      name: "Network",
+      // to: "/user/Refferral-tree",
       icon: MdAccountTree,
       submenu: [
         {
-          name: "Tree",
+          name: "Genealogy",
           to: "/user/refferral-tree",
           icon: Blocks,
           submenu: [],
         },
         {
-          name: "Table View",
+          name: "My Referral",
           to: "/user/direct-members",
           icon: List,
           submenu: [],
@@ -277,7 +304,7 @@ export default function UserMenu({ Children, PageName }) {
     // },
     {
       name: "Income",
-      to: "/user/income",
+      // to: "/user/income",
       icon: FaHandHoldingDollar,
       submenu: income,
     },
@@ -300,7 +327,14 @@ export default function UserMenu({ Children, PageName }) {
       submenu: [],
     },
     {
-      name: "ReTop-Up",
+      name: "Other TopUp",
+      to: "/user/retopup",
+      current: false,
+      icon: ScaleIcon,
+      submenu: wallet,
+    },
+    {
+      name: "Upgrade Package",
       to: "/user/topup",
       icon: DocumentChartBarIcon,
       submenu: [],
@@ -317,9 +351,36 @@ export default function UserMenu({ Children, PageName }) {
     //   to: "/user/queries",
     //   icon: FcSupport,
     //   submenu: [
-       
+
     //   ],
     // },
+  ];
+
+  const navItems = [
+    {
+      name: "Dashboard",
+      to: "/user/dashboard",
+      icon: AiOutlineDashboard,
+      submenu: [],
+    },
+    {
+      name: "Withdrawal",
+      to: "/user/withdrawal",
+      icon: PiHandWithdrawFill,
+      submenu: wallet,
+    },
+    {
+      name: "Rewards",
+      to: "/user/rewards",
+      icon: Trophy,
+      submenu: wallet,
+    },
+    {
+      name: "Upgrade Package",
+      to: "/user/topup",
+      icon: DocumentChartBarIcon,
+      submenu: [],
+    },
   ];
 
   const profitWallet =
@@ -337,7 +398,7 @@ export default function UserMenu({ Children, PageName }) {
   };
 
   return (
-    <div className="flex h-screen text-left">
+    <div className="h-screen text-left">
       {/* Sidebar */}
       <aside
         className={`fixed top-0 left-0 h-full bg-white  border-r border-gray-200 text-gray-800 transition-all duration-300 z-50
@@ -380,7 +441,7 @@ export default function UserMenu({ Children, PageName }) {
 
         {/* Menu Items */}
         <div className="flex flex-col h-full p-2  ">
-          <ul className="flex flex-col space-y-2 no-scrollbar overflow-auto mb-20">
+          <ul className="flex flex-col space-y-2 no-scrollbar overflow-auto md:mb-40 mb-20">
             {menus.map((menu, index) => {
               const isActive = activeTab === menu.name;
               return (
@@ -396,7 +457,11 @@ export default function UserMenu({ Children, PageName }) {
                               ? "bg-[#0d4db442] border text-[#d78628] border-[#2e5799]"
                               : ""
                           }`}
-                          onClick={() => setActiveTab(menu.name)}
+                          // onClick={() => setActiveTab(menu.name)}
+                          onClick={() => {
+                            setActiveTab(menu.name);
+                            if (isMobileMenuOpen) toggleMobileMenu();
+                          }}
                         >
                           {menu?.icon && <menu.icon className="w-6 h-6" />}
                           {(isSidebarOpen || isMobileMenuOpen) && (
@@ -422,7 +487,11 @@ export default function UserMenu({ Children, PageName }) {
                                       ? "bg-[#4874bb42] border text-[#d78628] border-[#2e5799]"
                                       : ""
                                   }`}
-                                  onClick={() => setActiveTab(submenu.name)}
+                                  // onClick={() => setActiveTab(submenu.name)}
+                                  onClick={() => {
+                                    setActiveTab(submenu.name);
+                                    if (isMobileMenuOpen) toggleMobileMenu();
+                                  }}
                                 >
                                   <Link
                                     to={submenu.to}
@@ -463,64 +532,68 @@ export default function UserMenu({ Children, PageName }) {
           <div className="flex flex-col flex-1 item-center">
             <nav
               aria-label="Breadcrumb"
-              className="flex border-b md:justify-between justify-end  px-4 py-2 "
+              className="flex border-b md:justify-between justify-end items-center gap-4 px-4 py-2 "
             >
-              <ol role="list" className="hidden space-x-4  lg:flex w-full">
-                <li className="flex">
-                  <div className="flex items-center">
-                    <a
-                      href="#"
-                      className="text-gray-800 hover:text-gray-800/85"
-                    >
-                      <HomeIcon
+              <div className="flex gap-4">
+                <ol role="list" className=" space-x-4  lg:flex hidden ">
+                  <li className="flex">
+                    <div className="flex items-center">
+                      <a
+                        href="#"
+                        className="text-gray-800 hover:text-gray-800/85"
+                      >
+                        <HomeIcon
+                          aria-hidden="true"
+                          className="flex-shrink-0 w-5 h-5"
+                        />
+                        <span className="sr-only">Home</span>
+                      </a>
+                    </div>
+                  </li>
+                  <li className="flex">
+                    <div className="flex items-center">
+                      <svg
+                        fill="currentColor"
+                        viewBox="0 0 24 44"
+                        preserveAspectRatio="none"
                         aria-hidden="true"
-                        className="flex-shrink-0 w-5 h-5"
-                      />
-                      <span className="sr-only">Home</span>
-                    </a>
-                  </div>
-                </li>
-                <li className="flex">
-                  <div className="flex items-center">
-                    <svg
-                      fill="currentColor"
-                      viewBox="0 0 24 44"
-                      preserveAspectRatio="none"
-                      aria-hidden="true"
-                      className="flex-shrink-0 w-6 h-full text-gray-800 hover:text-gray-800/85"
-                    >
-                      <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
-                    </svg>
-                    <a className="ml-4 text-base font-medium text-gray-800 hover:text-gray-800/85">
-                      <span className="block text-sm">
-                        {" "}
-                        {singleuser?.fullname}
-                      </span>
-                      <span className="block text-xs">
-                        {" "}
-                        {singleuser?.email}
-                      </span>
-                    </a>
-                  </div>
-                </li>
-                <li className="flex">
-                  <div className="flex items-center">
-                    <svg
-                      fill="currentColor"
-                      viewBox="0 0 24 44"
-                      preserveAspectRatio="none"
-                      aria-hidden="true"
-                      className="flex-shrink-0 w-6 h-full text-gray-800 hover:text-gray-800/85"
-                    >
-                      <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
-                    </svg>
-                    <a className="ml-4 text-base font-medium text-gray-800 hover:text-gray-800/85">
-                      {singleuser?.username}
-                    </a>
-                  </div>
-                </li>
-                <li className="flex justify-end">
-                  <div className="hidden md:flex space-x-3">
+                        className="flex-shrink-0 w-6 h-full text-gray-800 hover:text-gray-800/85"
+                      >
+                        <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+                      </svg>
+                      <a className="ml-4 text-base font-medium text-gray-800 hover:text-gray-800/85">
+                        <span className="block text-sm">
+                          {" "}
+                          {singleuser?.fullname}
+                        </span>
+                        <span className="block text-xs">
+                          {" "}
+                          {singleuser?.email}
+                        </span>
+                      </a>
+                    </div>
+                  </li>
+                  <li className="flex">
+                    <div className="flex items-center">
+                      <svg
+                        fill="currentColor"
+                        viewBox="0 0 24 44"
+                        preserveAspectRatio="none"
+                        aria-hidden="true"
+                        className="flex-shrink-0 w-6 h-full text-gray-800 hover:text-gray-800/85"
+                      >
+                        <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+                      </svg>
+                      <a className="ml-4 text-base font-medium text-gray-800 hover:text-gray-800/85">
+                        {singleuser?.username}
+                      </a>
+                    </div>
+                  </li>
+                </ol>
+                <div className="relative">
+                  {/* Wallets grid for large screens */}
+                  <div className="grid-cols-3 gap-4 lg:grid hidden">
+                    {/* Active Wallet */}
                     <div className="flex items-center bg-blue-50 rounded-lg px-4 py-2 shadow-sm border border-blue-100 hover:bg-blue-100 transition-colors">
                       <Briefcase size={18} className="text-blue-600" />
                       <div className="ml-2">
@@ -531,28 +604,85 @@ export default function UserMenu({ Children, PageName }) {
                       </div>
                     </div>
 
-                    <div className="flex items-center bg-yellow-50 rounded-lg px-4 py-2 shadow-sm border border-yellow-100 hover:bg-yellow-100 transition-colors">
+                    {/* Rent Wallet */}
+                    <div className="flex items-center bg-yellow-50 rounded-lg sm:px-4 px-2 py-2 shadow-sm border border-yellow-100 hover:bg-yellow-100 transition-colors">
                       <Briefcase size={18} className="text-yellow-600" />
                       <div className="ml-2">
                         <p className="font-medium text-yellow-900">
-                          $ {singleuser?.non_working}
+                          ${singleuser?.non_working}
                         </p>
                         <p className="text-xs text-yellow-600">Rent Wallet</p>
                       </div>
                     </div>
 
+                    {/* Income Wallet */}
                     <div className="flex items-center bg-purple-50 rounded-lg px-4 py-2 shadow-sm border border-purple-100 hover:bg-purple-100 transition-colors">
                       <Briefcase size={18} className="text-purple-600" />
                       <div className="ml-2">
                         <p className="font-medium text-purple-900">
-                          $ {singleuser?.working}
+                          ${singleuser?.working}
                         </p>
                         <p className="text-xs text-purple-600">Income Wallet</p>
                       </div>
                     </div>
                   </div>
-                </li>
-              </ol>
+
+                  {/* Dropdown toggle button for small screens */}
+                  <div
+                    className="lg:hidden flex justify-between items-center  border rounded-md p-2 bg-blue-600 text-white cursor-pointer"
+                    onClick={() => setShowWallets(!showWallets)}
+                  >
+                    <BsCurrencyDollar className="h-4 w-4" />
+                    <span className="font-medium text-sm me-2">Wallets</span>
+                    {showWallets ? (
+                      <ChevronUp size={20} />
+                    ) : (
+                      <ChevronDown size={20} />
+                    )}
+                  </div>
+
+                  {/* Dropdown wallet cards for small screens - positioned absolutely */}
+                  {showWallets && (
+                    <div className="lg:hidden absolute  right-0 z-40 w-56 bg-white border border-gray-200 shadow-sm rounded-md mt-2 p-2">
+                      {/* Active Wallet */}
+                      <div className="flex items-center bg-blue-50 rounded-lg px-4 py-2 shadow-sm border border-blue-100 hover:bg-blue-100 transition-colors mb-2">
+                        <Briefcase size={18} className="text-blue-600" />
+                        <div className="ml-2">
+                          <p className="font-medium text-blue-900">
+                            ${singleuser?.business || "0.00"}
+                          </p>
+                          <p className="text-xs text-blue-600">Active Wallet</p>
+                        </div>
+                      </div>
+
+                      {/* Rent Wallet */}
+                      <div className="flex items-center bg-yellow-50 rounded-lg sm:px-4 px-2 py-2 shadow-sm border border-yellow-100 hover:bg-yellow-100 transition-colors mb-2">
+                        <Briefcase size={18} className="text-yellow-600" />
+                        <div className="ml-2">
+                          <p className="font-medium text-yellow-900">
+                            ${singleuser?.non_working}
+                          </p>
+                          <p className="text-xs text-yellow-600">Rent Wallet</p>
+                        </div>
+                      </div>
+
+                      {/* Income Wallet */}
+                      <div className="flex items-center bg-purple-50 rounded-lg px-4 py-2 shadow-sm border border-purple-100 hover:bg-purple-100 transition-colors">
+                        <Briefcase size={18} className="text-purple-600" />
+                        <div className="ml-2">
+                          <p className="font-medium text-purple-900">
+                            ${singleuser?.working}
+                          </p>
+                          <p className="text-xs text-purple-600">
+                            Income Wallet
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
               <Menu as="div" className="relative inline-block text-left">
                 <Menu.Button className="flex items-center p-3 text-sm font-medium rounded-full text-gray-400 border border-white/20 bg-[#5c8ad5]">
                   <FaUserAlt
@@ -564,7 +694,6 @@ export default function UserMenu({ Children, PageName }) {
                 <Menu.Items className="absolute right-0 z-50 mt-2 min-w-48 max-w-96 break-all origin-top-right rounded-sm bg-black py-1 shadow-lg ring-1 focus:outline-none">
                   <div className="flex items-center px-4 pb-1 border-b border-gray-400">
                     <div className="shrink-0 border bg-[#1c1a0e] p-2 rounded-full">
-                      {/* <img alt="" className="size-8 rounded-full border" /> */}
                       <FaUserAlt
                         aria-hidden="true"
                         className="size-4 text-gray-300"
@@ -581,32 +710,106 @@ export default function UserMenu({ Children, PageName }) {
                   </div>
 
                   <div className="mt-3 space-y-1 px-2">
-                    <Link to={`/user/profile/${auth?.id}`}>
-                      <button
-                        className={`group flex w-full text-gray-100 items-center px-4 py-2 text-sm font-medium ${
-                          currentMenu === "Profile"
-                            ? "bg-gray-200 text-gray-900"
-                            : " hover:bg-gray-200 hover:text-gray-800"
-                        }`}
-                      >
-                        <FaRegUser className="mr-2 h-4 w-4" />
-                        Profile
-                      </button>
-                    </Link>
-                    <button
-                      onClick={handleLogout}
-                      className="flex w-full items-center  font-medium text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-200"
-                    >
-                      <IoMdLogOut className="mr-2 h-5 w-5 text-red-400" />
-                      Logout
-                    </button>
+                    <Menu.Item>
+                      {({ active }) => (
+                        <Link to={`/user/profile/${auth?.id}`}>
+                          <div
+                            className={`group flex w-full items-center px-4 py-2 text-sm font-medium ${
+                              currentMenu === "Profile" || active
+                                ? "bg-gray-200 text-gray-900"
+                                : "text-gray-100 hover:bg-gray-200 hover:text-gray-800"
+                            }`}
+                          >
+                            <FaRegUser className="mr-2 h-4 w-4" />
+                            Profile
+                          </div>
+                        </Link>
+                      )}
+                    </Menu.Item>
+
+                    <Menu.Item>
+                      {({ active }) => (
+                        <button
+                          onClick={handleLogout}
+                          className="flex w-full items-center font-medium text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-200"
+                        >
+                          <IoMdLogOut className="mr-2 h-5 w-5 text-red-400" />
+                          Logout
+                        </button>
+                      )}
+                    </Menu.Item>
                   </div>
                 </Menu.Items>
               </Menu>
             </nav>
           </div>
         </header>
+        {/* <header className=" lg:hidden flex justify-between p-3 items-center w-full ">
+          <div className="grid grid-cols-3 gap-2 w-full">
+            <div className="flex items-center bg-blue-50 rounded-lg px-2 py-2 shadow-sm border border-blue-100 hover:bg-blue-100 transition-colors">
+              <Briefcase size={18} className="text-blue-600" />
+              <div className="ml-2">
+                <p className="font-medium text-xs text-blue-900">
+                  ${singleuser?.business || "0.00"}
+                </p>
+                <p className="text-xs text-blue-600">Active Wallet</p>
+              </div>
+            </div>
 
+            <div className="flex items-center bg-yellow-50 rounded-lg sm:px-2 px-2 py-2 shadow-sm border border-yellow-100 hover:bg-yellow-100 transition-colors">
+              <Briefcase size={18} className="text-yellow-600" />
+              <div className="ml-2">
+                <p className="font-medium text-xs text-yellow-900">
+                  $ {singleuser?.non_working}
+                </p>
+                <p className="text-xs text-yellow-600">Rent Wallet</p>
+              </div>
+            </div>
+
+            <div className="flex items-center bg-purple-50 rounded-lg px-2 py-2 shadow-sm border border-purple-100 hover:bg-purple-100 transition-colors">
+              <Briefcase size={18} className="text-purple-600" />
+              <div className="ml-2">
+                <p className="font-medium text-xs text-purple-900">
+                  $ {singleuser?.working}
+                </p>
+                <p className="text-xs text-purple-600">Income Wallet</p>
+              </div>
+            </div>
+          </div>
+        </header> */}
+        <div className="md:hidden text-xs z-50 w-full fixed bottom-0 border border-white/50 bg-black backdrop-blur-md p-5 flex justify-around items-center shadow-lg">
+          {navItems.map((item) => {
+            const isActive = activeTabs === item.to;
+            return (
+              <Link
+                key={item.to}
+                to={item.to}
+                className="flex flex-col items-center relative transition-all duration-500 ease-in-out"
+              >
+                <div
+                  className={`p-2 rounded-full flex items-center justify-center absolute -top-10 border-2 border-white/50 transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] delay-150 ${
+                    isActive
+                      ? "bg-[#2e5799] opacity-100 scale-110 translate-y-0 shadow-xl"
+                      : "bg-transparent opacity-0 scale-75 translate-y-4"
+                  }`}
+                >
+                  <item.icon
+                    className={`w-5 h-5 transition-colors duration-500 ease-in-out ${
+                      isActive ? "text-white" : "text-gray-200"
+                    }`}
+                  />
+                </div>
+                <span
+                  className={`text-xs mt-0.5 transition-all duration-500 ease-[cubic-bezier(0.4, 0, 0.2, 1)] ${
+                    isActive ? "text-[#d78628] font-semibold" : "text-gray-200"
+                  } text-center`}
+                >
+                  {item.name}
+                </span>
+              </Link>
+            );
+          })}
+        </div>
         <header className="">
           <div className="max-w-7xl mx-auto px-4 my-4">
             <div className="flex justify-between ">
@@ -640,7 +843,12 @@ export default function UserMenu({ Children, PageName }) {
                       />
                       <p className="ml-2 text-sm font-medium text-[#eda041] ">
                         {PageName === "Trade" ? (
-                          <Link to="/user/transaction/roi_transaction/invest" className="text-blue-400 animate-pulse">View History</Link>
+                          <Link
+                            to="/user/transaction/roi_transaction/invest"
+                            className="text-blue-400 animate-pulse"
+                          >
+                            View History
+                          </Link>
                         ) : (
                           PageName
                         )}
@@ -653,11 +861,12 @@ export default function UserMenu({ Children, PageName }) {
           </div>
         </header>
 
-        <main className="flex-1 px-4 text-white">
-          <div className="max-w-full">
+        <main className="px-4 text-white">
+          <div className="max-w-7xl mx-auto">
             {/* <h1 className="text-2xl font-semibold ">{PageName}</h1> */}
             {Children}
           </div>
+          <div className="h-16 md:h-0"></div>
         </main>
       </div>
     </div>

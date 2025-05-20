@@ -6,7 +6,7 @@ export const addTopup = createAsyncThunk(
   async ({ values }, thunkAPI) => {
     try {
 
-      const response = await fetch(`http://localhost:8000/api/v1/topup/add`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/topup/add`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -34,7 +34,7 @@ export const entryPlanActivation = createAsyncThunk(
   async ({ id ,userby_id}, thunkAPI) => {
     try {
       console.log(id)
-      const response = await fetch(`http://localhost:8000/api/v1/topup/entry`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/topup/entry`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -60,7 +60,7 @@ export const entryPlanActivation = createAsyncThunk(
 //   "user/addRecharge",
 //   async (formData, thunkAPI) => {
 //     try {
-//       const response = await fetch('http://localhost:8000/api/v1/topup/recharge', {
+//       const response = await fetch('https://api.r2rgloble.com/api/v1/topup/recharge', {
 //         method: 'POST',
 //         body: formData,
 //       });
@@ -81,7 +81,7 @@ export const getAllTopup = createAsyncThunk(
   "staff/getAllTopup",
   async (_, thunkAPI) => {
     try {
-      const response = await fetch("http://localhost:8000/api/v1/topup/list");
+      const response = await fetch("https://api.r2rgloble.com/api/v1/topup/list");
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -100,7 +100,7 @@ export const getAllTopupByid = createAsyncThunk(
   "staff/getAllTopupByid",
   async (user_id, thunkAPI) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/topup/by/${user_id}`)
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/topup/by/${user_id}`)
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -121,7 +121,7 @@ export const deleteTopup = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       // Your asynchronous logic to delete student here
-      const response = await fetch(`http://localhost:8000/api/v1/topup/${id}`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/topup/${id}`, {
         method: "DELETE",
       });
 
@@ -143,7 +143,7 @@ export const updateTopup = createAsyncThunk(
     try {
         console.log( id, updatedData)
       // Your asynchronous logic to update student here
-      const response = await fetch(`http://localhost:8000/api/v1/topup/${id}`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/topup/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -169,7 +169,7 @@ export const addReTopup = createAsyncThunk(
   "staff/addReTopup",
   async ({ values }, thunkAPI) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/topup/addretopup`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/topup/addretopup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

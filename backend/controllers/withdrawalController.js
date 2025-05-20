@@ -128,224 +128,20 @@ exports.deleteWithdrawalRequest = asyncHandler(async (req, res, next) => {
   });
 });
 
-// exports.addWithdrawalRequest = catchAsyncErrors(async (request, response, next) => {
-//   const { user_id, amount } = request.body;
-
-//   // Check if the amount is less than 30
-//   if (amount < 10) {
-//     return response.status(400).json({ message: "Amount less than 10 is not allowed" });
-//   }
-//   const { setwithdrawal } = await fetchSetRoiFromAdminSettings();
-
-//   if (setwithdrawal !== 1) {
-//     return response.status(404).json({ message: "UseAdmin not allowed ROI" });
-//   }
-//   const checkBalanceSql = `SELECT non_working FROM users WHERE id = ?`;
-//   db.query(checkBalanceSql, [user_id], (err, results) => {
-//     if (err) {
-//       console.error("Error during balance check:", err);
-//       return next(new ErrorHandler("Error during balance check!", 500));
-//     }
-
-//     if (results.length === 0) {
-//       return response.status(404).json({ message: "User not found" });
-//     }
-
-//     const { non_working } = results[0];
-//     if (non_working < amount) {
-//       return response.status(400).json({ message: "Insufficient funds in non_working balance" });
-//     }
-//     let remainingAmount = amount;
-//     let deductionAmount = amount * 0.05; // 5% admin charge
-//     let amountAfterDeduction = remainingAmount - deductionAmount;
-
-//     // Update the non_working balance
-//     const updatedNonWorkingBalance = non_working - amount;
-
-//     // Update the user's non_working balance in the database
-//     const updateUserSql = `
-//       UPDATE users
-//       SET non_working = ?
-//       WHERE id = ?
-//     `;
-
-//     db.query(updateUserSql, [updatedNonWorkingBalance, user_id], (err, updateResult) => {
-//       if (err) {
-//         console.error("Error updating non_working balance:", err);
-//         return next(new ErrorHandler("Error updating non_working balance", 500));
-//       }
-
-//         const insertWithdrawalSql = `
-//           INSERT INTO withdrawal_request (user_id, amount, type, deduction)
-//           VALUES (?, ?, 'working', ?)
-//         `;
-//         db.query(insertWithdrawalSql, [user_id, amountAfterDeduction, deductionAmount], (err, result) => {
-//           if (err) {
-//             console.error("Error during withdrawal_request creation:", err);
-//             return next(new ErrorHandler("Error during withdrawal_request creation!", 500));
-//           }
-
-//           if (result.affectedRows > 0) {
-//             response.status(200).json({
-//               success: true,
-//               message: `Withdrawal request sent successfully. Admin charge of ${deductionAmount} deducted.`,
-//             });
-//           } else {
-//             response.status(400).json({ error: "Withdrawal request could not be sent" });
-//           }
-//         });
-//     });
-//   });
-// });
-
-// exports.addWithdrawalRequest = catchAsyncErrors(
-//   async (request, response, next) => {
-//     const { user_id, amount } = request.body;
-
-//     // Check if the amount is less than 10
-//     if (amount < 10) {
-//       return response
-//         .status(400)
-//         .json({ message: "Amount less than 10 is not allowed" });
-//     }
-
-//     const { setwithdrawal } = await fetchSetRoiFromAdminSettings();
-//     if (setwithdrawal !== 1) {
-//       return response.status(404).json({ message: "UseAdmin not allowed ROI" });
-//     }
-
-//     // Get user data with all relevant columns
-//     const checkBalanceSql = `SELECT level_month, direct_income, salary, reward FROM users WHERE id = ?`;
-
-//     db.query(checkBalanceSql, [user_id], (err, results) => {
-//       if (err) {
-//         console.error("Error during balance check:", err);
-//         return next(new ErrorHandler("Error during balance check!", 500));
-//       }
-
-//       if (results.length === 0) {
-//         return response.status(404).json({ message: "User not found" });
-//       }
-
-//       const singleuser = results[0];
-//       // Calculate total available balance from specified columns
-//       const totalAvailableBalance =
-//         Number(singleuser.level_month) +
-//         Number(singleuser.direct_income) +
-//         Number(singleuser.salary) +
-//         Number(singleuser.reward);
-
-//       if (totalAvailableBalance < amount) {
-//         return response
-//           .status(400)
-//           .json({ message: "Insufficient funds in combined balances" });
-//       }
-
-//       let remainingAmount = amount;
-//       let deductionAmount = amount * 0.05; // 5% admin charge
-//       let amountAfterDeduction = remainingAmount - deductionAmount;
-
-//       // Logic to deduct from each column proportionally
-//       let remainingToDeduct = amount;
-//       let newLevelMonth = singleuser.level_month;
-//       let newDirectIncome = singleuser.direct_income;
-//       let newSalary = singleuser.salary;
-//       let newReward = singleuser.reward;
-
-//       // Deduct from level_month
-//       if (remainingToDeduct > 0 && newLevelMonth > 0) {
-//         const deduct = Math.min(remainingToDeduct, newLevelMonth);
-//         newLevelMonth -= deduct;
-//         remainingToDeduct -= deduct;
-//       }
-
-//       // Deduct from direct_income
-//       if (remainingToDeduct > 0 && newDirectIncome > 0) {
-//         const deduct = Math.min(remainingToDeduct, newDirectIncome);
-//         newDirectIncome -= deduct;
-//         remainingToDeduct -= deduct;
-//       }
-
-//       // Deduct from salary
-//       if (remainingToDeduct > 0 && newSalary > 0) {
-//         const deduct = Math.min(remainingToDeduct, newSalary);
-//         newSalary -= deduct;
-//         remainingToDeduct -= deduct;
-//       }
-
-//       // Deduct from reward
-//       if (remainingToDeduct > 0 && newReward > 0) {
-//         const deduct = Math.min(remainingToDeduct, newReward);
-//         newReward -= deduct;
-//         remainingToDeduct -= deduct;
-//       }
-
-//       // Update all balances in the database
-//       const updateUserSql = `
-//       UPDATE users
-//       SET level_month = ?, direct_income = ?, salary = ?, reward = ?
-//       WHERE id = ?
-//     `;
-
-//       db.query(
-//         updateUserSql,
-//         [newLevelMonth, newDirectIncome, newSalary, newReward, user_id],
-//         (err, updateResult) => {
-//           if (err) {
-//             console.error("Error updating balances:", err);
-//             return next(new ErrorHandler("Error updating balances", 500));
-//           }
-
-//           const insertWithdrawalSql = `
-//         INSERT INTO withdrawal_request (user_id, amount, type, deduction)
-//         VALUES (?, ?, 'working', ?)
-//       `;
-
-//           db.query(
-//             insertWithdrawalSql,
-//             [user_id, amountAfterDeduction, deductionAmount],
-//             (err, result) => {
-//               if (err) {
-//                 console.error("Error during withdrawal_request creation:", err);
-//                 return next(
-//                   new ErrorHandler(
-//                     "Error during withdrawal_request creation!",
-//                     500
-//                   )
-//                 );
-//               }
-
-//               if (result.affectedRows > 0) {
-//                 response.status(200).json({
-//                   success: true,
-//                   message: `Withdrawal request sent successfully. Admin charge of ${deductionAmount} deducted.`,
-//                 });
-//               } else {
-//                 response
-//                   .status(400)
-//                   .json({ error: "Withdrawal request could not be sent" });
-//               }
-//             }
-//           );
-//         }
-//       );
-//     });
-//   }
-// );
 
 exports.addWithdrawalRequest = catchAsyncErrors(
   async (request, response, next) => {
     const { user_id, amount } = request.body;
 
-    if (amount < 20) {
+    if (amount < 35) {
       return response
         .status(400)
-        .json({ message: "Amount less than 30 is not allowed" });
+        .json({ message: "Amount less than 35 is not allowed" });
     }
     const { setwithdrawal } = await fetchSetRoiFromAdminSettings();
 
     if (setwithdrawal !== 1) {
-      return response.status(404).json({ message: "UseAdmin not allowed ROI" });
+      return response.status(404).json({ message: "UseAdmin not allowed widthrwal" });
     }
     const checkBalanceSql = `SELECT working FROM users WHERE id = ?`;
     db.query(checkBalanceSql, [user_id], (err, results) => {
@@ -363,12 +159,12 @@ exports.addWithdrawalRequest = catchAsyncErrors(
       if (working < amount) {
         return response
           .status(400)
-          .json({ message: "Insufficient funds in non_working balance" });
+          .json({ message: "Insufficient funds in working balance" });
       }
 
       // Deduct the amount from non_working
       let remainingAmount = amount;
-      let deductionAmount = amount * 0.05; // 5% admin charge
+      let deductionAmount = amount * 0.10; // 10% admin charge
       let amountAfterDeduction = remainingAmount - deductionAmount;
 
       // Update the non_working balance
@@ -392,7 +188,7 @@ exports.addWithdrawalRequest = catchAsyncErrors(
           if (err) {
             console.error("Error updating working balance:", err);
             return next(
-              new ErrorHandler("Error updating non_working balance", 500)
+              new ErrorHandler("Error updating working balance", 500)
             );
           }
 

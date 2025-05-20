@@ -2,7 +2,7 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 export default function ForexTutorial() {
   return (
-    <div className="bg-gray-50 min-h-screen ">
+    <div className="bg-gray-50 lg:min-h-screen ">
       <div className="max-w-7xl mx-auto p-6">
         <div className="flex justify-center items-center gap-2 mb-3">
           <div className="flex">

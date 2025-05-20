@@ -205,34 +205,36 @@ const StatsSummary = ({ stats }) => {
 
 const FilterTabs = ({ activeTab, handleTabClick, transactionTypeOptions }) => {
   return (
-    <div className="mb-4 overflow-x-auto pb-2">
-      <div className="flex space-x-2">
-        <button
-          onClick={() => handleTabClick("all")}
-          className={`px-4 py-2 rounded-lg font-medium transition-all ${
-            activeTab === "all"
-              ? "bg-blue-600 text-white shadow-lg"
-              : "bg-blue-500 text-white/80 "
-          }`}
-        >
-          All Transactions
-        </button>
+    <>
+    <div></div></>
+    // <div className="mb-4 overflow-x-auto pb-2">
+    //   <div className="flex space-x-2">
+    //     <button
+    //       onClick={() => handleTabClick("all")}
+    //       className={`px-4 py-2 rounded-lg font-medium transition-all ${
+    //         activeTab === "all"
+    //           ? "bg-blue-600 text-white shadow-lg"
+    //           : "bg-blue-500 text-white/80 "
+    //       }`}
+    //     >
+    //       All Transactions
+    //     </button>
         
-        {transactionTypeOptions.map((type) => (
-          <button
-            key={type}
-            onClick={() => handleTabClick(type)}
-            className={`px-4 py-2 rounded-lg font-medium transition-all capitalize ${
-              activeTab === type
-                ? "bg-blue-600 text-white shadow-lg"
-                : "bg-blue-500 text-white/80 "
-            }`}
-          >
-            {type}
-          </button>
-        ))}
-      </div>
-    </div>
+    //     {transactionTypeOptions.map((type) => (
+    //       <button
+    //         key={type}
+    //         onClick={() => handleTabClick(type)}
+    //         className={`px-4 py-2 rounded-lg font-medium transition-all capitalize ${
+    //           activeTab === type
+    //             ? "bg-blue-600 text-white shadow-lg"
+    //             : "bg-blue-500 text-white/80 "
+    //         }`}
+    //       >
+    //         {type}
+    //       </button>
+    //     ))}
+    //   </div>
+    // </div>
   );
 };
 

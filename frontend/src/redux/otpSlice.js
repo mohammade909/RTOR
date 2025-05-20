@@ -4,7 +4,7 @@ export const sendOTP = createAsyncThunk(
     "staff/sendOTP",
     async ({ userId ,email}, thunkAPI) => {
       try {
-        const response = await fetch(`http://localhost:8000/api/v1/otp/send`, {
+        const response = await fetch(`https://api.r2rgloble.com/api/v1/otp/send`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -30,7 +30,7 @@ export const verifyOTP = createAsyncThunk(
     "staff/verifyOTP",
     async ({ userId, otp  }, thunkAPI) => {
       try {
-        const response = await fetch(`http://localhost:8000/api/v1/otp/verify`, {
+        const response = await fetch(`https://api.r2rgloble.com/api/v1/otp/verify`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

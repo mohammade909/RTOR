@@ -91,6 +91,12 @@ import Market from "./User/Market";
 import Trade from "./User/Trade";
 import Service from "./HomeFile/StaticsPage/Service";
 import Login from "./BaseFile/Pages/Login";
+import Nowpayments from "./User/Nowpayment";
+import {PaywithScreener} from "./User/PaywithScreener";
+import WalletConnection from "./User/WalletConnection";
+import {Ourteam} from "./HomeFile/StaticsPage/Ourteam"
+import AgreementTerms from "./User/Agreement";
+import SignupTerms from "./HomeFile/StaticsPage/SignupTerms";
 function App() {
   useAutoLogout()  
   return (
@@ -101,11 +107,12 @@ function App() {
                
         <Route path="/" element={ <Home/>}/>
         <Route path="/contact-us" element={ <Contact/>}/>
+        <Route path="/terms-conditions" element={ <SignupTerms/>}/>
         <Route path="/terms" element={ <Terms/>}/>
         <Route path="/privacy" element={ <Privacy/>}/>
         <Route path="/about-us" element={ <About/>}/>
         <Route path="/services" element={ <Service/>}/>
-
+        <Route path="/Ourteam" element={ <Ourteam/>}/>
         {/* <Route path="/Service" element={ <Service/>}/> */}
         <Route path="/Admin/login" element={ <AdminLogin/>}/>
         <Route path="/reset-password/:token" element={ <ForgotPassword/>}/>
@@ -159,6 +166,9 @@ function App() {
         <Route path="/user/sendsupport" element={ <UserMenu Children={<UserAddSupport/>} PageName={"Send Message"}/>}/>
         <Route path="/user/withdrawal" element={ <UserMenu Children={<UserAddWithdrawal/>} PageName={"Withdrawal Request"}/>}/>
         <Route path="/user/deposit" element={ <UserMenu Children={<UserDeposite/>} PageName={"Deposit"}/>}/>
+        <Route path="/user/PaywithScreener" element={ <UserMenu Children={<PaywithScreener/>} PageName={"Pay With Screener"}/>}/>
+        <Route path="/user/connectWallet" element={ <UserMenu Children={<WalletConnection/>} PageName={"Wallet Connection"}/>}/>
+         <Route path="/user/deposit-gatway/:id" element={ <UserMenu Children={<Nowpayments/>} PageName={"Now Payments"}/>}/>
         <Route path="/user/dashboard" element={ <UserMenu Children={<UserDashboard/>} PageName={"User Dashboard"}/>}/>
         <Route path="/user/market" element={ <UserMenu Children={<Market/>} PageName={"User Treading Chart"}/>}/>
         <Route path="/user/trade" element={ <UserMenu Children={<Trade/>} PageName={"Trade"}/>}/>
@@ -166,6 +176,7 @@ function App() {
         <Route path="/user/refferral-tree" element={ <UserMenu Children={<UserReferralTree/>} PageName={"Refferal Tree"}/>}/>
         <Route path="/user/plan" element={ <UserMenu Children={<UserPlan/>} PageName={"User Plan"}/>}/>
         <Route path="/user/income" element={ <UserMenu Children={<UserIncome/>} PageName={"Income "}/>}/>
+        <Route path="/user/retopup" element={ <UserMenu Children={<UserRetopup/>} PageName={"ReTop-Up "}/>}/>
         <Route path="/user/topup" element={ <UserMenu Children={<UserTopup/>} PageName={"Topup "}/>}/>
         <Route path="/user/re-topup" element={ <UserMenu Children={<UserRetopup/>} PageName={"ReTop-Up "}/>}/>
         <Route path="/user/transaction/:table_name/:fit" element={ <UserMenu Children={<UserIncomeTransaction/>} PageName={"income "}/>}/>
@@ -186,6 +197,7 @@ function App() {
         <Route path="/user/queries" element={ <UserMenu Children={<QueryList/>} PageName={"Queries"}/>}/>
         <Route path="/user/queries/:ticketId" element={ <UserMenu Children={<QueryChat/>} PageName={"Query Details"}/>}/>
         <Route path="/user/query/create" element={ <UserMenu Children={<AddQuery/>} PageName={"Have a question?"}/>}/>
+        <Route path="/agreement-terms-condition" element={ <UserMenu Children={<AgreementTerms/>} PageName={"agreement terms condition"}/>}/>
     
         </Route>
       </Routes>

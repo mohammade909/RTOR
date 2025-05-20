@@ -1,276 +1,195 @@
-// import React from 'react';
-// import { ShieldCheck, TrendingUp, DollarSign, Users, Clock } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import {
+  ShieldCheck,
+  TrendingUp,
+  DollarSign,
+  Users,
+  Award,
+  Globe,
+  ArrowRight,
+  ChevronDown,
+} from "lucide-react";
 
-// export const TradingAccounts = () => {
-//   const benefits = [
-//     {
-//       icon: <ShieldCheck className="w-8 h-8 text-orange-400" />,
-//       title: 'Robust Security',
-//       desc: 'Military-grade encryption protects your assets and data 24/7.',
-//     },
-//     {
-//       icon: <TrendingUp className="w-8 h-8 text-green-400" />,
-//       title: 'Smart ROI Engine',
-//       desc: 'AI-driven strategy delivers consistent, risk-adjusted returns.',
-//     },
-//     {
-//       icon: <DollarSign className="w-8 h-8 text-yellow-400" />,
-//       title: 'Flexible Investments',
-//       desc: 'Start small or scale up anytime. No hidden fees or lock-ins.',
-//     },
-//     {
-//       icon: <Users className="w-8 h-8 text-blue-400" />,
-//       title: 'Referral Rewards',
-//       desc: 'Earn extra by inviting others—unlock multi-level commissions.',
-//     },
-//     {
-//       icon: <Clock className="w-8 h-8 text-red-400" />,
-//       title: 'Real-Time Insights',
-//       desc: 'Live dashboard keeps you in control of every market move.',
-//     },
-//     {
-//       icon: <ShieldCheck className="w-8 h-8 text-orange-400" />,
-//       title: 'Robust Security',
-//       desc: 'Military-grade encryption protects your assets and data 24/7.',
-//     },
-//   ];
-
-//   return (
-//     <section className="relative text-gray-900 py-24 overflow-hidden">
-//       {/* Section Heading */}
-//       <div className="max-w-6xl mx-auto px-6 text-center">
-//         <h2 className="text-4xl md:text-5xl font-bold mb-4">
-//           Why Choose <span className="text-orange-500">R2R Global</span>
-//         </h2>
-//         <p className="text-lg text-slate-800 max-w-2xl mx-auto">
-//           A powerful platform designed to maximize your profits, minimize risk, and simplify your journey.
-//         </p>
-//       </div>
-
-//       {/* Glass Benefit Cards */}
-//       <div className="mt-20 max-w-7xl mx-auto lg:px-0 px-5 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
-//         {benefits.map((item, idx) => (
-//           <div
-//             key={idx}
-//             className="bg-white/5 backdrop-blur-sm p-8 rounded-3xl shadow-xl border border-white/10 hover:shadow-orange-500/30 transition-transform  relative"
-//           >
-//             {/* Gradient Icon Ring */}
-//             <div className="mb-5 flex items-center justify-center w-16 h-16 mx-auto rounded-full bg-gradient-to-tr from-orange-500 to-purple-500 p-[2px]">
-//               <div className="bg-[#0f172a] rounded-full w-full h-full flex items-center justify-center">
-//                 {item.icon}
-//               </div>
-//             </div>
-
-//             <h3 className="text-xl font-semibold text-gray-900 text-center">{item.title}</h3>
-//             <p className="mt-2 text-slate-800 text-center">{item.desc}</p>
-//           </div>
-//         ))}
-//       </div>
-
-
-//       {/* Visual Accent */}
-//       <div className="absolute top-0 right-0 w-80 h-80 bg-orange-500 opacity-10 rounded-full blur-3xl pointer-events-none animate-pulse" />
-//       <div className="absolute bottom-0 left-0 w-60 h-60 bg-purple-600 opacity-10 rounded-full blur-2xl pointer-events-none animate-pulse" />
-//     </section>
-//   );
-// };
-
-
-
-import React, { useState, useEffect } from 'react';
-import { ShieldCheck, TrendingUp, DollarSign, Users, Clock, ChevronRight, Star, Award, BarChart4 } from 'lucide-react';
-
-export const TradingAccounts = () => {
+export default function WhyChooseR2R() {
+  const [activeTab, setActiveTab] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  const [activeCard, setActiveCard] = useState(null);
 
   useEffect(() => {
     setIsVisible(true);
-    
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY + window.innerHeight;
-      const elements = document.querySelectorAll('.benefit-card');
-      
-      elements.forEach((el, index) => {
-        if (el.offsetTop < scrollPosition - 100) {
-          setTimeout(() => {
-            setActiveCard(prev => prev === null ? 0 : Math.max(prev, index));
-          }, index * 120);
-        }
-      });
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Initial check
-    
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    const interval = setInterval(() => {
+      setActiveTab((prev) => (prev + 1) % benefits.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, []);
 
-  // Updated benefit items with additional content
   const benefits = [
     {
-      icon: <ShieldCheck className="w-8 h-8 text-orange-400" />,
-      title: 'Real Assets, Not Promises',
-      desc: ' Invest in actual operational hotels with verified income—not future blueprints or concepts.',
-      highlight: '256-bit encryption',
-      color: 'from-orange-500 to-red-500'
+      icon: <ShieldCheck className="w-8 h-8 text-white" />,
+      title: "Real Assets, Not Promises",
+      desc: "At R2R Globle, you invest in actual operating hotels—not ideas or undeveloped plans. These are verified properties that already generate consistent revenue.",
+      color: "bg-amber-600",
+      textColor: "text-amber-600",
+      img: "/whychoose1.avif",
     },
     {
-      icon: <TrendingUp className="w-8 h-8 text-green-400" />,
-      title: 'Monthly Passive Returns',
-      desc: ' Enjoy consistent monthly income based on real hotel bookings and performance.',
-      highlight: '+15% avg. returns',
-      color: 'from-green-400 to-teal-500'
+      icon: <TrendingUp className="w-8 h-8 text-white" />,
+      title: "Monthly Passive Returns",
+      desc: "Enjoy consistent monthly income based on real hotel bookings and performance.",
+      color: "bg-green-600",
+      textColor: "text-green-600",
+      img:"/whychoose2.avif"
     },
     {
-      icon: <DollarSign className="w-8 h-8 text-yellow-400" />,
-      title: 'Low Entry Barrier',
-      desc: ' Start investing with as little as $100 and scale your portfolio at your own pace.',
-      highlight: 'No minimum deposit',
-      color: 'from-yellow-400 to-amber-500'
+      icon: <DollarSign className="w-8 h-8 text-white" />,
+      title: "Low Entry Barrier",
+      desc: "Start investing with as little as $100 and scale your portfolio at your own pace.",
+      color: "bg-blue-600",
+      textColor: "text-blue-600",
+      img:"/whychoose3.avif"
     },
     {
-      icon: <Users className="w-8 h-8 text-blue-400" />,
-      title: 'Full Transparency',
-      desc: ' Access detailed reports, real-time dashboards, and legal documentation for every investment.',
-      highlight: 'Up to 20% commission',
-      color: 'from-blue-400 to-indigo-500'
+      icon: <Users className="w-8 h-8 text-white" />,
+      title: "Full Transparency",
+      desc: "Access detailed reports, real-time dashboards, and legal documentation for every investment.",
+      color: "bg-yellow-600",
+      textColor: "text-yellow-600",
+      img:"/whychoose4.avif"
     },
     {
-      icon: <Clock className="w-8 h-8 text-red-400" />,
-      title: 'Global Reach, Local Expertise',
-      desc: ' Invest in hotels located in top-performing global markets, selected by our expert team.',
-      highlight: 'Under 0.5s latency',
-      color: 'from-red-400 to-rose-500'
+      icon: <Globe className="w-8 h-8 text-white" />,
+      title: "Global Reach, Local Expertise",
+      desc: "Invest in hotels in top-performing global markets, selected by our expert team.",
+      color: "bg-rose-600",
+      textColor: "text-rose-600",
+      img:"/whychoose5.avif"
     },
     {
-      icon: <BarChart4 className="w-8 h-8 text-purple-400" />,
-      title: 'Security You Can Trust',
-      desc: ' All investments are legally backed and protected through smart contracts and secure agreements.',
-      color: 'from-purple-400 to-violet-500'
+      icon: <ShieldCheck className="w-8 h-8 text-white" />,
+      title: "Security You Can Trust",
+      desc: "All investments are legally backed and protected through smart contracts and secure agreements.",
+      color: "bg-indigo-600",
+      textColor: "text-indigo-600",
+      img:"/whychoose6.avif"
     },
-  ];
-
-  // Featured statistics
-  const stats = [
-    { value: '$150M+', label: 'in Hotel Transactions' },
-    { value: '25+', label: 'Countries Investors' },
-    { value: '$5.4M+', label: 'Paid Out to Investors' },
-    { value: '97.3%', label: 'Investor Retention Rate' }
   ];
 
   return (
-    <section className="relative text-gray-900 py-16 md:py-24 lg:py-32 overflow-hidden">
-      {/* Enhanced Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-white to-purple-50 opacity-80"></div>
-      
-      {/* Animated background elements */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-orange-500 opacity-5 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
-      <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-600 opacity-5 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
-      <div className="absolute top-1/3 left-1/4 w-64 h-64 bg-blue-500 opacity-5 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
-      
-      {/* Floating elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(10)].map((_, i) => (
-          <div 
-            key={i}
-            className="absolute rounded-full bg-gradient-to-r from-orange-300 to-purple-300 opacity-20"
-            style={{
-              width: `${Math.random() * 12 + 4}px`,
-              height: `${Math.random() * 12 + 4}px`,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDuration: `${Math.random() * 20 + 15}s`,
-              animationDelay: `${Math.random() * 5}s`,
-              animation: `float ${Math.random() * 10 + 15}s ease-in-out infinite`
-            }}
-          />
-        ))}
+    <section
+      className={`py-24 px-1 bg-gray-100 transition-all duration-1000 ${
+        isVisible ? "opacity-100" : "opacity-0"
+      }`}
+    >
+      {/* Dark Background with Animated Pattern */}
+      <div className="absolute inset-0 overflow-hidden z-0">
+        <div className="absolute w-full h-full bg-[radial-gradient(circle_at_center,rgba(29,78,216,0.15),transparent_70%)]"></div>
       </div>
-      
-      <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-12 relative z-10">        
-        {/* Section Heading with animated reveal */}
-        <div className={`text-center transition-all duration-1000 ${isVisible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform -translate-y-10'}`}>
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-100 to-purple-100 px-5 py-2 rounded-full shadow-sm mb-6">
-            <Award className="text-orange-500 h-5 w-5" />
-            <span className="text-orange-800 font-medium text-sm">Industry-Leading Platform</span>
+
+      <div className="max-w-7xl  mx-auto lg:px-0 px-5 relative z-10">
+        {/* Main Title Area */}
+        <div className="max-w-2xl mx-auto text-center mb-16">
+          <div className="inline-block p-1 rounded-full bg-gradient-to-r from-blue-500 via-yellow-500 to-pink-500 mb-6">
+            <div className="bg-gray-900 rounded-full px-6 py-2 flex items-center justify-center">
+              <Award className="text-blue-400 w-4 h-4 mr-2" />
+              <span className="text-blue-400 text-sm font-medium">
+                R2R ADVANTAGES
+              </span>
+            </div>
           </div>
-          
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-orange-600 via-red-600 to-purple-600">
-            Why Choose <span className="relative text-blue-500">
-              R2R Global
-              <div className="absolute h-1 w-full bg-gradient-to-r from-orange-400 to-purple-400 bottom-0 left-0 rounded-full"></div>
-            </span>
+
+          <h2 className="text-4xl md:text-5xl font-bold text-black mb-4 leading-tight">
+            Why choose{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-yellow-500 mr-2">
+              R2R
+            </span>{" "}
+            Globle
           </h2>
-          
-          <p className="text-lg md:text-xl text-slate-700 max-w-3xl mx-auto mb-8">
-            A platform built on real results, strong ethics, and investor-first values. We're not just a tech solution—we're your trusted partner in global hotel investing.
+
+          <p className="text-gray-800 text-base sm:text-lg">
+            R2R Globle stands apart with a platform built on real results,
+            strong ethics, and investor-first values. We’re not just a tech
+            solution—we’re your trusted partner in global hotel investing.
           </p>
-          
-          {/* Stats showcase */}
-          <div className="flex flex-wrap justify-center gap-6 md:gap-12 mt-10 mb-16">
-            {stats.map((stat, index) => (
-              <div 
-                key={index} 
-                className="group"
-                style={{ transitionDelay: `${index * 100}ms` }}
+        </div>
+
+        {/* Interactive Feature Display */}
+        <div className="grid md:grid-cols-12 gap-8 mb-16">
+          {/* Left - Feature Tabs */}
+          <div className="md:col-span-5 space-y-2">
+            {benefits.map((benefit, idx) => (
+              <div
+                key={idx}
+                className={`p-4 rounded-lg cursor-pointer transition-all flex items-center space-x-4 
+                  ${
+                    activeTab === idx
+                      ? "bg-gray-900 shadow-lg "
+                      : "hover:bg-gray-100/50"
+                  }`}
+                onClick={() => setActiveTab(idx)}
               >
-                <div className="bg-white/80 backdrop-blur-sm px-6 py-4 rounded-2xl shadow-lg border border-orange-100 hover:border-orange-300 transition-all duration-300 hover:shadow-orange-200 hover:-translate-y-1">
-                  <p className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-purple-500">{stat.value}</p>
-                  <p className="text-sm text-gray-500">{stat.label}</p>
+                <div className={`${benefit.color} p-3 rounded-full`}>
+                  {benefit.icon}
+                </div>
+                <div className="flex-1">
+                  <h3
+                    className={`text-lg font-medium ${
+                      activeTab === idx ? "text-white" : "text-gray-900"
+                    }`}
+                  >
+                    {benefit.title}
+                  </h3>
+                </div>
+                <div
+                  className={`transition-transform ${
+                    activeTab === idx ? "rotate-180" : ""
+                  }`}
+                >
+                  <ChevronDown className="w-5 h-5 text-gray-400" />
                 </div>
               </div>
             ))}
           </div>
-        </div>
-        
-        {/* Glass Benefit Cards with staggered animation */}
-        <div className="mt-16 grid gap-6 sm:gap-8 lg:gap-10 sm:grid-cols-2 lg:grid-cols-3">
-          {benefits.map((item, idx) => (
-            <div
-              key={idx}
-              className={`benefit-card group bg-white backdrop-blur-lg p-6 sm:p-8 rounded-3xl shadow-xl border border-orange-100 hover:border-transparent transition-all duration-500 relative overflow-hidden ${activeCard >= idx ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
-              style={{ 
-                transitionDelay: `${idx * 150}ms`,
-                boxShadow: '0 10px 40px -10px rgba(255, 125, 26, 0.15)'
-              }}
-            >
-              {/* Gradient background effect on hover */}
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-50 to-purple-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              
-              {/* Decorative corner element */}
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-orange-100/30 to-purple-100/30 -translate-y-1/2 translate-x-1/2 rounded-full blur-xl group-hover:blur-lg transition-all duration-500 opacity-80"></div>
-              
-              {/* Animated gradient border effect on hover */}
-              <div className="absolute inset-0 rounded-3xl p-[1px] bg-gradient-to-r opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0" style={{ background: `linear-gradient(90deg, ${item.color.split(' ')[0].replace('from-', '')}, ${item.color.split(' ')[1].replace('to-', '')})` }}></div>
-              
-              {/* Gradient Icon Ring with raised effect */}
-              <div className="mb-6 relative z-10">
-                <div className={`flex items-center justify-center w-16 h-16 mx-auto rounded-full bg-gradient-to-r ${item.color} p-[2px] group-hover:scale-110 transition-transform duration-500 shadow-lg`}>
-                  <div className="bg-white rounded-full w-full h-full flex items-center justify-center shadow-inner">
-                    {item.icon}
-                  </div>
-                </div>
-              </div>
-              
-              <div className="relative z-10 text-center">
-                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-orange-600 transition-colors duration-300">{item.title}</h3>
-                <p className="text-slate-700 mb-4">{item.desc}</p>
-                
 
-                
-                {/* Subtle learn more link */}
-                <div className="flex justify-center">
-                  <a href="#" className="text-sm font-medium text-orange-500 flex items-center hover:text-orange-700 transition-colors">
-                    Learn more
-                    <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                  </a>
+          {/* Right - Feature Detail */}
+          <div className="md:col-span-7 px-5 relative">
+            <div className="bg-yellow-50 rounded-2xl border-3 p-8 h-full transform transition-all duration-500">
+              <div
+                className={`absolute -left-3 top-1/2 w-6 h-6 transform -translate-y-1/2 rotate-45 ${benefits[activeTab].color}`}
+              ></div>
+
+              {/* Animated Content */}
+              <div className="space-y-3 h-full flex flex-col">
+                <div
+                  className={`${benefits[activeTab].textColor} text-xl font-semibold mb-2 transition-all duration-300`}
+                >
+                  {benefits[activeTab].title}
+                </div>
+
+                <p className="text-gray-800 text-base flex-grow">
+                  {benefits[activeTab].desc}
+                </p>
+                {benefits[activeTab].img && (
+                  <div className="w-full mt-4">
+                    <img
+                      src={benefits[activeTab].img}
+                      alt={benefits[activeTab].title}
+                      className="w-full max-h-96 object-cover rounded-lg shadow"
+                    />
+                  </div>
+                )}
+
+                <div
+                  className={`flex items-center mt-6 text-sm font-medium ${benefits[activeTab].textColor}`}
+                >
+                  <span>Learn more about this benefit</span>
+                  <ArrowRight className="ml-2 w-4 h-4" />
                 </div>
               </div>
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </section>
   );
-};
+}

@@ -198,7 +198,7 @@ export default function AdminPendingWidhdrawalRequest() {
         {error && <ErrorAlert error={error} />}
         <div className="overflow-x-auto">
           <div className="inline-block min-w-full py-2 align-middle">
-            <table className="w-full mt-6 text-left border-collapse whitespace-nowrap text-gray-100 bg-black">
+            <table className="w-full mt-6 text-left border-collapse whitespace-nowrap bg-gradient-to-r from-blue-900 to-blue-700 p-4 border-b border-blue-500 text-gray-300">
               <thead className="text-sm leading-6 border-b border-gray-300">
                 <tr>
                   <th className="px-4 py-3 font-medium  border-r border-gray-300">

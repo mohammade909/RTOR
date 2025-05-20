@@ -71,7 +71,7 @@ const UserDepostie = () => {
       {message && <SuccessAlert message={message} />}
       {error && <ErrorAlert error={error} />}
       <Loader isLoading={loading} />
-      <div className="my-5 ">
+      <div className=" ">
         <DepositForm transactions={singleDeposite} user={auth} />
         <div className="flex-col my-4">
           <div className="mb-2 sm:mb-0">
@@ -113,13 +113,13 @@ const UserDepostie = () => {
           </div>
         </div>
 
-        <div className="relative w-full overflow-hidden rounded-xl shadow-sm">
+        <div className="relative w-full overflow-auto rounded-xl shadow-sm">
           {loading ? (
             <div className="flex items-center justify-center h-64">
               <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
             </div>
           ) : (
-            <div className="overflow-hidden border border-gray-200 rounded-xl">
+            <div className="overflow-auto border border-gray-200 rounded-xl">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gradient-to-r from-blue-600 to-blue-800">
                   <tr>

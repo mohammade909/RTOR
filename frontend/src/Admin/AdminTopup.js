@@ -103,7 +103,7 @@ export default function AdminTopup() {
   };
 
   return (
-    <div className="bg-gray-900">
+    <div className="bg-white">
       <div className="px-8 pt-5">
         <label htmlFor="search" className="sr-only">
           Search
@@ -115,7 +115,7 @@ export default function AdminTopup() {
           onChange={handleSearch}
           type="text"
           placeholder="search here . . ."
-          className="block w-[50vh] px-2 py-1 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-lg sm:leading-6"
+          className="block w-[50vh] px-2 py-1 rounded-md border border-gray-200 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-800 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-lg sm:leading-6"
         />
       </div>
       <div className="px-8 pt-5">
@@ -127,7 +127,7 @@ export default function AdminTopup() {
     name="filterquery"
     value={filterquery}
     onChange={(e) => setFilterquery(e.target.value)}
-    className="block w-[50vh] px-2 py-1 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-lg sm:leading-6"
+    className="block w-[50vh] px-2 py-1 rounded-md border border-gray-200 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-lg sm:leading-6"
   >
     <option value="" disabled>
       Select status...
@@ -144,7 +144,7 @@ export default function AdminTopup() {
         <div className="overflow-x-auto">
           <div className="inline-block min-w-full py-2 align-middle">
           <table className="z-10 mt-6 w-full whitespace-nowrap text-left border border-gray-700">
-  <thead className="border-b border-white/10 text-lg leading-6 text-white">
+  <thead className="bg-gradient-to-r from-blue-900 to-blue-700 p-4 border-b border-blue-500 text-gray-300">
     <tr>
       <th scope="col" className="py-2 pl-4 font-semibold sm:pl-6 lg:pl-8 border border-gray-700">
         ID
@@ -172,40 +172,40 @@ export default function AdminTopup() {
   </thead>
   <tbody className="divide-y divide-white/5">
     {(searchQuery ? allTopup : alltopup)?.filter((item)=> (filterquery ? item?.status === filterquery : true))?.map((item, index) => (
-      <tr key={index} className="hover:bg-gray-700 transition-colors duration-200">
+      <tr key={index} className="hover:bg-gray-100 transition-colors duration-200">
         <td className="py-4 pl-4 sm:pl-6 lg:pl-8 border border-gray-700">
           <div className="flex items-center">
-            <div className="truncate text-lg font-medium leading-6 text-white">
+            <div className="truncate text-lg font-medium leading-6 text-gray-800">
               {item?.id}
             </div>
           </div>
         </td>
         <td className="hidden py-4 pl-2 pr-4 sm:table-cell sm:pr-8 border border-gray-700">
-          <div className="font-mono cursor-pointer text-lg leading-6 text-gray-400">
+          <div className="font-mono cursor-pointer text-lg leading-6 text-gray-800">
             <Link to={`/admin/check/profile/${item?.userby_id}`}>
               {allusers?.find((user) => user?.id === item?.userby_id)?.username}
             </Link>
           </div>
         </td>
         <td className="hidden py-4 pl-2 pr-4 sm:table-cell sm:pr-8 border border-gray-700">
-          <div className="font-mono cursor-pointer text-lg leading-6 text-gray-400">
+          <div className="font-mono cursor-pointer text-lg leading-6 text-gray-800">
             <Link to={`/admin/check/profile/${item?.userto_id}`}>
               {allusers?.find((user) => user?.id === item?.userto_id)?.username}
             </Link>
           </div>
         </td>
         <td className="hidden py-4 pl-2 pr-4 sm:table-cell sm:pr-8 border border-gray-700">
-          <div className="font-mono text-lg leading-6 text-gray-400">
+          <div className="font-mono text-lg leading-6 text-gray-800">
             ${item?.amount}
           </div>
         </td>
         <td className="hidden py-4 pl-2 pr-4 sm:table-cell sm:pr-8 border border-gray-700">
-          <div className="rounded-md bg-gray-700/40 px-2 py-1 text-xs font-medium text-gray-400 ring-1 ring-inset ring-white/10">
+          <div className="rounded-md bg-gray-200 px-2 py-1 text-xs font-medium text-gray-800 ring-1 ring-inset ring-white/10">
             {editMode && editableTopup && editableTopup.id === item?.id ? (
               <select
                 id="status"
                 name="status"
-                className="border-0 px-3 py-1 text-gray-600 bg-gray-200 rounded-sm text-lg shadow focus:outline-none w-full"
+                className="border-0 px-3 py-1 text-gray-800 bg-gray-200 rounded-sm text-lg shadow focus:outline-none w-full"
                 onChange={handleChange}
                 defaultValue={item?.status}
               >
@@ -221,7 +221,7 @@ export default function AdminTopup() {
         </td>
        
         <td className="hidden py-4 pl-2 pr-4 sm:table-cell sm:pr-6 lg:pr-8 border border-gray-700">
-          <div className="text-lg font-mono text-gray-500">
+          <div className="text-lg font-mono text-gray-800">
           {new Date(item?.createdAT).toLocaleDateString()}
 
           </div>

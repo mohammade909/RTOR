@@ -10,7 +10,7 @@ import { getAllPlans } from "../redux/planSlice";
 import { getUser } from "../redux/userSlice";
 import { clearErrors, clearMessage } from "../redux/depositeSlice";
 import { useDispatch, useSelector } from "react-redux";
-
+import {Link} from  'react-router-dom'
 export default function UserPlan() {
   const dispatch = useDispatch();
   const { allplans, loading } = useSelector((state) => state.allplans);
@@ -60,6 +60,52 @@ export default function UserPlan() {
     setEntryPlanModel(true);
   }
 
+  // const compoundPlan = allplans?.find((item) => item.name === "Compound Plan");
+
+  const getPlanStyle = (planName) => {
+    switch (planName.toLowerCase()) {
+      case "entry":
+        return {
+          bgColor: "bg-blue-50",
+          borderColor: "border-blue-500",
+          badgeColor: "bg-blue-100 text-blue-800",
+          buttonColor: "bg-blue-600 hover:bg-blue-700",
+          iconColor: "text-blue-500",
+        };
+      case "silver":
+        return {
+          bgColor: "bg-cyan-50",
+          borderColor: "border-cyan-400",
+          badgeColor: "bg-cyan-100 text-cyan-800",
+          buttonColor: "bg-cyan-600 hover:bg-cyan-700",
+          iconColor: "text-cyan-500",
+        };
+      case "gold":
+        return {
+          bgColor: "bg-yellow-50",
+          borderColor: "border-yellow-500",
+          badgeColor: "bg-yellow-100 text-yellow-800",
+          buttonColor: "bg-yellow-600 hover:bg-yellow-700",
+          iconColor: "text-yellow-600",
+        };
+      case "platinum":
+        return {
+          bgColor: "bg-purple-50",
+          borderColor: "border-purple-500",
+          badgeColor: "bg-purple-100 text-purple-800",
+          buttonColor: "bg-purple-600 hover:bg-purple-700",
+          iconColor: "text-purple-600",
+        };
+      default:
+        return {
+          bgColor: "bg-white",
+          borderColor: "border-gray-300",
+          badgeColor: "bg-gray-100 text-gray-800",
+          buttonColor: "bg-blue-600 hover:bg-blue-700",
+          iconColor: "text-blue-500",
+        };
+    }
+  };
 
   return (
     <>
@@ -83,27 +129,32 @@ export default function UserPlan() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-10  mb-8">
+             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-10  mb-8">
               {singleuser?.entry_fees == 0
                 ? allplans
                     ?.filter((item) => item.name == "agreement")
                     .map((plan) => (
                       <div key={plan.id} className="relative group">
-                        <div className="relative h-full overflow-hidden shadow-sm border border-gray-200">
+                        <div className="relative h-full overflow-hidden shadow-sm border-t-0 border border-gray-200">
                           {/* Top Clip Shape */}
                           <div className="bg-gradient-to-r from-amber-600 to-amber-400 h-24 relative">
-                            <div
-                              className="absolute bottom-0 left-0 w-full h-8 bg-gray-800"
-                              style={{
-                                clipPath: "ellipse(50% 100% at 50% 100%)",
-                              }}
-                            ></div>
+                              <div
+                                className="absolute bottom-[16px] left-0 w-full h-20 bg-white"
+                                style={{
+                                  clipPath: "ellipse(50% 100% at 50% -15%)",
+                                }}
+                              ></div>
                           </div>
 
                           {/* Header */}
                           <div className="bg-gradient-to-r from-amber-600 to-amber-400 px-8 pt-0 pb-4">
-                            <div className="flex justify-between items-start">
-                              <h2 className="text-3xl font-bold capitalize tracking-wider mb-2 text-white">
+                           <div className="absolute top-[50px] left-1/2 -translate-x-1/2 ">
+                                <div className="bg-gray-800 text-white text-xs font-bold uppercase tracking-wider py-1 px-3 rounded-full shadow-md">
+                                   {plan.name}
+                                </div>
+                              </div>
+                            {/* <div className="flex justify-between items-start">
+                              <h2 className="text-xl font-semibold capitalize tracking-wider mb-2 text-white">
                                 {plan.name}
                               </h2>
                               <div className="bg-white bg-opacity-20 rounded-full p-3">
@@ -122,9 +173,9 @@ export default function UserPlan() {
                                   />
                                 </svg>
                               </div>
-                            </div>
-                            <div className="flex items-end mt-4">
-                              <span className="text-5xl font-bold text-white">
+                            </div> */}
+                            <div className="flex items-end ">
+                              <span className="text-3xl font-semibold text-white">
                                 ${plan.monthly_price}
                               </span>
                               {plan.id !== 4 && (
@@ -139,30 +190,30 @@ export default function UserPlan() {
                           </div>
                           <div className="p-8 bg-gray-800">
                             <ul className="space-y-4">
-                              <li className="flex justify-between items-center bg-gray-700 bg-opacity-40 rounded-lg p-4">
+                              <li className="flex justify-between items-center bg-gray-700 bg-opacity-40 rounded-lg p-3">
                                 <span className="text-gray-300">
-                                  Daily Rent
+                                 Daily Rent
                                 </span>
                                 <span className="font-semibold text-amber-400 text-lg">
                                   {plan.ROI_overall}%
                                 </span>
                               </li>
-                              <li className="flex justify-between items-center bg-gray-700 bg-opacity-40 rounded-lg p-4">
+                              <li className="flex justify-between items-center bg-gray-700 bg-opacity-40 rounded-lg p-3">
                                 <span className="text-gray-300">Bonus</span>
                                 <span className="font-semibold text-amber-400 text-lg">
                                   {plan.bonus}%
                                 </span>
                               </li>
-                              <li className="flex justify-between items-center bg-gray-700 bg-opacity-40 rounded-lg p-4">
+                              {/* <li className="flex justify-between items-center bg-gray-700 bg-opacity-40 rounded-lg p-4">
                                 <span className="text-gray-300">
                                   Plan Period
                                 </span>
                                 <span className="font-semibold text-amber-400 text-lg">
                                   {plan.plan_period} months
                                 </span>
-                              </li>
+                              </li> */}
                               {plan.id !== 4 && (
-                                <li className="flex justify-between items-center bg-gray-700 bg-opacity-40 rounded-lg p-4">
+                                <li className="flex justify-between items-center bg-gray-700 bg-opacity-40 rounded-lg p-3">
                                   <span className="text-gray-300">
                                     Investment Range
                                   </span>
@@ -174,7 +225,7 @@ export default function UserPlan() {
                             </ul>
                             <button
                               onClick={() => handleEntryPlan()}
-                              className="w-full mt-8 py-4 px-4 rounded-lg font-bold text-lg transition-all overflow-hidden relative group/btn bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white"
+                              className="w-full mt-8 py-3 px-4 rounded-lg font-bold text-lg transition-all overflow-hidden relative group/btn bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white"
                             >
                               <span className="absolute -inset-0.5 bg-gradient-to-r from-amber-600 to-amber-400 rounded-lg blur opacity-0 group-hover/btn:opacity-30 transition duration-500"></span>
                               <span className="relative flex items-center justify-center gap-2">
@@ -192,9 +243,9 @@ export default function UserPlan() {
                             </button>
                             <div className="mt-6 pt-4 border-t border-gray-700">
                               <p className="text-xs text-gray-400">
-                                <span className="font-medium text-gray-300">
+                                <Link  to="/agreement-terms-condition" className="font-semibold text-yellow-400 ">
                                   Terms & Conditions:
-                                </span>{" "}
+                                </Link >{" "}
                                 Participants must be at least 18 years old to
                                 enroll in any marketing plan.
                               </p>
@@ -202,14 +253,14 @@ export default function UserPlan() {
                           </div>
 
                           {/* Bottom Clip Shape */}
-                          <div className="bg-gradient-to-r from-amber-600 to-amber-400 h-24 relative">
+                          {/* <div className="bg-gradient-to-r from-amber-600 to-amber-400 h-24 relative">
                             <div
                               className="absolute top-0 left-0 w-full h-8 bg-gray-800"
                               style={{
                                 clipPath: "ellipse(50% 100% at 50% 0%)",
                               }}
                             ></div>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     ))
@@ -265,7 +316,7 @@ export default function UserPlan() {
                         if (plan.ROI_day === 0) return 0;
                         const dailyEarning =
                           (plan.monthly_price * plan.ROI_day) / 100;
-                        return (dailyEarning * 30).toFixed(
+                        return (dailyEarning * 30 ).toFixed(
                           2
                         );
                       };
@@ -416,7 +467,7 @@ export default function UserPlan() {
                                     </span>
                                   </div>
                                 </li>
-                                <li className="flex items-center">
+                                {/* <li className="flex items-center">
                                   <div
                                     className={`${bgColor} p-1 rounded-full mr-3`}
                                   >
@@ -442,7 +493,7 @@ export default function UserPlan() {
                                       {plan.plan_period} months
                                     </span>
                                   </div>
-                                </li>
+                                </li> */}
                                 <li className="flex items-center">
                                   <div
                                     className={`${bgColor} p-1 rounded-full mr-3`}
@@ -495,14 +546,14 @@ export default function UserPlan() {
                             </div>
 
                             {/* Bottom Clip Shape */}
-                            <div className={`${bgColor} h-24 relative`}>
+                            {/* <div className={`${bgColor} h-24 relative`}>
                               <div
                                 className="absolute top-0 left-0 w-full h-20 bg-white"
                                 style={{
                                   clipPath: "ellipse(55% 100% at 50% 0%)",
                                 }}
                               ></div>
-                            </div>
+                            </div> */}
                           </div>
                         </div>
                       );

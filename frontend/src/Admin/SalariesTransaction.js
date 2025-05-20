@@ -13,7 +13,7 @@ const SalaryTransactionsTable = () => {
   const fetchTransactions = async (filterValues = {}, currentPage = 1) => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:8000/api/v1/salary/transactions`, {
+      const response = await axios.get(`https://api.r2rgloble.com/api/v1/salary/transactions`, {
         params: {
           ...filterValues,
           page: currentPage,

@@ -5,7 +5,7 @@ export const getctoList = createAsyncThunk(
   "staff/getctoList",
   async (_, thunkAPI) => {
     try {
-      const response = await fetch("http://localhost:8000/api/v1/cto/list");
+      const response = await fetch("https://api.r2rgloble.com/api/v1/cto/list");
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -25,7 +25,7 @@ export const checkCto = createAsyncThunk(
   "staff/checkCto",
   async (_, thunkAPI) => {
     try {
-      const response = await fetch("http://localhost:8000/api/v1/cto");
+      const response = await fetch("https://api.r2rgloble.com/api/v1/cto");
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -46,7 +46,7 @@ export const getctoListByid = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       const response = await fetch(
-        `http://localhost:8000/api/v1/cto/byid/${id}`
+        `https://api.r2rgloble.com/api/v1/cto/byid/${id}`
       );
 
       if (!response.ok) {
@@ -67,7 +67,7 @@ export const getctoTransListByid = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       const response = await fetch(
-        `http://localhost:8000/api/v1/cto/transaction/${id}`
+        `https://api.r2rgloble.com/api/v1/cto/transaction/${id}`
       );
 
       if (!response.ok) {
@@ -88,7 +88,7 @@ export const payToCto = createAsyncThunk(
   async ({ values }, thunkAPI) => {
     try {
       console.log(values);
-      const response = await fetch("http://localhost:8000/api/v1/cto/pay", {
+      const response = await fetch("https://api.r2rgloble.com/api/v1/cto/pay", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -115,7 +115,7 @@ export const deleteCto = createAsyncThunk(
     try {
       console.log(id);
       // Your asynchronous logic to delete student here
-      const response = await fetch(`http://localhost:8000/api/v1/cto/${id}`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/cto/${id}`, {
         method: "PUT",
       });
 

@@ -6,7 +6,7 @@ export const createOffer = createAsyncThunk(
   async (values, thunkAPI) => {
     try {
       const response = await fetch(
-        `http://localhost:8000/api/v1/offers/create`,
+        `https://api.r2rgloble.com/api/v1/offers/create`,
         {
           method: "POST",
           headers: {
@@ -35,7 +35,7 @@ export const MineReward = createAsyncThunk(
   "offer/MineReward",
   async (values, thunkAPI) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/offers/mine`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/offers/mine`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -63,7 +63,7 @@ export const fetchOffers = createAsyncThunk(
   "offer/fetchOffers",
   async (_, thunkAPI) => {
     try {
-      const response = await fetch("http://localhost:8000/api/v1/offers");
+      const response = await fetch("https://api.r2rgloble.com/api/v1/offers");
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -83,7 +83,7 @@ export const fetchOfferById = createAsyncThunk(
   "offer/fetchOfferById",
   async (id, thunkAPI) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/offers/${id}`);
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/offers/${id}`);
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -104,7 +104,7 @@ export const fetchReferredUsers = createAsyncThunk(
   async ({ userId, startDate, endDate, userPlanVal }, thunkAPI) => {
     try {
       const response = await fetch(
-        `http://localhost:8000/api/v1/offers/referred/${userId}/${startDate}/${endDate}/${userPlanVal}`
+        `https://api.r2rgloble.com/api/v1/offers/referred/${userId}/${startDate}/${endDate}/${userPlanVal}`
       );
       if (!response.ok) {
         const errorData = await response.json();
@@ -123,7 +123,7 @@ export const fecthUserOffers = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       const response = await fetch(
-        `http://localhost:8000/api/v1/offers/user/${id}`
+        `https://api.r2rgloble.com/api/v1/offers/user/${id}`
       );
 
       if (!response.ok) {
@@ -145,7 +145,7 @@ export const deleteOffer = createAsyncThunk(
     try {
       // Your asynchronous logic to delete student here
       const response = await fetch(
-        `http://localhost:8000/api/v1/offers/delete/${id}`,
+        `https://api.r2rgloble.com/api/v1/offers/delete/${id}`,
         {
           method: "DELETE",
         }
@@ -171,7 +171,7 @@ export const updateOffer = createAsyncThunk(
     try {
       // Your asynchronous logic to update student here
       const response = await fetch(
-        `http://localhost:8000/api/v1/offers/update/${id}`,
+        `https://api.r2rgloble.com/api/v1/offers/update/${id}`,
         {
           method: "PUT",
           headers: {

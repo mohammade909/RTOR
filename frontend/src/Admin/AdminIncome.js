@@ -133,14 +133,14 @@ export default function AdminIncome() {
               <div className="inline-block min-w-full py-2 align-middle">
                 <table className="min-w-full border-collapse divide-y divide-gray-700">
                   {/* Table Headings */}
-                  <thead className="text-base leading-6 text-gray-100 bg-black border-b border-gray-300">
+                  <thead className="text-base leading-6 bg-gradient-to-r from-blue-900 to-blue-700 p-4 border-b border-blue-500 text-gray-300 ">
                     <tr>
-                      <th scope="col" className="px-4 py-2 font-medium text-left border-r border-gray-600">Name</th>
-                      <th scope="col" className="px-4 py-2 font-medium text-left border-r border-gray-600 sm:table-cell">Active Plan</th>
-                      <th scope="col" className="px-4 py-2 font-medium text-left border-r border-gray-600 sm:table-cell">Salary</th>
-                      <th scope="col" className="px-4 py-2 font-medium text-right border-r border-gray-600 sm:text-left">Trade</th>
-                      <th scope="col" className="px-4 py-2 font-medium text-right border-r border-gray-600 sm:text-left">Level Day / Total</th>
-                      <th scope="col" className="px-4 py-2 font-medium text-right border-r border-gray-600 sm:text-left">Reward</th>
+                      <th scope="col" className="px-4 py-2 font-medium text-left border-r ">Name</th>
+                      <th scope="col" className="px-4 py-2 font-medium text-left border-r  sm:table-cell">Active Plan</th>
+                      <th scope="col" className="px-4 py-2 font-medium text-left border-r  sm:table-cell">Salary</th>
+                      <th scope="col" className="px-4 py-2 font-medium text-right border-r  sm:text-left">Trade</th>
+                      <th scope="col" className="px-4 py-2 font-medium text-right border-r  sm:text-left">Level Day / Total</th>
+                      <th scope="col" className="px-4 py-2 font-medium text-right border-r  sm:text-left">Reward</th>
                       <th scope="col" className="px-4 py-2 font-medium text-center">Tree</th>
                     </tr>
                   </thead>

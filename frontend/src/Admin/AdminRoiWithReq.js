@@ -118,7 +118,7 @@ export default function AdminRoiWithReq() {
     return `${formattedDate} - ${formattedTime}`;
   };
   return (
-    <div className="bg-gray-900 ">
+    <div className="bg-white ">
       <div className="px-8 pt-5">
         <label htmlFor="search" className="sr-only">
           Search
@@ -130,7 +130,7 @@ export default function AdminRoiWithReq() {
           onChange={handleSearch}
           type="text"
           placeholder="search here . . ."
-          className="block w-[50vh] px-2 py-1 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-lg sm:leading-6"
+          className="block w-[50vh] px-2 py-1 rounded-md border border-gray-200 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-lg sm:leading-6"
         />
       </div>
       <div className="px-8 pt-5">
@@ -142,7 +142,7 @@ export default function AdminRoiWithReq() {
     name="filterquery"
     value={filterquery}
     onChange={(e) => setFilterquery(e.target.value)}
-    className="block w-[50vh] px-2 py-1 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-lg sm:leading-6"
+    className="block w-[50vh] px-2 py-1 rounded-md border border-gray-200 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-lg sm:leading-6"
   >
     <option value="" disabled>
       Select status...
@@ -159,7 +159,7 @@ export default function AdminRoiWithReq() {
         <div className="overflow-x-auto">
           <div className="inline-block min-w-full py-2 align-middle">
           <table className="mt-6 w-full whitespace-nowrap text-left border-collapse">
-  <thead className="border-b border-gray-300 text-lg leading-6 text-white bg-gray-800">
+  <thead className="bg-gradient-to-r from-blue-900 to-blue-700 p-4 border-b border-blue-500 text-gray-300">
     <tr>
       <th className="py-3 px-4 font-semibold border-r border-gray-300">Name</th>
       <th className="py-3 px-4 font-semibold border-r border-gray-300">Amount</th>

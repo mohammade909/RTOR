@@ -15,7 +15,6 @@
 
 //   const plans = allplans?.slice().sort((a, b) => a.monthly_price - b.monthly_price) || [];
 
-
 //   const slidesPerView = () => {
 //     if (window.innerWidth >= 1280) return 3;
 //     if (window.innerWidth >= 768) return 2;
@@ -261,8 +260,6 @@
 
 // export default Packagessection;
 
-
-
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllPlans } from "../../redux/planSlice";
@@ -285,14 +282,20 @@ const Packagessection = () => {
     allplans?.slice().sort((a, b) => a.monthly_price - b.monthly_price) || [];
 
   const formatFeatures = (plan) => [
-    `${plan.ROI_day}% Daily ROI`,
-    `${plan.plan_period} Month Plan Period`,
+    `${plan.ROI_day}% Daily Rent`,
+    // `${plan.plan_period}  Plan Period`,
     `Min: $${plan.min}`,
     `Max: ${plan.max === 1000000 ? "Unlimited" : "$" + plan.max}`,
   ];
 
-  const formatPlanName = (name) =>
-    name.charAt(0).toUpperCase() + name.slice(1);
+//   const formatFeatures = (plan, index) => [
+//   `${plan.ROI_day}% Daily Rent`,
+//   index === 0 ? "Lifetime Access" : `${plan.plan_period} Month Plan Period`,
+//   `Min: $${plan.min}`,
+//   `Max: ${plan.max === 1000000 ? "Unlimited" : "$" + plan.max}`,
+// ];
+
+  const formatPlanName = (name) => name.charAt(0).toUpperCase() + name.slice(1);
 
   const getCardTheme = (index) => {
     const themes = [
@@ -338,19 +341,19 @@ const Packagessection = () => {
 
   return (
     <div className="bg-gradient-to-br from-gray-900 to-gray-800 py-16 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-5 sm:px-0">
+      <div className="max-w-7xl mx-auto lg:px-5 px-5">
         <div className="text-center">
           <span className="inline-block px-3 py-1 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm font-semibold tracking-wide mb-4">
             INVESTMENT PLANS
           </span>
           <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
-            Tailored{" "}
+            Smart{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-              Investment Solutions
+               Hotel Packages{" "}
             </span>
           </h2>
           <p className="mt-4 max-w-2xl text-xl text-gray-300 mx-auto">
-            Choose a plan that matches your financial goals and risk appetite.
+            Choose a package that fits your goals and start earning daily from real hotel rooms.
           </p>
         </div>
 
@@ -373,13 +376,19 @@ const Packagessection = () => {
               return (
                 <SwiperSlide key={plan.id}>
                   <div className="h-full flex flex-col rounded-2xl overflow-hidden shadow-2xl bg-gray-900 hover:scale-[1.02] transition-all duration-300">
-                    <div className={`bg-gradient-to-r ${theme.bg} px-6 py-8 relative`}>
+                    <div
+                      className={`bg-gradient-to-r ${theme.bg} px-6 py-8 relative`}
+                    >
                       <div className="absolute top-4 right-4">
-                        <span className={`${theme.accent} text-xs font-bold uppercase px-2 py-1 rounded-md text-white`}>
+                        <span
+                          className={`${theme.accent} text-xs font-bold uppercase px-2 py-1 rounded-md text-white`}
+                        >
                           {formatPlanName(plan.name)}
                         </span>
                       </div>
-                      <h3 className={`text-center text-2xl font-bold ${theme.text}`}>
+                      <h3
+                        className={`text-center text-2xl font-bold ${theme.text}`}
+                      >
                         {formatPlanName(plan.name)} Plan
                       </h3>
                       <div className="mt-6 flex justify-center items-end">
@@ -392,7 +401,7 @@ const Packagessection = () => {
                       </div>
                       <div className="mt-4 text-center">
                         <span className="inline-block px-3 py-1 rounded-full bg-black bg-opacity-20 text-sm font-medium text-white">
-                          {plan.ROI_day}% Daily ROI
+                          {plan.ROI_day}% Daily Rent
                         </span>
                       </div>
                     </div>
@@ -414,7 +423,9 @@ const Packagessection = () => {
                       </ul>
                       <div className="mt-8">
                         <button
-                          onClick={() => (window.location.href = "/registration")}
+                          onClick={() =>
+                            (window.location.href = "/register")
+                          }
                           className={`w-full py-3 px-6 rounded-xl font-bold text-white bg-gradient-to-r ${theme.button} shadow-lg transition-all hover:shadow-xl`}
                         >
                           Get Started

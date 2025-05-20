@@ -9,7 +9,7 @@ export const makeTrade = createAsyncThunk(
   async ({ userId, pair }, { rejectWithValue }) => {
     try {
       const response = await axios.put(
-        `http://localhost:8000/api/v1/referral/self-trade/${userId}?pair=${pair}`
+        `https://api.r2rgloble.com/api/v1/referral/self-trade/${userId}?pair=${pair}`
       );
       return response.data;
     } catch (error) {

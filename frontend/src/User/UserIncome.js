@@ -1,13 +1,13 @@
-import { 
-  ArrowTrendingUpIcon, 
-  CurrencyDollarIcon, 
-  UserGroupIcon, 
+import {
+  ArrowTrendingUpIcon,
+  CurrencyDollarIcon,
+  UserGroupIcon,
   ChartBarIcon,
   BanknotesIcon,
   UserIcon,
   UsersIcon,
   GiftIcon,
-  ScaleIcon
+  ScaleIcon,
 } from "@heroicons/react/24/outline";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,7 +22,6 @@ export default function UserIncome() {
   const { singleuser, loading, error, message } = useSelector(
     (state) => state.allusers
   );
- 
 
   const { auth } = useSelector((state) => state.auth);
   const { treeData } = useSelector((state) => state.referralTree);
@@ -31,8 +30,6 @@ export default function UserIncome() {
     if (auth?.id) {
       dispatch(getUser(auth?.id));
       dispatch(getTreeData(auth?.refferal_code));
-
-
     }
 
     if (error) {
@@ -48,7 +45,6 @@ export default function UserIncome() {
       return () => clearInterval(messageInterval);
     }
   }, [dispatch, error, message, auth?.id]);
-
 
   function analyzeTeamData(treeData) {
     let totalMembers = 0;
@@ -81,7 +77,7 @@ export default function UserIncome() {
       totalInvestmentPlanAmount,
     };
   }
-  
+
   const {
     totalMembers,
     activeMembers,
@@ -89,14 +85,11 @@ export default function UserIncome() {
     totalInvestmentPlanAmount,
   } = analyzeTeamData(treeData);
 
-  const limit =
-    singleuser?.active_plan * 5;
-
+  const limit = singleuser?.active_plan * 3;
 
   const earning = (
     (singleuser?.level_month ?? 0) +
     (singleuser?.roi_income ?? 0) +
-    (singleuser?.reward ?? 0) +
     Number(singleuser?.direct_income) +
     Number(singleuser?.community_income) +
     (singleuser?.total_salary ?? 0)
@@ -109,7 +102,7 @@ export default function UserIncome() {
       value: earning,
       bgColor: "from-purple-600 to-indigo-700",
       textColor: "text-white",
-      icon: <CurrencyDollarIcon className="h-8 w-8 text-purple-200" />,
+      icon: <CurrencyDollarIcon className="sm:h-8 sm:w-8 h-5 w-5 text-purple-200" />,
       highlight: true,
       gridSpan: "col-span-2",
     },
@@ -118,56 +111,58 @@ export default function UserIncome() {
       value: (limit - earning).toFixed(2),
       bgColor: "from-emerald-500 to-teal-600",
       textColor: "text-white",
-      icon: <ScaleIcon className="h-8 w-8 text-emerald-200" />,
+      icon: <ScaleIcon className="sm:h-8 sm:w-8 h-5 w-5 text-emerald-200" />,
     },
     {
       name: "Rent Earned",
       value: singleuser?.roi_income?.toFixed(2) || "0.00",
       bgColor: "from-blue-500 to-blue-600",
       textColor: "text-white",
-      icon: <ChartBarIcon className="h-8 w-8 text-blue-200" />,
+      icon: <ChartBarIcon className="sm:h-8 sm:w-8 h-5 w-5 text-blue-200" />,
     },
     {
       name: "Refferal Income",
       value: singleuser?.direct_income || "0.00",
       bgColor: "from-amber-500 to-orange-600",
       textColor: "text-white",
-      icon: <ArrowTrendingUpIcon className="h-8 w-8 text-amber-200" />,
+      icon: <ArrowTrendingUpIcon className="sm:h-8 sm:w-8 h-5 w-5 text-amber-200" />,
     },
     {
       name: "Level Income",
       value: singleuser?.level_month?.toFixed(2) || "0.00",
       bgColor: "from-pink-500 to-rose-600",
       textColor: "text-white",
-      icon: <BanknotesIcon className="h-8 w-8 text-pink-200" />,
+      icon: <BanknotesIcon className="sm:h-8 sm:w-8 h-5 w-5 text-pink-200" />,
     },
     {
       name: "Rewards",
       value: singleuser?.reward?.toFixed(2) || "0.00",
       bgColor: "from-yellow-500 to-amber-600",
       textColor: "text-white",
-      icon: <GiftIcon className="h-8 w-8 text-yellow-200" />,
+      icon: <GiftIcon className="sm:h-8 sm:w-8 h-5 w-5 text-yellow-200" />,
     },
     {
       name: "Total Members",
       value: totalMembers || 0,
       bgColor: "from-indigo-500 to-blue-600",
       textColor: "text-white",
-      icon: <UsersIcon className="h-8 w-8 text-indigo-200" />,
+      icon: <UsersIcon className="sm:h-8 sm:w-8 h-5 w-5 text-indigo-200" />,
     },
     {
       name: "Active Members",
       value: activeMembers || 0,
       bgColor: "from-green-500 to-emerald-600",
       textColor: "text-white",
-      icon: <UserIcon className="h-8 w-8 text-green-200" />,
+      icon: <UserIcon className="sm:h-8 sm:w-8 h-5 w-5 text-green-200" />,
     },
     {
       name: "Total Team Business",
-      value: (totalActivePlanAmount + totalInvestmentPlanAmount).toFixed(2) || "0.00",
+      value:
+        (totalActivePlanAmount + totalInvestmentPlanAmount).toFixed(2) ||
+        "0.00",
       bgColor: "from-violet-600 to-purple-700",
       textColor: "text-white",
-      icon: <UserGroupIcon className="h-8 w-8 text-violet-200" />,
+      icon: <UserGroupIcon className="sm:h-8 sm:w-8 h-5 w-5 text-violet-200" />,
       gridSpan: "col-span-2",
     },
   ];
@@ -176,33 +171,46 @@ export default function UserIncome() {
     <div className="px-4 py-6">
       {loading ? (
         <div className="flex justify-center items-center h-64">
-          <div className="animate-pulse text-gray-400 text-lg">Loading data...</div>
+          <div className="animate-pulse text-gray-400 text-lg">
+            Loading data...
+          </div>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {cardData.map((card, index) => (
-            <div 
-              key={index} 
-              className={`${card.gridSpan || ""} rounded-xl overflow-hidden shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl`}
+            <div
+              key={index}
+              className={`${
+                card.gridSpan ? `lg:${card.gridSpan}` : ""
+              } rounded-xl overflow-hidden shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl`}
             >
               <div className={`bg-gradient-to-br ${card.bgColor} p-6 h-full`}>
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <h3 className={`text-lg font-medium ${card.textColor} opacity-90`}>
+                    <h3
+                      className={`sm:text-base text-sm font-medium ${card.textColor} opacity-90`}
+                    >
                       {card.name}
                     </h3>
-                    <div className={`mt-2 ${card.highlight ? "text-3xl" : "text-2xl"} font-bold ${card.textColor}`}>
-                      {typeof card.value === 'number' ? 
-                        (card.name.includes('Members') ? card.value : `$${card.value}`) 
-                        : 
-                        (card.name.includes('Members') ? card.value : `$${card.value}`)}
+                    <div
+                      className={`mt-2 ${
+                        card.highlight ? "text-lg" : "text-base"
+                      } font-semibold ${card.textColor}`}
+                    >
+                      {typeof card.value === "number"
+                        ? card.name.includes("Members")
+                          ? card.value
+                          : `$${card.value}`
+                        : card.name.includes("Members")
+                        ? card.value
+                        : `$${card.value}`}
                     </div>
                   </div>
-                  <div className="bg-white/20 rounded-lg p-3 backdrop-blur-sm">
+                  <div className="bg-white/20 rounded-lg sm:p-3 p-2 backdrop-blur-sm">
                     {card.icon}
                   </div>
                 </div>
-                
+
                 {card.highlight && (
                   <div className="mt-4 pt-3 border-t border-white/20">
                     <div className="flex items-center text-sm text-white/80">
@@ -219,11 +227,10 @@ export default function UserIncome() {
   );
 }
 
-
-// import { 
-//   ArrowTrendingUpIcon, 
-//   CurrencyDollarIcon, 
-//   UserGroupIcon, 
+// import {
+//   ArrowTrendingUpIcon,
+//   CurrencyDollarIcon,
+//   UserGroupIcon,
 //   ChartBarIcon,
 //   BanknotesIcon,
 //   UserIcon,
@@ -244,7 +251,7 @@ export default function UserIncome() {
 //   const { singleuser, loading, error, message } = useSelector(
 //     (state) => state.allusers
 //   );
- 
+
 //   const { auth } = useSelector((state) => state.auth);
 //   const { treeData } = useSelector((state) => state.referralTree);
 
@@ -299,7 +306,7 @@ export default function UserIncome() {
 //       totalInvestmentPlanAmount,
 //     };
 //   }
-  
+
 //   const {
 //     totalMembers,
 //     activeMembers,
@@ -326,7 +333,7 @@ export default function UserIncome() {
 //       bgColor: "bg-gradient-to-br from-purple-600 to-indigo-800",
 //       iconBg: "bg-white/20",
 //       textColor: "text-white",
-//       icon: <CurrencyDollarIcon className="h-8 w-8 text-white" />,
+//       icon: <CurrencyDollarIcon className="sm:h-8 sm:w-8 h-5 w-5 text-white" />,
 //       highlight: true,
 //       gridSpan: "md:col-span-2",
 //       growthText: "Overall performance",
@@ -339,7 +346,7 @@ export default function UserIncome() {
 //       bgColor: "bg-gradient-to-br from-emerald-500 to-teal-700",
 //       iconBg: "bg-emerald-400/30",
 //       textColor: "text-white",
-//       icon: <ScaleIcon className="h-8 w-8 text-white" />,
+//       icon: <ScaleIcon className="sm:h-8 sm:w-8 h-5 w-5 text-white" />,
 //       growthText: "Remaining capacity",
 //       growthValue: "72% available",
 //       growthColor: "text-emerald-200",
@@ -350,7 +357,7 @@ export default function UserIncome() {
 //       bgColor: "bg-gradient-to-br from-blue-500 to-blue-700",
 //       iconBg: "bg-blue-400/30",
 //       textColor: "text-white",
-//       icon: <ChartBarIcon className="h-8 w-8 text-white" />,
+//       icon: <ChartBarIcon className="sm:h-8 sm:w-8 h-5 w-5 text-white" />,
 //       growthText: "Monthly growth",
 //       growthValue: "+8.5%",
 //       growthColor: "text-blue-200",
@@ -361,7 +368,7 @@ export default function UserIncome() {
 //       bgColor: "bg-gradient-to-br from-amber-500 to-orange-700",
 //       iconBg: "bg-amber-400/30",
 //       textColor: "text-white",
-//       icon: <ArrowTrendingUpIcon className="h-8 w-8 text-white" />,
+//       icon: <ArrowTrendingUpIcon className="sm:h-8 sm:w-8 h-5 w-5 text-white" />,
 //       growthText: "From last period",
 //       growthValue: "+17.2%",
 //       growthColor: "text-amber-200",
@@ -372,7 +379,7 @@ export default function UserIncome() {
 //       bgColor: "bg-gradient-to-br from-pink-500 to-rose-700",
 //       iconBg: "bg-pink-400/30",
 //       textColor: "text-white",
-//       icon: <BanknotesIcon className="h-8 w-8 text-white" />,
+//       icon: <BanknotesIcon className="sm:h-8 sm:w-8 h-5 w-5 text-white" />,
 //       growthText: "Milestone progress",
 //       growthValue: "65% to next level",
 //       growthColor: "text-pink-200",
@@ -383,7 +390,7 @@ export default function UserIncome() {
 //       bgColor: "bg-gradient-to-br from-yellow-500 to-amber-700",
 //       iconBg: "bg-yellow-400/30",
 //       textColor: "text-white",
-//       icon: <GiftIcon className="h-8 w-8 text-white" />,
+//       icon: <GiftIcon className="sm:h-8 sm:w-8 h-5 w-5 text-white" />,
 //       growthText: "Achievement rate",
 //       growthValue: "3 new rewards",
 //       growthColor: "text-yellow-200",
@@ -394,7 +401,7 @@ export default function UserIncome() {
 //       bgColor: "bg-gradient-to-br from-indigo-500 to-blue-700",
 //       iconBg: "bg-indigo-400/30",
 //       textColor: "text-white",
-//       icon: <UsersIcon className="h-8 w-8 text-white" />,
+//       icon: <UsersIcon className="sm:h-8 sm:w-8 h-5 w-5 text-white" />,
 //       growthText: "Network expansion",
 //       growthValue: "+5 this week",
 //       growthColor: "text-indigo-200",
@@ -405,7 +412,7 @@ export default function UserIncome() {
 //       bgColor: "bg-gradient-to-br from-green-500 to-emerald-700",
 //       iconBg: "bg-green-400/30",
 //       textColor: "text-white",
-//       icon: <UserIcon className="h-8 w-8 text-white" />,
+//       icon: <UserIcon className="sm:h-8 sm:w-8 h-5 w-5 text-white" />,
 //       growthText: "Activation rate",
 //       growthValue: "86% of total",
 //       growthColor: "text-green-200",
@@ -416,7 +423,7 @@ export default function UserIncome() {
 //       bgColor: "bg-gradient-to-br from-violet-600 to-purple-800",
 //       iconBg: "bg-violet-400/30",
 //       textColor: "text-white",
-//       icon: <UserGroupIcon className="h-8 w-8 text-white" />,
+//       icon: <UserGroupIcon className="sm:h-8 sm:w-8 h-5 w-5 text-white" />,
 //       gridSpan: "md:col-span-2",
 //       growthText: "Business volume",
 //       growthValue: "+12.8% this month",
@@ -461,10 +468,10 @@ export default function UserIncome() {
 //                 <p className="opacity-80">Current performance metrics</p>
 //               </div>
 //               <div className="bg-white/20 p-3 rounded-lg backdrop-blur-sm">
-//                 <CurrencyDollarIcon className="h-8 w-8 text-white" />
+//                 <CurrencyDollarIcon className="sm:h-8 sm:w-8 h-5 w-5 text-white" />
 //               </div>
 //             </div>
-            
+
 //             <div className="mt-6 flex justify-between items-end">
 //               <div>
 //                 <div className="text-sm opacity-80">Total Earnings</div>
@@ -475,15 +482,15 @@ export default function UserIncome() {
 //                 <div className="text-2xl font-semibold">${limit?.toFixed(2) || "0.00"}</div>
 //               </div>
 //             </div>
-            
+
 //             <div className="mt-4">
 //               <div className="flex justify-between mb-1 text-sm">
 //                 <span>Progress</span>
 //                 <span>{totalEarningPercentage.toFixed(0)}%</span>
 //               </div>
 //               <div className="h-3 bg-white/20 rounded-full overflow-hidden">
-//                 <div 
-//                   className="h-full bg-gradient-to-r from-green-300 to-emerald-400 rounded-full transition-all duration-1000" 
+//                 <div
+//                   className="h-full bg-gradient-to-r from-green-300 to-emerald-400 rounded-full transition-all duration-1000"
 //                   style={{ width: `${totalEarningPercentage}%` }}
 //                 ></div>
 //               </div>
@@ -494,15 +501,15 @@ export default function UserIncome() {
 //         {/* Card Grid */}
 //         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 //           {cardData.map((card, index) => (
-//             <div 
-//               key={index} 
+//             <div
+//               key={index}
 //               className={`${card.gridSpan || ""} rounded-2xl overflow-hidden shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl border border-gray-100`}
 //             >
 //               <div className={`${card.bgColor} p-6 h-full relative overflow-hidden`}>
 //                 {/* Decorative elements */}
 //                 <div className="absolute -right-6 -bottom-6 w-32 h-32 rounded-full bg-white/5"></div>
 //                 <div className="absolute -right-4 -top-4 w-16 h-16 rounded-full bg-white/5"></div>
-                
+
 //                 <div className="relative z-10">
 //                   <div className="flex items-start justify-between">
 //                     <div className="flex-1">
@@ -511,9 +518,9 @@ export default function UserIncome() {
 //                       </h3>
 //                       <div className={`mt-2 ${card.highlight ? "text-4xl" : "text-3xl"} font-bold ${card.textColor} flex items-baseline`}>
 //                         {!card.name.includes('Members') && <span className="text-lg mr-1">$</span>}
-//                         {typeof card.value === 'number' ? 
-//                           (card.name.includes('Members') ? card.value.toLocaleString() : parseFloat(card.value).toLocaleString()) 
-//                           : 
+//                         {typeof card.value === 'number' ?
+//                           (card.name.includes('Members') ? card.value.toLocaleString() : parseFloat(card.value).toLocaleString())
+//                           :
 //                           (card.name.includes('Members') ? card.value : card.value)}
 //                       </div>
 //                     </div>
@@ -521,7 +528,7 @@ export default function UserIncome() {
 //                       {card.icon}
 //                     </div>
 //                   </div>
-                  
+
 //                   <div className="mt-4 pt-3 border-t border-white/20 flex justify-between items-center">
 //                     <div className="text-sm text-white/80">
 //                       {card.growthText}

@@ -6,7 +6,7 @@ export const getAllLeadership = createAsyncThunk(
   "staff/getAllLeadership",
   async (_, thunkAPI) => {
     try {
-      const response = await fetch("http://localhost:8000/api/v1/leadership/list");
+      const response = await fetch("https://api.r2rgloble.com/api/v1/leadership/list");
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -25,7 +25,7 @@ export const getAllLeadershipByid = createAsyncThunk(
   "staff/getAllLeadershipByid",
   async ({user_id}, thunkAPI) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/leadership/by/${user_id}`)
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/leadership/by/${user_id}`)
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -46,7 +46,7 @@ export const deleteleadership = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       // Your asynchronous logic to delete student here
-      const response = await fetch(`http://localhost:8000/api/v1/leadership/${id}`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/leadership/${id}`, {
         method: "DELETE",
       });
 

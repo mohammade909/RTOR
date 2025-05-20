@@ -4,7 +4,7 @@ export const sendForgotLink = createAsyncThunk(
   "pass/sendForgotLink",
   async (forgotData, thunkAPI) => {
     try {
-      const response = await fetch('http://localhost:8000/api/v1/pass/forget', {
+      const response = await fetch('https://api.r2rgloble.com/api/v1/pass/forget', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -28,7 +28,7 @@ export const resetPassword = createAsyncThunk(
   "pass/resetPassword",
   async (forgotData, thunkAPI) => {
     try {
-      const response = await fetch('http://localhost:8000/api/v1/pass/reset', {
+      const response = await fetch('https://api.r2rgloble.com/api/v1/pass/reset', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -177,7 +177,7 @@ export default function AdminPlan() {
                             />
                           </svg>
                           <div>
-                            <span className="text-gray-600">Daily ROI: </span>
+                            <span className="text-gray-600">Daily Rent: </span>
                             <span className="font-medium">{plan.ROI_day}%</span>
                           </div>
                         </li>
@@ -194,7 +194,7 @@ export default function AdminPlan() {
                             />
                           </svg>
                           <div>
-                            <span className="text-gray-600">Overall ROI: </span>
+                            <span className="text-gray-600">Overall Rent: </span>
                             <span className="font-medium">
                               {plan.ROI_overall}%
                             </span>

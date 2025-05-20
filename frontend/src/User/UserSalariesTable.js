@@ -12,7 +12,7 @@ const UserSalariesTable = () => {
     setLoading(true);
     try {
       const res = await axios.get(
-        "http://localhost:8000/api/v1/salary/user-salaries",
+        "https://api.r2rgloble.com/api/v1/salary/user-salaries",
         {
           params: { 
             user_id: auth.id,

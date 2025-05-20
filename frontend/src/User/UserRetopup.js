@@ -5,17 +5,14 @@ import { AiFillDelete } from "react-icons/ai";
 import SuccessAlert from "../BaseFile/comman/SuccessAlert";
 import ErrorAlert from "../BaseFile/comman/ErrorAlert";
 import { Confirmation } from "../BaseFile/comman/Confirmation";
-import UserEntryFeeConfirmation from "./UserEntryFeeConfirmation";
-
 import {
-  getAllTopupByid,
   deleteTopup,
+  getAllTopupByid,
   clearErrors,
   clearMessage,
 } from "../redux/topupSlice";
 import { getAllPlans } from "../redux/planSlice";
 import UserRetopupModel from "./UserRetopupModel";
-import { getUser } from "../redux/userSlice";
 
 export default function UserRetopup() {
   const dispatch = useDispatch();
@@ -23,12 +20,15 @@ export default function UserRetopup() {
     (state) => state.alltopup
   );
   const { auth } = useSelector((state) => state.auth);
-  const { singleuser } = useSelector((state) => state.allusers);
   const [deleteID, setDeleteID] = useState();
   const [modalOpen, setModalOpen] = useState(false);
   const [openModel, setOpenModel] = useState(null);
-  const [entryPlanModel, setEntryPlanModel] = useState(false);
+
   useEffect(() => {
+    dispatch(getAllPlans());
+    if (auth?.id) {
+      dispatch(getAllTopupByid(auth?.id));
+    }
     if (error) {
       const errorInterval = setInterval(() => {
         dispatch(clearErrors());
@@ -43,158 +43,179 @@ export default function UserRetopup() {
     }
   }, [dispatch, error, message]);
 
-
-  useEffect(()=>{
-    if (auth?.id) {
-      dispatch(getAllTopupByid(auth?.id));
-      dispatch(getUser(auth?.id));
-    }
-    dispatch(getAllPlans());
-  },[,auth?.id])
+  const handleDelete = (id) => {
+    setDeleteID(id);
+    setModalOpen(true);
+  };
 
   const isClose = () => {
     setModalOpen(false);
-    setEntryPlanModel(false)
-
   };
 
-  function modelClose(){
-    setOpenModel(false)
-  }  
-  function handleEntryPlan(){
-    setEntryPlanModel(true)
+  function modelClose() {
+    setOpenModel(false);
   }
-
   return (
     <>
-    {message && <SuccessAlert message={message} />}
-    {error && <ErrorAlert error={error} />}
-    <Loader isLoading={loading}/>
-<div className="mx-5 sm:mx-2 px-2 my-5">
- <div className="w-full lg:flex flex-col md:flex-row justify-between items-center mb-3">
-   <div>
-     <h3 className="text-lg font-semibold text-gray-200">Top-Up History</h3>
-     <p className="text-slate-200 text-lg">Overview of the Top-Up History.</p>
-   </div>
-   <div className="mt-3 md:mt-0 flex  items-start md:items-center gap-3">
-     <div className="relative w-full md:w-72">
-       <input
-         className="bg-blue-900/50 w-full pr-11 h-10 pl-3 py-2  placeholder:text-slate-200 text-slate-200 text-lg border border-slate-200 rounded transition duration-200 ease focus:outline-none focus:border-slate-200 hover:border-slate-200 shadow-sm focus:shadow-md"
-         placeholder="Search for invoice..."
-       />
-       <button
-         className="absolute h-8 w-8 right-1 top-1 flex  justify-center items-center bg-blue-900 rounded"
-         type="button"
-       >
-         <svg
-           xmlns="http://www.w3.org/2000/svg"
-           fill="none"
-           viewBox="0 0 24 24"
-           strokeWidth="3"
-           stroke="currentColor"
-           className="w-5 h-5 text-slate-300"
-         >
-           <path
-             strokeLinecap="round"
-             strokeLinejoin="round"
-             d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-           />
-         </svg>
-       </button>
-     </div>
-   
-     <button
-       type="button"
-       onClick={() => setOpenModel(true)}
-       className="w-full md:w-auto bg-gray-800 px-3 py-2 text-center text-lg font-semibold text-white rounded shadow-sm hover:bg-rose-800 focus:outline-none"
-     >
-       ReTop-Up
-     </button>
-   </div>
- </div>
+      {message && <SuccessAlert message={message} />}
+      {error && <ErrorAlert error={error} />}
+      <Loader isLoading={loading} />
+      <div className=" ">
+        <div className="relative mb-8 overflow-hidden">
+          <div className="absolute inset-0  animate-gradient-x"></div>
+          <div className="m-0.5 rounded-md p-4 relative  border border-gray-200 shadow-md z-10">
+            <div className="grid lg:grid-cols-2 grid-cols-1 lg:space-y-0 space-y-4 gap-4">
+              <div className="flex items-center">
+                <div className="h-12 w-12 rounded-full bg-gradient-to-br from-yellow-500 to-pink-600 flex items-center justify-center mr-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6 "
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+                    <path
+                      fillRule="evenodd"
+                      d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h2 className="font-semibold text-lg text-gray-800 ">
+                    Transaction History
+                  </h2>
+                  <p className="text-gray-600 mt-1 text-sm">
+                    Manage your account top-ups and transfers
+                  </p>
+                </div>
+              </div>
+              <div>
+              <div className=" flex gap-2">
+                <div className="relative flex-grow md:max-w-full max-w-xs">
+                  <input
+                    className="w-full bg-gray-100 border py-2.5 text-sm pl-12 pr-4 rounded-md text-gray-800 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                    placeholder="Search transactions..."
+                  />
+                  <div className="absolute top-2.5 left-0 pl-4 flex items-center pointer-events-none">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5 text-gray-700"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      />
+                    </svg>
+                  </div>
+                </div>
 
- <div className="relative flex flex-col w-full h-full text-gray-300  border shadow-md rounded-lg bg-clip-border overflow-x-auto">
-   {loading ? (
-     <Loader />
-   ) : (
-     <table className="w-full text-left table-auto min-w-full border ">
-       <thead className="bg-gradient-to-r from-blue-900 to-blue-700 p-4 border-b border-blue-500">
-         <tr>
-           <th className="p-4 border-b border-slate-200 ">
-             <p className="text-lg font-normal leading-none text-white">E-Mail</p>
-           </th>
-           <th className="p-4 border-b border-slate-200 ">
-             <p className="text-lg font-normal leading-none text-white">Amount</p>
-           </th>
-           <th className="p-4 border-b border-slate-200 ">
-             <p className="text-lg font-normal leading-none text-white">Status</p>
-           </th>
-           <th className="p-4 border-b border-slate-200  w-56">
-             <p className="text-lg font-normal leading-none text-white">Request</p>
-           </th>
-         </tr>
-       </thead>
-       <tbody className="bg-green-900/50">
-         {
-           singletopup?.length > 0 ? (
-         singletopup
-           ?.slice()
-           .reverse()
-           .filter((item) => item?.userto_id === item?.userby_id)
-           .map((item, index) => (
-             <tr key={index} className="even:bg-red-900/50  even:text:white text-gray-300">
-               <td className="whitespace-nowrap py-4 pl-4 pr-3 text-lg font-medium text-gray-300 sm:pl-3">
-                 {item?.userto_email}
-               </td>
-               <td className="whitespace-nowrap px-3 py-4 text-lg text-gray-300">
-                 ${item?.amount}
-               </td>
-               <td className="whitespace-nowrap px-3 py-4 text-lg text-gray-300">
-                 {item?.status}
-               </td>
-               <td className="whitespace-nowrap px-3 py-4 text-lg text-gray-300">
-                 {item?.createdAT
-                           ? new Date(item?.createdAT).toLocaleDateString(
-                               "en-US",
-                               {
-                                 year: "numeric",
-                                 month: "short",
-                                 day: "numeric",
-                               }
-                             )
-                           : "N/A"}
+                <button
+                  type="button"
+                  onClick={() => setOpenModel(true)}
+                  className="group relative overflow-hidden rounded-md bg-blue-600 px-4 py-2 font-semibold"
+                >
+                  <span className="absolute inset-0 translate-y-full bg-gradient-to-r from-blue-600 to-yellow-600 transition-transform duration-300 group-hover:translate-y-0"></span>
+                  <span className="relative flex items-center justify-center text-sm">
+                    Top-Up
+                  </span>
+                </button>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-               </td>
-             </tr>
-           ))):
-           ( <tr>
-             <td
-               colSpan={6} 
-               className="whitespace-nowrap py-4 text-center text-lg font-medium text-gray-300 bg-amber-900"
-             >
-               No data available
-             </td>
-           </tr>
-           )}
-       </tbody>
-     </table>
-   )}
- </div>
-</div>
-
-{modalOpen && (
- <Confirmation isClose={isClose} deletefunction={deleteTopup} id={deleteID} />
-)}
-
-{openModel && (
- <UserRetopupModel openModel={openModel} modelClose={modelClose} />
-)}
-{entryPlanModel && (
-       <UserEntryFeeConfirmation
-         isclose={isClose}
-         user_id={auth?.id}
-       />
-     )}
-   </>
+        <div className=" overflow-hidden ">
+          {loading ? (
+            <div className="flex justify-center items-center h-64">
+              <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-yellow-500"></div>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-gradient-to-r from-blue-900 to-blue-700 border-b border-blue-500">
+                  <tr className="text-gray-100 text-sm">
+                    <th className="px-6 py-4 text-left font-medium  uppercase tracking-wider border-b border-gray-700">
+                      Recipient
+                    </th>
+                    <th className="px-6 py-4 text-left font-medium  uppercase tracking-wider border-b border-gray-700">
+                      Amount
+                    </th>
+                    <th className="px-6 py-4 text-left font-medium  uppercase tracking-wider border-b border-gray-700">
+                      Status
+                    </th>
+                    <th className="px-6 py-4 text-left font-medium  uppercase tracking-wider border-b border-gray-700">
+                      Date
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {singletopup
+                    ?.slice()
+                    .reverse()
+                    .map((item, index) => (
+                      <tr
+                        key={index}
+                        className="hover:bg-gray-100 transition-colors duration-150"
+                      >
+                        <td className="px-6 py-4 whitespace-nowrap text-gray-800">
+                          <div className="flex items-center">
+                            <div className="flex-shrink-0 h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-yellow-100 font-bold">
+                              {item?.userto_email?.charAt(0)?.toUpperCase()}
+                            </div>
+                            <div className="ml-3">
+                              <div className="text-sm font-medium ">
+                                {item?.userto_email}
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm font-semibold text-green-600">
+                            ${item?.amount}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span
+                            className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
+                      ${
+                        item?.status === "Completed"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : item?.status === "Pending"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : "bg-red-100 text-red-800"
+                      }`}
+                          >
+                            {item?.status}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-gray-800 text-sm ">
+                          {item?.createdAT}
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      </div>
+      {modalOpen && (
+        <Confirmation
+          isClose={isClose}
+          deletefunction={deleteTopup}
+          id={deleteID}
+        />
+      )}
+      {openModel && (
+        <UserRetopupModel openModel={openModel} modelClose={modelClose} />
+      )}
+    </>
   );
 }

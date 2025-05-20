@@ -5,7 +5,7 @@ export const addQrLink = createAsyncThunk(
   "staff/addQrLink",
   async (values , thunkAPI) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/qr/add`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/qr/add`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -32,7 +32,7 @@ export const getQrLink = createAsyncThunk(
   "staff/getQrLink",
   async (_, thunkAPI) => {
     try {
-      const response = await fetch("http://localhost:8000/api/v1/qr");
+      const response = await fetch("https://api.r2rgloble.com/api/v1/qr");
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -53,7 +53,7 @@ export const deleteQrLink = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       // Your asynchronous logic to delete student here
-      const response = await fetch(`http://localhost:8000/api/v1/qr/${id}`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/qr/${id}`, {
         method: "DELETE",
       });
 

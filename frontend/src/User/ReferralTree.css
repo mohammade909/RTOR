@@ -12,13 +12,11 @@
   }
   
   .genealogy-scroll::-webkit-scrollbar-thumb {
-    background: #212121;
+    background: #bcbcbc;
     border-radius: 10px;
   }
   
-  .genealogy-scroll::-webkit-scrollbar-thumb:hover {
-    background: #d5b14c;
-  }
+ 
   
   /* Styling for the genealogy tree */
   .tree ul {

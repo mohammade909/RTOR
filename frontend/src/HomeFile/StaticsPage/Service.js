@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import Packagessection from "./Packagessection";
 import { Serviceherosection } from "./Serviceherosection";
+import { Rooms } from "../Rooms";
 
 // New Hero Section Component
 
@@ -112,6 +113,7 @@ export const Service = () => {
       <Serviceherosection />
       <ServicesSection />
       <Packagessection />
+      {/* <Rooms/> */}
       <Faq />
       <Footer />
     </>

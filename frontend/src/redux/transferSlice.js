@@ -6,7 +6,7 @@ export const transfertouser = createAsyncThunk(
   async ({values} , thunkAPI) => {
     try {
       console.log(values)
-      const response = await fetch(`http://localhost:8000/api/v1/transfer/touser`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/transfer/touser`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -34,7 +34,7 @@ export const FriendTopup = createAsyncThunk(
   async ({values} , thunkAPI) => {
     try {
       console.log(values)
-      const response = await fetch(`http://localhost:8000/api/v1/transfer/friend`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/transfer/friend`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -61,7 +61,7 @@ export const getTransfer = createAsyncThunk(
   "tran/getTransfer",
   async (_, thunkAPI) => {
     try {
-      const response = await fetch("http://localhost:8000/api/v1/transfer/list");
+      const response = await fetch("https://api.r2rgloble.com/api/v1/transfer/list");
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -81,7 +81,7 @@ export const getTransferById = createAsyncThunk(
   "tran/getTransferById",
   async (user_id , thunkAPI) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/transfer/byid/${user_id}`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/transfer/byid/${user_id}`, {
        
       });
 

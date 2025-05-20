@@ -6,7 +6,7 @@ export const addWithdrawal = createAsyncThunk(
   async ({ values }, thunkAPI) => {
     try {
       console.log(values)
-      const response = await fetch(`http://localhost:8000/api/v1/withdrawalrequest/add`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/withdrawalrequest/add`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -32,7 +32,7 @@ export const autoTransfer = createAsyncThunk(
   "withdrwal/autoTransfer",
   async (id, thunkAPI) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/withdrawalrequest/auto-transfer/${id}`);
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/withdrawalrequest/auto-transfer/${id}`);
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -54,7 +54,7 @@ export const addROIWithdrawal = createAsyncThunk(
   async ({ values }, thunkAPI) => {
     try {
       console.log(values)
-      const response = await fetch(`http://localhost:8000/api/v1/withdrawalrequest/add/roiwithdrawal`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/withdrawalrequest/add/roiwithdrawal`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -81,7 +81,7 @@ export const WithdrawalPrinciple = createAsyncThunk(
   async ({ values }, thunkAPI) => {
     try {
       console.log(values)
-      const response = await fetch(`http://localhost:8000/api/v1/withdrawalrequest/add/principle`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/withdrawalrequest/add/principle`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -109,7 +109,7 @@ export const addCompoundWithdrawal = createAsyncThunk(
   async ({ values }, thunkAPI) => {
     try {
       console.log(values)
-      const response = await fetch(`http://localhost:8000/api/v1/withdrawalrequest/addcompoundwithdrawal`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/withdrawalrequest/addcompoundwithdrawal`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -136,7 +136,7 @@ export const getAllWithdrawal = createAsyncThunk(
   "staff/getAllWithdrawal",
   async (_, thunkAPI) => {
     try {
-      const response = await fetch("http://localhost:8000/api/v1/withdrawalrequest/list");
+      const response = await fetch("https://api.r2rgloble.com/api/v1/withdrawalrequest/list");
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -155,7 +155,7 @@ export const getAllWithdrawalByid = createAsyncThunk(
   "staff/getAllWithdrawalByid",
   async (user_id, thunkAPI) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/withdrawalrequest/by/${user_id}`)
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/withdrawalrequest/by/${user_id}`)
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -176,7 +176,7 @@ export const deleteWithdrawal = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       // Your asynchronous logic to delete student here
-      const response = await fetch(`http://localhost:8000/api/v1/withdrawalrequest/${id}`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/withdrawalrequest/${id}`, {
         method: "DELETE",
       });
 
@@ -198,7 +198,7 @@ export const compoundAmount = createAsyncThunk(
   async ({ values }, thunkAPI) => {
     try {
       console.log(values)
-      const response = await fetch(`http://localhost:8000/api/v1/withdrawalrequest/compound/amount`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/withdrawalrequest/compound/amount`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -225,7 +225,7 @@ export const updateWithdrawal = createAsyncThunk(
   async ({  id, status,amount,user_id }, thunkAPI) => {
     try {
       // Your asynchronous logic to update student here
-      const response = await fetch(`http://localhost:8000/api/v1/withdrawalrequest/${id}`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/withdrawalrequest/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -252,7 +252,7 @@ export const updateROIWithdrawal = createAsyncThunk(
   async ({  id, status,amount,user_id }, thunkAPI) => {
     try {
       // Your asynchronous logic to update student here
-      const response = await fetch(`http://localhost:8000/api/v1/withdrawalrequest/update/roi/${id}`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/withdrawalrequest/update/roi/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -279,7 +279,7 @@ export const updatePrincipleWithdrawal = createAsyncThunk(
   async ({  id, status,amount,user_id }, thunkAPI) => {
     try {
       // Your asynchronous logic to update student here
-      const response = await fetch(`http://localhost:8000/api/v1/withdrawalrequest/update/principle/${id}`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/withdrawalrequest/update/principle/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -307,7 +307,7 @@ export const updateCompoundWithdrawal = createAsyncThunk(
   async ({  id, status,amount,user_id }, thunkAPI) => {
     try {
       // Your asynchronous logic to update student here
-      const response = await fetch(`http://localhost:8000/api/v1/withdrawalrequest/compound/${id}`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/withdrawalrequest/compound/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -334,7 +334,7 @@ export const debitAmount = createAsyncThunk(
   async (values, thunkAPI) => {
     try {
       // Your asynchronous logic to update student here
-      const response = await fetch(`http://localhost:8000/api/v1/withdrawalrequest/debit`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/withdrawalrequest/debit`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

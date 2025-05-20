@@ -6,7 +6,7 @@ export const addPassport = createAsyncThunk(
   "user/addPassport",
   async (formData, thunkAPI) => {
     try {
-      const response = await fetch('http://localhost:8000/api/v1/passport/add', {
+      const response = await fetch('https://api.r2rgloble.com/api/v1/passport/add', {
         method: 'POST',
         body: formData,
       });
@@ -27,7 +27,7 @@ export const getAllPassport = createAsyncThunk(
   "staff/getAllPassport",
   async (_, thunkAPI) => {
     try {
-      const response = await fetch("http://localhost:8000/api/v1/passport/list");
+      const response = await fetch("https://api.r2rgloble.com/api/v1/passport/list");
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -46,7 +46,7 @@ export const getPassportByid = createAsyncThunk(
   "staff/getPassportByid",
   async (user_id, thunkAPI) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/passport/by/${user_id}`)
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/passport/by/${user_id}`)
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -67,7 +67,7 @@ export const deletePassport = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       // Your asynchronous logic to delete student here
-      const response = await fetch(`http://localhost:8000/api/v1/passport/${id}`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/passport/${id}`, {
         method: "DELETE",
       });
 
@@ -87,7 +87,7 @@ export const addTicket = createAsyncThunk(
   "user/addTicket",
   async (fdata, thunkAPI) => {
     try {
-      const response = await fetch('http://localhost:8000/api/v1/passport/ticket', {
+      const response = await fetch('https://api.r2rgloble.com/api/v1/passport/ticket', {
         method: 'POST',
         body: fdata,
       });

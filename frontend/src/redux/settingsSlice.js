@@ -7,7 +7,7 @@ export const getSettings = createAsyncThunk(
   "staff/getSettings",
   async (_, thunkAPI) => {
     try {
-      const response = await fetch("http://localhost:8000/api/v1/settings");
+      const response = await fetch("https://api.r2rgloble.com/api/v1/settings");
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -29,7 +29,7 @@ export const updateSettings = createAsyncThunk(
   async (values , thunkAPI) => {
     try {
       // Your asynchronous logic to update student here
-      const response = await fetch(`http://localhost:8000/api/v1/settings`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/settings`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

@@ -44,7 +44,7 @@ export default function Trade() {
     const fetchLatestRoiDate = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:8000/api/v1/referral/latest/${userId}`
+          `https://api.r2rgloble.com/api/v1/referral/latest/${userId}`
         );
 
         if (res.data?.latestRoiDate) {

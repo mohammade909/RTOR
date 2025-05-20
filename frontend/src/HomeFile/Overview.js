@@ -7,7 +7,7 @@ export default function Overview() {
   const [hoveredCard, setHoveredCard] = useState(null);
   const [counts, setCounts] = useState({
     reviews: 0,
-    roi: 0,
+    roi: "1-2",
     investors: 0,
     countries: 0
   });
@@ -18,8 +18,8 @@ export default function Overview() {
     const steps = duration / interval;
 
     const targetValues = {
-      reviews: 30,
-      roi: 15,
+      reviews: 100,
+      roi: "1-2",
       investors: 8500,
       countries: 12
     };
@@ -31,7 +31,7 @@ export default function Overview() {
 
       setCounts({
         reviews: Math.ceil(progress * targetValues.reviews),
-        roi: Math.ceil(progress * targetValues.roi),
+        roi: Math.ceil(),
         investors: Math.ceil(progress * targetValues.investors),
         countries: Math.ceil(progress * targetValues.countries)
       });
@@ -51,8 +51,8 @@ export default function Overview() {
       color: "from-amber-500 to-amber-300"
     },
     {
-      value: counts.roi + "%",
-      label: "Annual ROI",
+      value: "30%- 60%",
+      label: "Monthly Rent Income",
       description: "Enjoy stable earnings based on actual hotel performance.",
       icon: <Percent className="text-emerald-500" size={28} />,
       color: "from-emerald-500 to-emerald-300"
@@ -67,7 +67,7 @@ export default function Overview() {
     {
       value: counts.countries + "+",
       label: "Countries",
-      description: "Invest in hotels across major global destinations.",
+      description: "Invest in hotels across major globle destinations.",
       icon: <MapPin className="text-rose-500" size={28} />,
       color: "from-rose-500 to-rose-300"
     }

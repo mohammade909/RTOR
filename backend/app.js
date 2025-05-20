@@ -1,4 +1,4 @@
-const experss = require("express");
+  const experss = require("express");
 const authRoutes = require("./routes/authRoutes");
 const usersRoutes = require("./routes/usersRoutes");
 const plansRoutes = require("./routes/plansRoutes");
@@ -24,6 +24,7 @@ const offerRoutes = require("./routes/offers");
 const codesRoutes = require("./routes/codes");
 const bonusRoutes = require("./routes/bouns");
 const ticketRoutes = require("./routes/ticketRoutes");
+const nowpaymentRoutes = require("./routes/nowpayments");
 
 const cors = require("cors");
 const dotenv = require("dotenv");
@@ -78,7 +79,7 @@ app.use("/api/v1/salary", salrayRoutes);
 app.use("/api/v1/cto", ctoRoutes);
 app.use("/api/v1/offers", offerRoutes);
 app.use("/api/v1/codes", codesRoutes);
-
+app.use("/api/v1/now-payments", nowpaymentRoutes);
 
 app.use(errorMiddleware);
 module.exports = app;

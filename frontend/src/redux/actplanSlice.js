@@ -6,7 +6,7 @@ export const addActPlan = createAsyncThunk(
   "staff/addActPlan",
   async ({ values }, thunkAPI) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/actplan/add`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/actplan/add`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -33,7 +33,7 @@ export const getAllActPlan = createAsyncThunk(
   "staff/getAllActPlan",
   async (_, thunkAPI) => {
     try {
-      const response = await fetch("http://localhost:8000/api/v1/actplan/list");
+      const response = await fetch("https://api.r2rgloble.com/api/v1/actplan/list");
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -53,7 +53,7 @@ export const getActPlan = createAsyncThunk(
   "staff/getActPlan",
   async (id, thunkAPI) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/actplan/${id}`);
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/actplan/${id}`);
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -73,7 +73,7 @@ export const deleteActPlan = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       // Your asynchronous logic to delete student here
-      const response = await fetch(`http://localhost:8000/api/v1/actplan/${id}`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/actplan/${id}`, {
         method: "DELETE",
       });
 
@@ -94,7 +94,7 @@ export const updateActPlan = createAsyncThunk(
   async ({ id, updatedData }, thunkAPI) => {
     try {
       // Your asynchronous logic to update student here
-      const response = await fetch(`http://localhost:8000/api/v1/actplan/${id}`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/actplan/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

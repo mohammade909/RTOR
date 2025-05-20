@@ -5,7 +5,7 @@ export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (values, thunkAPI) => {
     try {
-      const response = await fetch("http://localhost:8000/api/v1/auth/signin", {
+      const response = await fetch("https://api.r2rgloble.com/api/v1/auth/signin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -34,7 +34,7 @@ export const loginAdmin = createAsyncThunk(
       console.log(values);
       // Your asynchronous logic to authenticate user here
       const response = await fetch(
-        "http://localhost:8000/api/v1/auth/adminsignin",
+        "https://api.r2rgloble.com/api/v1/auth/adminsignin",
         {
           method: "POST",
           headers: {
@@ -65,7 +65,7 @@ export const signupUser = createAsyncThunk(
     try {
       // Your asynchronous logic to authenticate user here
       const response = await fetch(
-        "http://localhost:8000/api/v1/auth/register",
+        "https://api.r2rgloble.com/api/v1/auth/register",
         {
           method: "POST",
           headers: {
@@ -96,7 +96,38 @@ export const sendVerificationEmail = createAsyncThunk(
     try {
       // Your asynchronous logic to authenticate user here
       const response = await fetch(
-        "http://localhost:8000/api/v1/auth/email-verification",
+        "https://api.r2rgloble.com/api/v1/auth/email-verification",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.log(errorData);
+        throw new Error(errorData.error);
+      }
+
+      const data = await response.json();
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue({ error: error.message });
+    }
+  }
+);
+export const sendUserVerificationEmail = createAsyncThunk(
+  "auth/sendUserVerificationEmail",
+  async (values, thunkAPI) => {
+    try {
+      // Your asynchronous logic to authenticate user here
+      const response = await fetch(
+        "https://api.r2rgloble.com/api/v1/auth/verify-user",
         {
           method: "POST",
           headers: {
@@ -126,8 +157,9 @@ export const verifyEmailCode = createAsyncThunk(
   async (values, thunkAPI) => {
     try {
       // Your asynchronous logic to authenticate user here
+      console.log("value", values);
       const response = await fetch(
-        "http://localhost:8000/api/v1/auth/verify-code",
+        "https://api.r2rgloble.com/api/v1/auth/otp-code",
         {
           method: "POST",
           headers: {
@@ -157,7 +189,7 @@ export const signoutuser = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       localStorage.removeItem("auth");
-      const response = await fetch("http://localhost:8000/api/v1/auth/signout");
+      const response = await fetch("https://api.r2rgloble.com/api/v1/auth/signout");
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message);
@@ -175,7 +207,7 @@ export const signoutadmin = createAsyncThunk(
     try {
       localStorage.removeItem("auth");
       const response = await fetch(
-        "http://localhost:8000/api/v1/auth/signoutadmin"
+        "https://api.r2rgloble.com/api/v1/auth/signoutadmin"
       );
       if (!response.ok) {
         const errorData = await response.json();
@@ -194,7 +226,7 @@ export const signoutadmin = createAsyncThunk(
 //     try {
 //       // Your asynchronous logic to authenticate user here
 //       console.log(values)
-//       const response = await fetch("http://localhost:8000/api/v1/auth/changepassword", {
+//       const response = await fetch("https://api.r2rgloble.com/api/v1/auth/changepassword", {
 //         method: "POST",
 //         headers: {
 //           "Content-Type": "application/json",
@@ -222,7 +254,7 @@ const initialState = {
   loading: false,
   error: null,
   message: null,
-  expireAt: null,         // Make sure this exists
+  expireAt: null, // Make sure this exists
   adminExpireAt: null,
 };
 
@@ -278,6 +310,19 @@ const authSlice = createSlice({
         state.message = action.payload.message;
       })
       .addCase(signupUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload.error;
+      })
+      .addCase(sendUserVerificationEmail.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(sendUserVerificationEmail.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.message = "Verification email sent!";
+      })
+      .addCase(sendUserVerificationEmail.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload.error;
       })

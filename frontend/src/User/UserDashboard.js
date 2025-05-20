@@ -12,6 +12,7 @@ import Loader from "../BaseFile/comman/Loader";
 import { getTreeData } from "../redux/referralSlice";
 import { getAllDepositeByid } from "../redux/depositeSlice";
 import { getAllWithdrawalByid } from "../redux/withdrawalSlice";
+import { FaStreetView } from "react-icons/fa";
 import {
   TrendingUp,
   TrendingDown,
@@ -27,6 +28,7 @@ import {
   Copy,
   ShoppingCart,
   Users,
+  Package,
 } from "lucide-react";
 import {
   BarChart,
@@ -38,6 +40,8 @@ import {
 } from "recharts";
 import HotelRoomSlider from "./HotelRoomSlider";
 import TradeNow from "./TradeNow";
+import { Link } from "react-router-dom";
+import { LimitWarningModal } from "./LimitWarningModal";
 function getActiveSinceInfo(createdAt) {
   const createdDate = new Date(createdAt);
   const today = new Date();
@@ -57,7 +61,7 @@ function getActiveSinceInfo(createdAt) {
 export default function Dashboard() {
   const dispatch = useDispatch();
   const [activeTimeframe, setActiveTimeframe] = useState("3M");
-  const [activeTab, setActiveTab] = useState("today");
+  const [limitModal, setLimitModal] = useState(false);
   const { singlecto } = useSelector((state) => state.cto);
   const { singleDeposite } = useSelector((state) => state.alldeposite);
   const { singleWithdrawal } = useSelector((state) => state.allwithdrawal);
@@ -69,7 +73,8 @@ export default function Dashboard() {
   const [isCopied, setIsCopied] = useState(false);
   const chartData = [20, 45, 28, 80, 99, 43, 50, 65, 35, 88, 70, 81];
   const maxValue = Math.max(...chartData);
-  const registerUrl = `https://www.r2rgloble.com/registration?referral=${singleuser?.refferal_code}`;
+
+  const registerUrl = `https://www.r2rgloble.com/register?referral=${singleuser?.refferal_code}`;
   const handleCopy = () => {
     navigator.clipboard
       .writeText(registerUrl)
@@ -82,15 +87,25 @@ export default function Dashboard() {
         console.error("Failed to copy referral link: ", err);
       });
   };
-  const limit = singleuser?.active_plan * 5;
+  const limit = singleuser?.active_plan * 3;
   const usedLimit = (
     (singleuser?.roi_income ?? 0) +
     (singleuser?.level_month ?? 0) +
     Number(singleuser?.community_income) +
-    (singleuser?.reward ?? 0) +
     Number(singleuser?.direct_income) +
     (singleuser?.total_salary ?? 0)
   ).toFixed(2);
+
+  const percentage = Math.min(
+    Math.round((Number(usedLimit) / limit) * 100),
+    100
+  );
+
+  useEffect(() => {
+    if (percentage >= 90) {
+      setLimitModal(true);
+    }
+  }, []);
 
   useEffect(() => {
     if (auth?.id) {
@@ -136,10 +151,10 @@ export default function Dashboard() {
   }
 
   const totalDirectActiveMembers = treeData?.filter(
-    (user) => user.is_active === "active"
+    (user) => user?.is_active === "active"
   ).length;
   const totalDirectInactiveMembers = treeData?.filter(
-    (user) => user.is_active === "inactive"
+    (user) => user?.is_active === "inactive"
   ).length;
 
   let totalTeamCount = 0;
@@ -155,10 +170,10 @@ export default function Dashboard() {
   });
 
   const calculateBusinessForTeam = (user) => {
-    let totalBusiness = user.active_plan || 0;
+    let totalBusiness = user?.active_plan || 0;
 
-    if (user.referrals && user.referrals.length > 0) {
-      user.referrals.forEach((referral) => {
+    if (user?.referrals && user?.referrals?.length > 0) {
+      user?.referrals?.forEach((referral) => {
         totalBusiness += calculateBusinessForTeam(referral); // Recursively calculate for all referrals
       });
     }
@@ -204,8 +219,8 @@ export default function Dashboard() {
   const calculateTeamBusiness = (user) => {
     let totalBusiness = user.active_plan || 0;
 
-    if (user.referrals && user.referrals.length > 0) {
-      user.referrals.forEach((referral) => {
+    if (user?.referrals && user?.referrals.length > 0) {
+      user?.referrals.forEach((referral) => {
         totalBusiness += calculateTeamBusiness(referral);
       });
     }
@@ -238,7 +253,7 @@ export default function Dashboard() {
   return (
     <div className=" ">
       <div className="">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+        <div className="grid grid-cols-1  sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
           <div className="bg-orange-400 rounded-md p-4 text-white shadow-md">
             <div className="flex items-start justify-between">
               <div className="bg-white/20 p-2 rounded-md">
@@ -258,7 +273,11 @@ export default function Dashboard() {
                 </svg>
               </div>
               <div className="px-2 py-1 bg-white/20 rounded-full text-xs font-medium">
-                +22%
+                <Link to="/user/income" className="text-xs hover:text-blue-500 hover:underline">
+                  {" "}
+                  {/* <FaStreetView className="w-5 h-5 text-gray-100 hover:text-blue-200" /> */}
+                  View All
+                </Link>
               </div>
             </div>
             <div className="mt-4">
@@ -290,7 +309,11 @@ export default function Dashboard() {
                 </svg>
               </div>
               <div className="px-2 py-1 bg-red-500/80 rounded-full text-xs font-medium">
-                -22%
+                <Link to="/user/income" className="text-xs hover:text-blue-500 hover:underline">
+                  {" "}
+                  {/* <FaStreetView className="w-5 h-5 text-gray-100 hover:text-blue-200" /> */}
+                  View All
+                </Link>
               </div>
             </div>
             <div className="mt-4">
@@ -321,7 +344,11 @@ export default function Dashboard() {
                 </svg>
               </div>
               <div className="px-2 py-1 bg-white/20 rounded-full text-xs font-medium">
-                +22%
+                <Link to="/user/income" className="text-xs hover:text-blue-500 hover:underline">
+                  {" "}
+                  {/* <FaStreetView className="w-5 h-5 text-gray-100 hover:text-blue-200" /> */}
+                  View All 
+                </Link>
               </div>
             </div>
             <div className="mt-4">
@@ -353,7 +380,11 @@ export default function Dashboard() {
                 </svg>
               </div>
               <div className="px-2 py-1 bg-white/20 rounded-full text-xs font-medium">
-                +22%
+                <Link to="/user/income" className="text-xs hover:text-blue-500 hover:underline">
+                  {" "}
+                  {/* <FaStreetView className="w-5 h-5 text-gray-100 hover:text-blue-200" /> */}
+                  View All
+                </Link>
               </div>
             </div>
             <div className="mt-4">
@@ -365,13 +396,13 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Profit Card */}
           <div className="bg-white rounded-md border border-gray-300 p-4 shadow-md">
             <div className="flex justify-between items-center mb-4">
               <div>
                 <p className="text-xl font-bold text-gray-800">
-                  ${Number(totalBusiness).toLocaleString()}
+                  ${Number(totalBusiness)?.toLocaleString()}
                 </p>
                 <p className="text-sm text-emerald-600 font-medium">
                   Total Business
@@ -394,12 +425,13 @@ export default function Dashboard() {
                 </svg>
               </div>
             </div>
-            <div className="flex justify-between items-center">
-              <p className="text-xs font-medium text-emerald-600">
-                +35% vs Last Month
-              </p>
-              <p className="text-sm font-medium text-blue-600">View All</p>
-            </div>
+            <Link
+              to="/user/income"
+              className="flex justify-between items-center"
+            >
+              <p className="text-sm font-medium text-blue-600">View All</p>{" "}
+              <FaStreetView className="w-5 h-5 text-blue-600 hover:text-blue-700" />
+            </Link>
           </div>
           {/* Invoice Due Card */}
           <div className="bg-white rounded-md border   border-gray-300 p-4 shadow-md">
@@ -431,12 +463,13 @@ export default function Dashboard() {
                 </svg>
               </div>
             </div>
-            <div className="flex justify-between items-center">
-              <p className="text-xs font-medium text-emerald-600">
-                +35% vs Last Month
-              </p>
-              <p className="text-sm font-medium text-blue-600">View All</p>
-            </div>
+            <Link
+              to="/user/transaction/reward_transaction"
+              className="flex justify-between items-center"
+            >
+              <p className="text-sm font-medium text-blue-600">View All</p>{" "}
+              <FaStreetView className="w-5 h-5 text-blue-600 hover:text-blue-700" />
+            </Link>
           </div>
           {/* Total Expenses Card */}
           <div className="bg-white rounded-md p-4  border border-gray-300 shadow-md">
@@ -467,12 +500,13 @@ export default function Dashboard() {
                 </svg>
               </div>
             </div>
-            <div className="flex justify-between items-center">
-              <p className="text-xs font-medium text-emerald-600">
-                +41% vs Last Month
-              </p>
-              <p className="text-sm font-medium text-blue-600">View All</p>
-            </div>
+            <Link
+              to="/user/withdrawal"
+              className="flex justify-between items-center"
+            >
+              <p className="text-sm font-medium text-blue-600">View All</p>{" "}
+              <FaStreetView className="w-5 h-5 text-blue-600 hover:text-blue-700" />
+            </Link>
           </div>
           {/* Total Payment Returns Card */}
           <div className="bg-white rounded-md p-4 shadow-md  border border-gray-300">
@@ -503,12 +537,13 @@ export default function Dashboard() {
                 </svg>
               </div>
             </div>
-            <div className="flex justify-between items-center">
-              <p className="text-xs font-medium text-red-500">
-                -20% vs Last Month
-              </p>
-              <p className="text-sm font-medium text-blue-600">View All</p>
-            </div>
+            <Link
+              to="/user/deposit"
+              className="flex justify-between items-center"
+            >
+              <p className="text-sm font-medium text-blue-600">View All</p>{" "}
+              <FaStreetView className="w-5 h-5 text-blue-600 hover:text-blue-700" />
+            </Link>
           </div>
         </div>
       </div>
@@ -516,6 +551,14 @@ export default function Dashboard() {
         <Loader isLoading={loading} />
       </div>
       <RewardsInitializationPopup />
+      {limitModal && (
+        <LimitWarningModal
+          limit={limit}
+          used={usedLimit}
+          open={limitModal}
+          onClose={() => setLimitModal(false)}
+        />
+      )}
       <div className="mt-4">
         <div className="lg:flex gap-5 bg-gray-50">
           <div className="bg-white rounded-md border border-gray-300 shadow-sm p-5 lg:w-3/5">
@@ -528,10 +571,10 @@ export default function Dashboard() {
                   Popular Rooms
                 </span>
               </div>
-           <TradeNow/>
+              <TradeNow user={singleuser} />
             </div>
-            <div className="flex gap-4 mb-5">
-              <div className="bg-gray-50 rounded-lg p-3 w-1/2">
+            <div className="grid sm:grid-cols-3 grid-cols-1 gap-4 mb-5">
+              <div className="bg-gray-50 rounded-lg p-3 ">
                 <div className="flex items-center gap-2">
                   <div className="h-3 w-3 bg-blue-400 rounded-full"></div>
                   <span className="text-sm text-gray-600">
@@ -544,7 +587,7 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              <div className="bg-gray-50 rounded-lg p-3 w-1/2">
+              <div className="bg-gray-50 rounded-lg p-3 ">
                 <div className="flex items-center gap-2">
                   <div className="h-3 w-3 bg-orange-400 rounded-full"></div>
                   <span className="text-sm text-gray-600">Active Members</span>
@@ -553,7 +596,7 @@ export default function Dashboard() {
                   {Number(totalActiveMembers).toLocaleString()}
                 </div>
               </div>
-              <div className="bg-gray-50 rounded-lg p-3 w-1/2">
+              <div className="bg-gray-50 rounded-lg p-3 ">
                 <div className="flex items-center gap-2">
                   <div className="h-3 w-3 bg-pink-400 rounded-full"></div>
                   <span className="text-sm text-gray-600">Remaining Limit</span>
@@ -568,40 +611,6 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="lg:w-2/5 flex flex-col  gap-4">
-            <div className="bg-white rounded-md border border-gray-300 shadow-sm p-5 text-gray-800">
-              <div className="flex items-center gap-2 mb-5">
-                <div className="bg-blue-100 p-2 rounded-lg text-blue-500 flex justify-center items-center">
-                  <span className="font-bold">ⓘ</span>
-                </div>
-                <span className="font-semibold text-gray-800">
-                  Overall Information
-                </span>
-              </div>
-
-              <div className="grid sm:grid-cols-2 grid-cols-1 gap-3">
-                <div className="border border-gray-200 rounded-lg p-3 flex flex-col items-center">
-                  <div className="text-blue-500 mb-1">
-                    <Users size={22} />
-                  </div>
-                  <span className="text-sm text-gray-600"> Rent Income</span>
-                  <div className="font-bold">
-                    {" "}
-                    +{Number(singleuser?.roi_income).toLocaleString()}
-                  </div>
-                </div>
-
-                <div className="border border-gray-200 rounded-lg p-3 flex flex-col items-center">
-                  <div className="text-orange-500 mb-1">
-                    <Users size={22} />
-                  </div>
-                  <span className="text-sm text-gray-600"> Active Plan</span>
-                  <div className="font-bold">
-                    {" "}
-                    {Number(singleuser?.active_plan).toLocaleString()}
-                  </div>
-                </div>
-              </div>
-            </div>
             <div className="bg-white rounded-md border border-gray-200 shadow-md p-0 overflow-hidden flex-1">
               <div className="bg-gradient-to-r from-blue-600 to-blue-400 h-24 relative" />
               <div className="px-6 pb-6 pt-0 relative">
@@ -609,21 +618,98 @@ export default function Dashboard() {
                   <div className="h-full w-full rounded-full bg-blue-50 flex items-center justify-center">
                     <User size={48} className="text-blue-600" />
                   </div>
+                 
                 </div>
-                <div className="pt-16 pl-6">
-                  <h1 className="text-xl font-semibold text-gray-900">
+               <div className=" absolute left-32 -top-7 ">
+                  <h1 className="text-xl font-semibold text-gray-100">
                     {singleuser?.fullname || "Satish"}
                   </h1>
                   <p className="text-sm text-gray-600 mt-1">
                     {singleuser?.email || "satish@gmail.com"}
                   </p>
-                  {singleuser?.active_plan > 0 && (
+                  {/* {singleuser?.active_plan > 0 && (
                     <div className="mt-3">
                       <span className="inline-block px-3 py-1 bg-blue-600 rounded-full text-xs text-white font-medium shadow-sm">
                         Pro Trader
                       </span>
                     </div>
+                  )} */}
+                </div>
+
+                
+                  <div className="pt-16">
+                    <span className="text-gray-800 text-sm mb-1 text-semibold">Referral Link</span>
+                  <div className="flex items-center justify-between gap-2 rounded-lg bg-gradient-to-r from-gray-50 to-gray-100 border border-gray-300 px-4 py-2 shadow-sm">
+                    <span className="text-gray-900 font-mono font-semibold text-sm truncate">
+                      {singleuser?.refferal_code || "Loading..."}
+                    </span>
+                    <button
+                      onClick={handleCopy}
+                      className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-md transition-all duration-200"
+                      title="Copy referral code"
+                    >
+                      {isCopied ? <Check size={18} /> : <Copy size={18} />}
+                    </button>
+                  </div>
+
+                  {isCopied && (
+                    <p className="mt-2 text-green-600 text-sm animate-fade-in flex items-center">
+                      <Check size={14} className="mr-1" />
+                      Copied to clipboard!
+                    </p>
                   )}
+                </div>
+              </div>
+            </div>
+            <div className="bg-white rounded-md border border-gray-300 shadow-sm p-5 text-gray-800">
+              {/* <div className="flex items-center gap-2 mb-5">
+                <div className="bg-blue-100 p-2 rounded-lg text-blue-500 flex justify-center items-center">
+                  <span className="font-bold">ⓘ</span>
+                </div>
+                <span className="font-semibold text-gray-800">
+                  Overall Information
+                </span>
+              </div> */}
+
+              <div className="grid sm:grid-cols-2 grid-cols-1 gap-3">
+                <div className="border border-gray-200 rounded-lg p-3 flex flex-col items-center">
+                  <div className="text-blue-500 mb-1">
+                    <DollarSign size={22} />
+                  </div>
+                  <span className="text-sm text-gray-600"> Rent Income</span>
+                  <div className="font-bold">
+                    {" "}
+                    ${Number(singleuser?.roi_income).toLocaleString()}
+                  </div>
+                </div>
+
+                <div className="border border-gray-200 rounded-lg p-3 flex flex-col items-center">
+                  <div className="text-orange-500 mb-1">
+                    <Package size={22} />
+                  </div>
+                  <span className="text-sm text-gray-600"> Active Plan</span>
+                  <div className="font-bold">
+                    {" "}
+                    ${Number(singleuser?.active_plan).toLocaleString()}
+                  </div>
+                </div>
+                <div className="border border-gray-200 rounded-lg p-3 flex flex-col items-center">
+                  <div className="text-blue-500 mb-1">
+                    <Users size={22} />
+                  </div>
+                  <span className="text-sm text-gray-600">Total Team </span>
+                  <div className="font-bold">
+                    {" "}
+                    {Number(totalTeamCount).toLocaleString()}
+                  </div>
+                </div>
+
+                <div className="border border-gray-200 rounded-lg p-3 flex flex-col items-center">
+                  <div className="text-orange-500 mb-1">
+                    <Users size={22} />
+                  </div>
+                  <span className="text-sm text-gray-600">CTO</span>
+                  <div className="font-bold"> -</div>
                 </div>
               </div>
             </div>
@@ -692,7 +778,7 @@ export default function Dashboard() {
           </div>
           <div className="grid grid-cols-2 text-center mb-4">
             <div>
-              <div className="text-3xl font-bold text-gray-800">
+              <div className="text-base font-semibold text-gray-800">
                 {singleuser?.reffer_by}
               </div>
               <div className="text-orange-500">Reffer By</div>
@@ -702,7 +788,7 @@ export default function Dashboard() {
             </div>
 
             <div>
-              <div className="text-3xl font-bold text-gray-800">
+              <div className="text-base font-semibold text-gray-800">
                 {" "}
                 {singleuser?.bep20?.substring(0, 10)}...
                 {singleuser?.bep20?.substring(singleuser?.bep20?.length - 8)}
@@ -718,7 +804,7 @@ export default function Dashboard() {
           <div className="">
             <div className="p-4 border-b border-gray-200">
               <h2 className="font-semibold text-gray-900">
-                Your Referral Code
+                Your Referral Link
               </h2>
             </div>
 

@@ -38,12 +38,12 @@ export const AboutHeroSection = () => {
                 <div className="absolute -top-10 -left-10 w-24 h-24 bg-amber-300 rounded-full opacity-20 blur-xl"></div>
           
                 <h1 className="sm:text-3xl text-2xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                  Trading <span className="text-amber-600">Excellence</span> Through Automation
+                 Real Hotels, Real Returns
                 </h1>
               </div>
               
               <p className="sm:text-xl text-gray-700 mb-8 leading-relaxed">
-                At Gold Fox Market, we offer reliable and automated Forex trading tools designed to simplify your trading journey and maximize your potential for success in the dynamic world of currency exchange.
+                At R2R Globle, we make hotel investment accessible, secure, and rewarding. Our mission is to help everyday investors earn consistent income by owning shares in high-performing, income-generating hotels.
               </p>
             </div>
           </div>

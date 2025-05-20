@@ -72,7 +72,7 @@ import { Sparkles, ArrowRight, Check } from "lucide-react";
 
 export const Process = () => {
   return (
-    <section className="bg-gradient-to-br from-yellow-50 via-white to-yellow-50 py-32 text-gray-800 overflow-hidden relative">
+    <section className="bg-gradient-to-br from-yellow-50 via-white to-yellow-50 py-6 lg:py-32 text-gray-800 overflow-hidden relative">
       {/* Decorative elements */}
       <div className="absolute top-0 left-0 w-64 h-64 bg-yellow-100 rounded-full opacity-20 -translate-x-1/2 -translate-y-1/2"></div>
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-yellow-100 rounded-full opacity-20 translate-x-1/3 translate-y-1/3"></div>

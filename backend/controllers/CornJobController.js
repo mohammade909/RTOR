@@ -472,207 +472,9 @@ exports.updateROIIncomeForUsers = catchAsyncErrors(
 );
 
 
-exports.processSelfTrade = catchAsyncErrors(async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const userId = parseInt(id);
-
-    if (isNaN(userId)) {
-      return res.status(400).json({ message: "Invalid User ID" });
-    }
-
-    // Check ROI status from admin settings
-    const { setroi } = await fetchSetRoiFromAdminSettings();
-    if (setroi !== 1) {
-      return res.status(403).json({ message: "Admin has disabled ROI" });
-    }
-
-    // ✅ Get user directly from DB
-    const userQuery = `SELECT * FROM users WHERE id = ?`;
-    const user = await new Promise((resolve, reject) => {
-      db.query(userQuery, [userId], (err, results) => {
-        if (err) return reject(err);
-        if (results.length === 0) return resolve(null);
-        resolve(results[0]);
-      });
-    });
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    const { plan_id, active_plan, compound_income } = user;
-
-    if (!plan_id || !active_plan) {
-      return res
-        .status(400)
-        .json({ message: "User does not have an active plan" });
-    }
-
-    // ✅ Get plan details
-    let planDetails;
-    try {
-      planDetails = await fetchPlanById(plan_id);
-    } catch (error) {
-      return res.status(404).json({ message: "User plan not found" });
-    }
-
-    const roi_percentage = planDetails.ROI_overall;
-    const roiIncome = (active_plan * roi_percentage) / 100;
-    const currentDate = new Date().toISOString().split("T")[0];
-
-    // ✅ Check if today's transaction already exists
-    // const checkQuery = `
-    //     SELECT COUNT(*) AS count FROM roi_transaction
-    //     WHERE user_id = ? AND DATE(createdAt) = ?
-    //   `;
-
-    // const transactionExists = await new Promise((resolve, reject) => {
-    //   db.query(checkQuery, [userId, currentDate], (err, results) => {
-    //     if (err) return reject(err);
-    //     resolve(results[0].count > 0);
-    //   });
-    // });
-
-    // if (transactionExists) {
-    //   return res
-    //     .status(409)
-    //     .json({ message: "ROI already processed for today" });
-    // }
-
-    // ✅ Update ROI Income
-    const { isUpdated, onAmount } = await updateUserROIIncome(
-      userId,
-      roiIncome.toFixed(2)
-    );
-
-    if (isUpdated) {
-      const insertQuery = `
-  INSERT INTO roi_transaction
-  (user_id, amount, type, onamount, percent, description, currency, transaction_by)
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-`;
-
-      const selfTradeNotes = [
-        "Executed a profitable trade today",
-        "Completed today's trade successfully",
-      ];
-
-      const randomNote =
-        selfTradeNotes[Math.floor(Math.random() * selfTradeNotes.length)];
-      const insertData = [
-        userId,
-        roiIncome.toFixed(2),
-        "Invest ROI",
-        active_plan,
-        roi_percentage,
-        `${randomNote}`,
-        "USD",
-        "self", // Or "admin" if manually triggered
-      ];
-
-      await new Promise((resolve, reject) => {
-        db.query(insertQuery, insertData, (err) => {
-          if (err) {
-            console.error("❌ Error inserting transaction:", err);
-            return reject(err);
-          }
-          console.log(`✅ ROI transaction recorded for user ${userId}`);
-          resolve();
-        });
-      });
-
-      // ✅ Check transaction count and update active_plan and compound_income if needed
-      // const transactionCountQuery = `
-      //   SELECT COUNT(*) AS count FROM roi_transaction 
-      //   WHERE user_id = ?
-      // `;
-
-      // const transactionCount = await new Promise((resolve, reject) => {
-      //   db.query(transactionCountQuery, [userId], (err, results) => {
-      //     if (err) return reject(err);
-      //     resolve(results[0].count);
-      //   });
-      // });
-
-      // If transaction count is 10 and active_plan > 100, subtract 100 from active_plan and compound_income
-      // If transaction count is 10 and active_plan > 100, subtract 100 from active_plan and compound_income
-  //     if (transactionCount === 10 && active_plan >= 100) {
-  //       const updateUserQuery = `
-  //   UPDATE users
-  //   SET active_plan = active_plan - 100,
-  //       compound_income = compound_income - 100
-  //   WHERE id = ?
-  // `;
-
-  //       await db
-  //         .promise()
-  //         .query(
-  //           `INSERT INTO topup (userby_id, userto_id, amount, note) VALUES (?, ?, ?, ?)`,
-  //           [id, id, 100, "Trade bonus deducted"]
-  //         );
-
-  //       await new Promise((resolve, reject) => {
-  //         db.query(updateUserQuery, [userId], (err, results) => {
-  //           if (err) {
-  //             console.error("❌ Error updating user plan and income:", err);
-  //             return reject(err);
-  //           }
-  //           console.log(
-  //             `✅ Updated active_plan and compound_income for user ${userId}`
-  //           );
-  //           resolve();
-  //         });
-  //       });
-
-  //       if (plan_id === 4) {
-  //         const updatePlanQuery = `
-  //     UPDATE users
-  //     SET plan_id = 0,
-  //         roi_status = 'close',
-  //         level_status = 'close',
-  //         roi_day = 0,
-  //         roi_income = 0
-  //     WHERE id = ?
-  //   `;
-
-  //         await new Promise((resolve, reject) => {
-  //           db.query(updatePlanQuery, [userId], (err, results) => {
-  //             if (err) {
-  //               console.error(
-  //                 "❌ Error updating plan details for plan_id=4:",
-  //                 err
-  //               );
-  //               return reject(err);
-  //             }
-  //             console.log(
-  //               `✅ Reset plan details for user ${userId} with plan_id=4`
-  //             );
-  //             resolve();
-  //           });
-  //         });
-  //       }
-  //     }
-    }
-
-    return res.status(200).json({
-      message: "ROI income updated successfully for the user",
-      user_id: userId,
-      roi: roiIncome.toFixed(2),
-    });
-  } catch (error) {
-    console.error("Error updating ROI for single user:", error);
-    return res
-      .status(500)
-      .json({ message: "Internal Server Error", error: error.message });
-  }
-});
-
-
 // exports.processSelfTrade = catchAsyncErrors(async (req, res, next) => {
 //   try {
 //     const { id } = req.params;
-//     const { pair } = req.query;
 //     const userId = parseInt(id);
 
 //     if (isNaN(userId)) {
@@ -707,6 +509,7 @@ exports.processSelfTrade = catchAsyncErrors(async (req, res, next) => {
 //         .json({ message: "User does not have an active plan" });
 //     }
 
+//     // ✅ Get plan details
 //     let planDetails;
 //     try {
 //       planDetails = await fetchPlanById(plan_id);
@@ -714,30 +517,15 @@ exports.processSelfTrade = catchAsyncErrors(async (req, res, next) => {
 //       return res.status(404).json({ message: "User plan not found" });
 //     }
 
-//     const roi_per = await adjustROIByReferralCount(id, planDetails);
-//     const roiIncome = (active_plan * roi_per) / 100;
 
-//     // Generate a random factor between 2 and 6
-//     const factor = Math.floor(Math.random() * 5) + 2; // Random number between 2-6
 
-//     // Calculate the split amount (rounded to 2 decimal places)
-//     const splitAmount = parseFloat((roiIncome / factor).toFixed(2));
+//     const roi_percentage = planDetails.ROI_overall;
+//     const roiIncome = (active_plan * roi_percentage) / 100;
+//     const currentDate = new Date().toISOString().split("T")[0];
 
-//     // Calculate the remaining amount for the last transaction to ensure exact total
-//     let remainingAmount = parseFloat(
-//       (roiIncome - splitAmount * (factor - 1)).toFixed(2)
-//     );
+    
 
-//     // Possible transaction notes
-//     const selfTradeNotes = [
-//       "Executed a profitable trade today",
-//       "Completed today's trade successfully",
-//       "Market position yielded returns",
-//       "Successful trading cycle completed",
-//       "Trade execution finalized with profit",
-//       "Market strategy delivered gains",
-//     ];
-
+//     // ✅ Update ROI Income
 //     const { isUpdated, onAmount } = await updateUserROIIncome(
 //       userId,
 //       roiIncome.toFixed(2)
@@ -745,138 +533,39 @@ exports.processSelfTrade = catchAsyncErrors(async (req, res, next) => {
 
 //     if (isUpdated) {
 //       const insertQuery = `
-//         INSERT INTO roi_transaction
-//         (user_id, amount, type, onamount, percent, description, status, currency, transaction_by, pair)
-//         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-//       `;
+//   INSERT INTO roi_transaction
+//   (user_id, amount, type, onamount, percent, description, currency, transaction_by)
+//   VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+// `;
 
-//       // Create multiple transactions based on the factor
-//       for (let i = 0; i < factor; i++) {
-//         // Use the splitAmount for all transactions except the last one
-//         const transactionAmount =
-//           i === factor - 1 ? remainingAmount : splitAmount;
+//       const selfTradeNotes = [
+//         "Executed a profitable trade today",
+//         "Completed today's trade successfully",
+//       ];
 
-//         // Get a random note for each transaction
-//         const randomNote =
-//           selfTradeNotes[Math.floor(Math.random() * selfTradeNotes.length)];
+//       const randomNote =
+//         selfTradeNotes[Math.floor(Math.random() * selfTradeNotes.length)];
+//       const insertData = [
+//         userId,
+//         roiIncome.toFixed(2),
+//         "Invest ROI",
+//         active_plan,
+//         roi_percentage,
+//         `${randomNote}`,
+//         "USD",
+//         "self", // Or "admin" if manually triggered
+//       ];
 
-//         const insertData = [
-//           userId,
-//           transactionAmount.toFixed(2),
-//           "Invest ROI",
-//           onAmount,
-//           roi_per,
-//           `${randomNote}`,
-//           "completed",
-//           "USDT",
-//           "self",
-//           pair, // Or "admin" if manually triggered
-//         ];
-
-//         await new Promise((resolve, reject) => {
-//           db.query(insertQuery, insertData, (err) => {
-//             if (err) {
-//               console.error(
-//                 `❌ Error inserting transaction ${i + 1}/${factor}:`,
-//                 err
-//               );
-//               return reject(err);
-//             }
-//             console.log(
-//               `✅ ROI transaction ${
-//                 i + 1
-//               }/${factor} recorded for user ${userId} with amount ${transactionAmount.toFixed(
-//                 2
-//               )}`
-//             );
-//             resolve();
-//           });
+//       await new Promise((resolve, reject) => {
+//         db.query(insertQuery, insertData, (err) => {
+//           if (err) {
+//             console.error("❌ Error inserting transaction:", err);
+//             return reject(err);
+//           }
+//           console.log(`✅ ROI transaction recorded for user ${userId}`);
+//           resolve();
 //         });
-//       }
-
-//       // Get user's activation date to check for plan_id 4 special condition
-//       // const userInfoQuery = `
-//       //     SELECT activation_date FROM users
-//       //     WHERE id = ?
-//       //   `;
-
-//       // const userInfo = await new Promise((resolve, reject) => {
-//       //   db.query(userInfoQuery, [userId], (err, results) => {
-//       //     if (err) return reject(err);
-//       //     if (results.length === 0) return resolve({ activation_date: null });
-//       //     resolve({
-//       //       activation_date: results[0].activation_date,
-//       //     });
-//       //   });
-//       // });
-
-//       // Calculate days since activation
-//       // const activationDate = userInfo.activation_date
-//       //   ? new Date(userInfo.activation_date)
-//       //   : null;
-//       // const currentDate = new Date();
-//       // const daysSinceActivation = activationDate
-//       //   ? Math.floor((currentDate - activationDate) / (1000 * 60 * 60 * 24))
-//       //   : 0;
-
-//       // If transaction count is 10 and active_plan > 100, subtract 100 from active_plan and compound_income
-//       // if (daysSinceActivation >= 10 && active_plan >= 100) {
-//       //   const updateUserQuery = `
-//       //     UPDATE users
-//       //     SET active_plan = active_plan - 100
-//       //     WHERE id = ?
-//       //   `;
-
-//       //   await db
-//       //     .promise()
-//       //     .query(
-//       //       `INSERT INTO topup (userby_id, userto_id, amount, note) VALUES (?, ?, ?, ?)`,
-//       //       [id, id, 100, "Trade bonus deducted"]
-//       //     );
-
-//       //   await new Promise((resolve, reject) => {
-//       //     db.query(updateUserQuery, [userId], (err, results) => {
-//       //       if (err) {
-//       //         console.error("❌ Error updating user plan and income:", err);
-//       //         return reject(err);
-//       //       }
-//       //       console.log(
-//       //         `✅ Updated active_plan and compound_income for user ${userId}`
-//       //       );
-//       //       resolve();
-//       //     });
-//       //   });
-
-//       //   // If plan_id is 4 AND at least 10 days have passed since activation, reset plan details
-//       //   if (plan_id === 4 && daysSinceActivation >= 10) {
-//       //     const updatePlanQuery = `
-//       //       UPDATE users
-//       //       SET plan_id = 0,
-//       //           roi_status = 'close',
-//       //           level_status = 'close',
-//       //           active_plan = 0,
-//       //           roi_day = 0,
-//       //           roi_income = 0
-//       //       WHERE id = ?
-//       //     `;
-
-//       //     await new Promise((resolve, reject) => {
-//       //       db.query(updatePlanQuery, [userId], (err, results) => {
-//       //         if (err) {
-//       //           console.error(
-//       //             "❌ Error updating plan details for plan_id=4:",
-//       //             err
-//       //           );
-//       //           return reject(err);
-//       //         }
-//       //         console.log(
-//       //           `✅ Reset plan details for user ${userId} with plan_id=4`
-//       //         );
-//       //         resolve();
-//       //       });
-//       //     });
-//       //   }
-//       // }
+//       });
 //     }
 
 //     return res.status(200).json({
@@ -892,288 +581,176 @@ exports.processSelfTrade = catchAsyncErrors(async (req, res, next) => {
 //   }
 // });
 
+exports.processSelfTrade = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const userId = parseInt(id);
 
+    if (isNaN(userId)) {
+      return res.status(400).json({ message: "Invalid User ID" });
+    }
 
+    // Check ROI status from admin settings
+    const { setroi } = await fetchSetRoiFromAdminSettings();
+    if (setroi !== 1) {
+      return res.status(403).json({ message: "Admin has disabled ROI" });
+    }
 
-// exports.processSelfTrade = catchAsyncErrors(async (req, res, next) => {
-//   try {
-//     const { id } = req.params;
-//     const { pair } = req.query;
-//     const userId = parseInt(id);
+    // Get user directly from DB
+    const userQuery = `SELECT * FROM users WHERE id = ?`;
+    const user = await new Promise((resolve, reject) => {
+      db.query(userQuery, [userId], (err, results) => {
+        if (err) return reject(err);
+        if (results.length === 0) return resolve(null);
+        resolve(results[0]);
+      });
+    });
 
-//     if (isNaN(userId)) {
-//       return res.status(400).json({ message: "Invalid User ID" });
-//     }
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
-//     // Check ROI status from admin settings
-//     const { setroi } = await fetchSetRoiFromAdminSettings();
-//     if (setroi !== 1) {
-//       return res.status(403).json({ message: "Admin has disabled ROI" });
-//     }
+    const { plan_id, active_plan } = user;
 
-//     // ✅ Get user directly from DB
-//     const userQuery = `SELECT * FROM users WHERE id = ?`;
-//     const user = await new Promise((resolve, reject) => {
-//       db.query(userQuery, [userId], (err, results) => {
-//         if (err) return reject(err);
-//         if (results.length === 0) return resolve(null);
-//         resolve(results[0]);
-//       });
-//     });
+    if (!plan_id || !active_plan) {
+      return res
+        .status(400)
+        .json({ message: "User does not have an active plan" });
+    }
 
-//     if (!user) {
-//       return res.status(404).json({ message: "User not found" });
-//     }
+    // Get all plans from the database sorted by price descending
+    const getAllPlansQuery = `SELECT id, name, monthly_price, description, ROI_day, ROI_overall, Sponser_bonus, plan_period, max, min, compound_roi, bonus FROM plans ORDER BY monthly_price DESC`;
+    const allPlans = await new Promise((resolve, reject) => {
+      db.query(getAllPlansQuery, (err, results) => {
+        if (err) return reject(err);
+        resolve(results);
+      });
+    });
 
-//     const { plan_id, active_plan } = user;
+    if (!allPlans || allPlans.length === 0) {
+      return res.status(404).json({ message: "No plans found in the system" });
+    }
 
-//     if (!plan_id || active_plan == 0) {
-//       return res
-//         .status(400)
-//         .json({ message: "User does not have an active plan" });
-//     }
-
-//     let planDetails;
-//     try {
-//       planDetails = await fetchPlanById(plan_id);
-//     } catch (error) {
-//       return res.status(404).json({ message: "User plan not found" });
-//     }
-
-//     const roi_per = await adjustROIByReferralCount(id, planDetails);
-//     const roiIncome = (active_plan * roi_per) / 100;
-
-//     // Generate a random factor between 2 and 6
-//     const factor = Math.floor(Math.random() * 5) + 2; // Random number between 2-6
-
-//     // Calculate the split amount (rounded to 2 decimal places)
-//     const splitAmount = parseFloat((roiIncome / factor).toFixed(2));
-
-//     // Calculate the remaining amount for the last transaction to ensure exact total
-//     let remainingAmount = parseFloat(
-//       (roiIncome - splitAmount * (factor - 1)).toFixed(2)
-//     );
-
-//     // Possible transaction notes
-//     const creditTradeNotes = [
-//       "Executed a profitable trade today",
-//       "Completed today's trade successfully",
-//       "Market position yielded returns",
-//       "Successful trading cycle completed",
-//       "Trade execution finalized with profit",
-//       "Market strategy delivered gains",
-//     ];
-
-//     const debitTradeNotes = [
-//       "Trade fees deduction",
-//       "Platform service charge",
-//       "Transaction processing fee",
-//       "Network fee for trade execution",
-//       "Trade maintenance fee",
-//       "Market access fee",
-//     ];
-
-//     const { isUpdated, onAmount } = await updateUserROIIncome(
-//       userId,
-//       roiIncome.toFixed(2)
-//     );
-
-//     if (isUpdated) {
-//       const insertQuery = `
-//         INSERT INTO roi_transaction
-//         (user_id, amount, type, onamount, percent, description, tr_type, currency, transaction_by, pair)
-//         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-//       `;
-
-//       // Create transaction data for both credit and debit transactions
-//       const transactions = [];
+    let remainingAmount = active_plan;
+    const matchedPlans = [];
+    
+    // Find all matching plans that fit into the active_plan amount
+    for (const plan of allPlans) {
+      if (remainingAmount <= 0) break;
       
-//       // Prepare credit transactions
-//       for (let i = 0; i < factor; i++) {
-//         // Use the splitAmount for all transactions except the last one
-//         const transactionAmount =
-//           i === factor - 1 ? remainingAmount : splitAmount;
+      if (plan.monthly_price <= remainingAmount) {
+        const count = Math.floor(remainingAmount / plan.monthly_price);
+        if (count > 0) {
+          matchedPlans.push({
+            plan,
+            count,
+            amount: plan.monthly_price * count
+          });
+          remainingAmount -= plan.monthly_price * count;
+        }
+      }
+    }
 
-//         // Get a random note for each transaction
-//         const randomNote =
-//           creditTradeNotes[Math.floor(Math.random() * creditTradeNotes.length)];
+    // If there's any remaining amount that doesn't match any plan
+    if (remainingAmount > 0) {
+      return res.status(400).json({ 
+        message: `User's active plan amount includes $${remainingAmount} that doesn't match any available plan`,
+        user_active_plan: active_plan,
+        matched_plans: matchedPlans.map(p => ({
+          plan_id: p.plan.id,
+          name: p.plan.name,
+          monthly_price: p.plan.monthly_price,
+          count: p.count,
+          amount: p.amount
+        })),
+        available_plans: allPlans.map(p => ({ 
+          id: p.id, 
+          name: p.name, 
+          monthly_price: p.monthly_price 
+        }))
+      });
+    }
 
-//         transactions.push({
-//           type: "credit",
-//           amount: transactionAmount.toFixed(2),
-//           transactionType: "Invest ROI",
-//           description: randomNote,
-//           index: i,
-//           total: factor
-//         });
-//       }
+    // Process ROI for each matched plan
+    const transactionResults = [];
+    let totalRoi = 0;
 
-//       // Add 1 to 3 debit transactions
-//       const debitCount = Math.floor(Math.random() * 3) + 1; // Random number between 1-3
-//       const totalDebitAmount = parseFloat((roiIncome * 0.05).toFixed(2)); // 5% of ROI as fees
-//       const debitSplitAmount = parseFloat((totalDebitAmount / debitCount).toFixed(2));
-      
-//       // Calculate the remaining debit amount for the last transaction to ensure exact total
-//       let remainingDebitAmount = parseFloat(
-//         (totalDebitAmount - debitSplitAmount * (debitCount - 1)).toFixed(2)
-//       );
+    for (const { plan, count, amount } of matchedPlans) {
+      const roi_percentage = plan.ROI_overall;
+      const roiIncome = (amount * roi_percentage) / 100;
+      totalRoi += roiIncome;
 
-//       for (let i = 0; i < debitCount; i++) {
-//         // Use the debitSplitAmount for all transactions except the last one
-//         const debitAmount =
-//           i === debitCount - 1 ? remainingDebitAmount : debitSplitAmount;
+      // Update ROI Income
+      const { isUpdated } = await updateUserROIIncome(
+        userId,
+        roiIncome.toFixed(2)
+      );
 
-//         // Get a random note for debit transaction
-//         const randomDebitNote =
-//           debitTradeNotes[Math.floor(Math.random() * debitTradeNotes.length)];
+      if (isUpdated) {
+        const insertQuery = `
+          INSERT INTO roi_transaction
+          (user_id, amount, type, onamount, percent, description, currency, transaction_by)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        `;
 
-//         transactions.push({
-//           type: "debit",
-//           amount: debitAmount.toFixed(2),
-//           transactionType: "Fee Deduction",
-//           description: randomDebitNote,
-//           index: i,
-//           total: debitCount
-//         });
-//       }
+        const selfTradeNotes = [
+          `ROI from ${count} x ${plan.name} ($${plan.monthly_price}) plan`,
+          `Daily return from ${plan.name} investment`,
+          `Completed trade for ${plan.name} plan`,
+          `Processed ${count} units of ${plan.name}`
+        ];
 
-//       // Shuffle the transactions array to mix credit and debit transactions
-//       for (let i = transactions.length - 1; i > 0; i--) {
-//         const j = Math.floor(Math.random() * (i + 1));
-//         [transactions[i], transactions[j]] = [transactions[j], transactions[i]];
-//       }
+        const randomNote =
+          selfTradeNotes[Math.floor(Math.random() * selfTradeNotes.length)];
+        const insertData = [
+          userId,
+          roiIncome.toFixed(2),
+          "Invest ROI",
+          amount,
+          roi_percentage,
+          `${randomNote}`,
+          "USD",
+          "self",
+        ];
 
-//       // Insert all transactions in the shuffled order
-//       for (const transaction of transactions) {
-//         const insertData = [
-//           userId,
-//           transaction.amount,
-//           transaction.transactionType,
-//           onAmount,
-//           roi_per,
-//           transaction.description,
-//           transaction.type, // credit or debit
-//           "USDT",
-//           "self",
-//           pair,
-//         ];
+        await new Promise((resolve, reject) => {
+          db.query(insertQuery, insertData, (err) => {
+            if (err) {
+              console.error("❌ Error inserting transaction:", err);
+              return reject(err);
+            }
+            console.log(`✅ ROI transaction recorded for user ${userId} for plan ${plan.name}`);
+            resolve();
+          });
+        });
 
-//         await new Promise((resolve, reject) => {
-//           db.query(insertQuery, insertData, (err) => {
-//             if (err) {
-//               console.error(
-//                 `❌ Error inserting ${transaction.type} transaction ${transaction.index + 1}/${transaction.total}:`,
-//                 err
-//               );
-//               return reject(err);
-//             }
-//             console.log(
-//               `✅ ROI ${transaction.type} transaction ${
-//                 transaction.index + 1
-//               }/${transaction.total} recorded for user ${userId} with amount ${transaction.amount}`
-//             );
-//             resolve();
-//           });
-//         });
-//       }
+        transactionResults.push({
+          plan_id: plan.id,
+          plan_name: plan.name,
+          unit_price: plan.monthly_price,
+          units: count,
+          amount: amount,
+          roi_percentage: roi_percentage,
+          roi_income: roiIncome.toFixed(2)
+        });
+      }
+    }
 
-//       // Get user's activation date to check for plan_id 4 special condition
-//       const userInfoQuery = `
-//           SELECT activation_date FROM users
-//           WHERE id = ?
-//         `;
-
-//       const userInfo = await new Promise((resolve, reject) => {
-//         db.query(userInfoQuery, [userId], (err, results) => {
-//           if (err) return reject(err);
-//           if (results.length === 0) return resolve({ activation_date: null });
-//           resolve({
-//             activation_date: results[0].activation_date,
-//           });
-//         });
-//       });
-
-//       // Calculate days since activation
-//       const activationDate = userInfo.activation_date
-//         ? new Date(userInfo.activation_date)
-//         : null;
-//       const currentDate = new Date();
-//       const daysSinceActivation = activationDate
-//         ? Math.floor((currentDate - activationDate) / (1000 * 60 * 60 * 24))
-//         : 0;
-
-//       // If transaction count is 10 and active_plan > 100, subtract 100 from active_plan and compound_income
-//       if (daysSinceActivation >= 10 && active_plan >= 100) {
-//         const updateUserQuery = `
-//           UPDATE users
-//           SET active_plan = active_plan - 100
-//           WHERE id = ?
-//         `;
-
-//         await db
-//           .promise()
-//           .query(
-//             `INSERT INTO topup (userby_id, userto_id, amount, note) VALUES (?, ?, ?, ?)`,
-//             [id, id, 100, "Trade bonus deducted"]
-//           );
-
-//         await new Promise((resolve, reject) => {
-//           db.query(updateUserQuery, [userId], (err, results) => {
-//             if (err) {
-//               console.error("❌ Error updating user plan and income:", err);
-//               return reject(err);
-//             }
-//             console.log(
-//               `✅ Updated active_plan and compound_income for user ${userId}`
-//             );
-//             resolve();
-//           });
-//         });
-
-//         // If plan_id is 4 AND at least 10 days have passed since activation, reset plan details
-//         if (plan_id === 4 && daysSinceActivation >= 10) {
-//           const updatePlanQuery = `
-//             UPDATE users
-//             SET plan_id = 0,
-//                 roi_status = 'close',
-//                 level_status = 'close',
-//                 active_plan = 0,
-//                 roi_day = 0,
-//                 roi_income = 0
-//             WHERE id = ?
-//           `;
-
-//           await new Promise((resolve, reject) => {
-//             db.query(updatePlanQuery, [userId], (err, results) => {
-//               if (err) {
-//                 console.error(
-//                   "❌ Error updating plan details for plan_id=4:",
-//                   err
-//                 );
-//                 return reject(err);
-//               }
-//               console.log(
-//                 `✅ Reset plan details for user ${userId} with plan_id=4`
-//               );
-//               resolve();
-//             });
-//           });
-//         }
-//       }
-//     }
-
-//     return res.status(200).json({
-//       message: "ROI income updated successfully for the user",
-//       user_id: userId,
-//       roi: roiIncome.toFixed(2),
-//     });
-//   } catch (error) {
-//     console.error("Error updating ROI for single user:", error);
-//     return res
-//       .status(500)
-//       .json({ message: "Internal Server Error", error: error.message });
-//   }
-// });
+    return res.status(200).json({
+      message: "ROI income updated successfully for the user",
+      user_id: userId,
+      total_roi: totalRoi.toFixed(2),
+      transactions: transactionResults,
+      remaining_amount: remainingAmount > 0 ? remainingAmount : 0
+    });
+  } catch (error) {
+    console.error("Error updating ROI for single user:", error);
+    return res
+      .status(500)
+      .json({ message: "Internal Server Error", error: error.message });
+  }
+});
+                                                             
 
 exports.getLatestRoiDate = catchAsyncErrors(async (req, res, next) => {
   const { userId } = req.params;

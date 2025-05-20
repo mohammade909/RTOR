@@ -6,7 +6,7 @@ export const createNotification = createAsyncThunk(
   'notifications/createNotification',
   async (notificationData, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`http://localhost:8000/api/v1/notifications`, notificationData);
+      const response = await axios.post(`https://api.r2rgloble.com/api/v1/notifications`, notificationData);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -17,7 +17,7 @@ export const addBanner= createAsyncThunk(
   'notifications/addBanner',
   async (formData, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`http://localhost:8000/api/v1/notifications/banner`, formData);
+      const response = await axios.post(`https://api.r2rgloble.com/api/v1/notifications/banner`, formData);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -30,7 +30,7 @@ export const getAllNotifications = createAsyncThunk(
   'notifications/getAllNotifications',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/v1/notifications`);
+      const response = await axios.get(`https://api.r2rgloble.com/api/v1/notifications`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -41,7 +41,7 @@ export const getHomeNotifications = createAsyncThunk(
   'notifications/getHomeNotifications',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/v1/notifications/home`);
+      const response = await axios.get(`https://api.r2rgloble.com/api/v1/notifications/home`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -54,7 +54,7 @@ export const getUserNotifications = createAsyncThunk(
   'notifications/getUserNotifications',
   async (userId, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/v1/notifications/user/${userId}`);
+      const response = await axios.get(`https://api.r2rgloble.com/api/v1/notifications/user/${userId}`);
       return response.data.notifications;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -65,7 +65,7 @@ export const getBanner = createAsyncThunk(
   'notifications/getBanner',
   async (userId, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/v1/notifications/banner`);
+      const response = await axios.get(`https://api.r2rgloble.com/api/v1/notifications/banner`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -78,7 +78,7 @@ export const markNotificationAsSeen = createAsyncThunk(
   'notifications/markNotificationAsSeen',
   async ({ userId, notificationId }, { rejectWithValue }) => {
     try {
-      const response = await axios.put(`http://localhost:8000/api/v1/notifications/${notificationId}/seen`, { userId });
+      const response = await axios.put(`https://api.r2rgloble.com/api/v1/notifications/${notificationId}/seen`, { userId });
       return { notificationId, message: response.data.message };
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -91,7 +91,7 @@ export const deleteNotification = createAsyncThunk(
   "notifications/deleteNotification",
   async (id, thunkAPI) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/notifications/delete/${id}`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/notifications/delete/${id}`, {
         method: "DELETE",
       });
 

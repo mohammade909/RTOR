@@ -6,7 +6,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 //   async ({ values }, thunkAPI) => {
 //     try {
 //       console.log(values)
-//       const response = await fetch(`http://localhost:8000/api/v1/deposite/add`, {
+//       const response = await fetch(`https://api.r2rgloble.com/api/v1/deposite/add`, {
 //         method: "POST",
 //         headers: {
 //           "Content-Type": "application/json",
@@ -32,7 +32,7 @@ export const addDeposite = createAsyncThunk(
   "user/addDeposite",
   async (formData, thunkAPI) => {
     try {
-      const response = await fetch('http://localhost:8000/api/v1/deposite/add', {
+      const response = await fetch('https://api.r2rgloble.com/api/v1/deposite/add', {
         method: 'POST',
         body: formData,
       });
@@ -53,7 +53,7 @@ export const getAllDeposite = createAsyncThunk(
   "staff/getAllDeposite",
   async (_, thunkAPI) => {
     try {
-      const response = await fetch("http://localhost:8000/api/v1/deposite/list");
+      const response = await fetch("https://api.r2rgloble.com/api/v1/deposite/list");
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -72,7 +72,7 @@ export const getAllDepositeByid = createAsyncThunk(
   "staff/getAllDepositeByid",
   async (user_id, thunkAPI) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/deposite/by/${user_id}`)
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/deposite/by/${user_id}`)
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -93,7 +93,7 @@ export const deleteDeposite = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       // Your asynchronous logic to delete student here
-      const response = await fetch(`http://localhost:8000/api/v1/deposite/${id}`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/deposite/${id}`, {
         method: "DELETE",
       });
 
@@ -114,7 +114,7 @@ export const updateDeposite = createAsyncThunk(
   async ({ id, status,amount,user_id }, thunkAPI) => {
     try {
       // Your asynchronous logic to update student here
-      const response = await fetch(`http://localhost:8000/api/v1/deposite/${id}`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/deposite/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

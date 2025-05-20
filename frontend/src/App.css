@@ -58,3 +58,7 @@
  .animate-float-confetti {
    animation: float-confetti ease-in-out infinite;
 }
+.swiper-button-prev,
+.swiper-button-next {
+  display: none !important;
+}

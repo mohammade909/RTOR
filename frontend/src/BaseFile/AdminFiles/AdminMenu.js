@@ -21,7 +21,7 @@ import {
   HomeIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { BadgePercent, DockIcon, HandCoins, HeartHandshake, MessageSquareQuote, ScrollText, Trophy, UserX } from "lucide-react";
+import { BadgePercent, DockIcon, HandCoins, HeartHandshake, ScrollText, Trophy, UserX } from "lucide-react";
 
 const Management = [
   { name: "Unblocked Users", to: "/admin/user/unblock", current: true },
@@ -78,13 +78,13 @@ const MainMenu = [
     current: false,
     submenu: [],
   },
-  {
-    name: "Salaries",
-    to: "/admin/salary-analysis",
-    icon: HandCoins,
-    current: false,
-    submenu: sal,
-  },
+  // {
+  //   name: "Salaries",
+  //   to: "/admin/salary-analysis",
+  //   icon: HandCoins,
+  //   current: false,
+  //   submenu: sal,
+  // },
   {
     name: "Reports",
     to: "/admin/reports",
@@ -92,17 +92,18 @@ const MainMenu = [
     current: false,
     submenu: [],
   },
+  // {
+  //   name: "Defaulter",
+  //   to: "/admin/defaulter",
+  //   icon: UserX,
+  //   current: false,
+  //   submenu: [],
+  // },
+
   {
-    name: "Defaulter",
-    to: "/admin/defaulter",
-    icon: UserX,
-    current: false,
-    submenu: [],
-  },
-  {
-    name: "Queries",
-    to: "/admin/tickets",
-    icon: MessageSquareQuote,
+    name: "Support",
+    to: "/admin/support",
+    icon: HeartHandshake,
     current: false,
     submenu: [],
   },
@@ -124,14 +125,14 @@ const User_Interface = [
     current: false,
     submenu: Management,
   },
-  {
-    id: 2,
-    name: "Rewards",
-    to: "/admin/rewards",
-    initial: "R",
-    current: false,
-    submenu: [],
-  },
+  // {
+  //   id: 2,
+  //   name: "Rewards",
+  //   to: "/admin/rewards",
+  //   initial: "R",
+  //   current: false,
+  //   submenu: [],
+  // },
   // {
   //   id: 2,
   //   name: "CTO",
@@ -140,14 +141,14 @@ const User_Interface = [
   //   current: false,
   //   submenu: [],
   // },
-  {
-    id: 2,
-    name: "Achivers",
-    to: "/admin/achivers",
-    initial: "A",
-    current: false,
-    submenu: [],
-  },
+  // {
+  //   id: 2,
+  //   name: "Achivers",
+  //   to: "/admin/achivers",
+  //   initial: "A",
+  //   current: false,
+  //   submenu: [],
+  // },
   {
     id: 3,
     name: "Transactions",
@@ -544,7 +545,7 @@ export default function AdminMenu({ Children, PageName }) {
         <div className="lg:pl-72 ">
           <div className="min-h-full">
             <div className="z-50 w-full lg:fixed">
-              <Disclosure as="nav" className="text-gray-100 bg-[#844fc1] ">
+              <Disclosure as="nav" className="text-gray-100 bg-[#181942] ">
                 <div className="max-w-full ml-4 ">
                   <div className="flex items-center justify-end h-16">
                     <div className="hidden w-1/3 lg:block ">
@@ -575,7 +576,7 @@ export default function AdminMenu({ Children, PageName }) {
                 </div>
               </Disclosure>
 
-              <header className="text-gray-100  bg-[#5e3dc9]">
+              <header className="text-gray-100  bg-[#443eee]">
                 <div className="px-4 py-0 border-t-2 border-b-2 border-green-300 max-w-7xl sm:px-6 lg:px-8">
                   <nav aria-label="Breadcrumb" className="flex text-base ">
                     <div className="flex items-center gap-2">
@@ -594,8 +595,8 @@ export default function AdminMenu({ Children, PageName }) {
                 </div>
               </header>
             </div>
-            <main className="lg:pt-28 -z-10 bg-blue-900/50">
-              <div className="flex items-center w-full ">
+            <main className="lg:pt-28 -z-10 ">
+              <div className="flex items-center w-full bg-[#0e3c86]">
                 <div className="pl-6 sm:block">
                   <div className="">
                     <nav aria-label="Tabs" className="flex w-full gap-x-5">
@@ -607,8 +608,8 @@ export default function AdminMenu({ Children, PageName }) {
                           aria-current={tab.current ? "page" : undefined}
                           className={classNames(
                             tab.name == currentSubTab
-                              ? "border-indigo-200 text-indigo-300"
-                              : "border-transparent text-gray-300 hover:border-gray-300 hover:text-gray-700",
+                              ? "border-indigo-100 text-indigo-100"
+                              : "border-transparent text-gray-300 hover:border-gray-300 hover:text-gray-200",
                             " border-b-2 px-1 py-4 text-center gap-3 lg:text-lg text-[10px]"
                           )}
                         >
@@ -621,12 +622,12 @@ export default function AdminMenu({ Children, PageName }) {
               </div>
               <div
                 className="relative min-h-screen flex flex-col gap-5 overflow-y-auto"
-                style={{
-                  backgroundImage:
-                    "url('https://img.freepik.com/free-photo/3d-rendering-financial-neon-bull_23-2151691899.jpg?ga=GA1.1.1673403856.1719407260&semt=ais_authors_boost')",
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }}
+                // style={{
+                //   backgroundImage:
+                //     "url('https://img.freepik.com/free-photo/3d-rendering-financial-neon-bull_23-2151691899.jpg?ga=GA1.1.1673403856.1719407260&semt=ais_authors_boost')",
+                //   backgroundSize: "cover",
+                //   backgroundPosition: "center",
+                // }}
               >
                 <div className="relative z-10">{Children}</div>
               </div>

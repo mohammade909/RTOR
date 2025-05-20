@@ -341,6 +341,110 @@ const calculateRewardsForSingleUser = async (userId) => {
   }
 };
 
+// const calculateRewardsForSingleUser = async (userId) => {
+//   try {
+//     // Fetch the specific user by ID
+//     const user = await fetchUserWithReferrals(userId);
+
+//     if (!user) {
+//       throw new Error(`User with ID ${userId} not found`);
+//     }
+
+//     // Fetch active, incomplete rewards for the user
+//     const [activeRewardRows] = await db.promise().query(
+//       `SELECT * FROM user_rewards 
+//        WHERE is_active = 1 
+//        AND is_completed = 0 
+//        AND user_id = ?`,
+//       [user.id]
+//     );
+
+//     // If no active, incomplete rewards found, return early
+//     if (!activeRewardRows || activeRewardRows.length === 0) {
+//       return {
+//         userId: user.id,
+//         status: "no_active_rewards",
+//         message: "No active, incomplete rewards found",
+//       };
+//     }
+
+//     const {
+//       reward_amount,
+//       threshold,
+//     } = activeRewardRows[0];
+
+//     // Calculate business for all referrals
+//     const businessByLeg = calculateBusinessForLegs(user.referrals || []);
+
+//     // Sort legs by business volume (descending)
+//     const sortedLegs = Object.entries(businessByLeg)
+//       .map(([legId, totalBusiness]) => ({
+//         legId: parseInt(legId),
+//         totalBusiness,
+//       }))
+//       .sort((a, b) => b.totalBusiness - a.totalBusiness);
+
+//     const topLeg = sortedLegs[0] || { legId: 0, totalBusiness: 0 };
+//     const otherLegsTotalBusiness = sortedLegs
+//       .slice(1)
+//       .reduce((acc, leg) => acc + leg.totalBusiness, 0);
+
+//     // Final legs structure
+//     const finalLegs = [
+//       topLeg,
+//       { legId: "Other", totalBusiness: otherLegsTotalBusiness },
+//     ];
+
+//     // Calculate total business
+//     const totalBusiness = finalLegs.reduce((acc, leg) => acc + leg.totalBusiness, 0);
+
+//     const required50A = threshold * 0.5;
+//     const required50B = threshold * 0.5;
+
+//     // Check reward conditions
+//     if (totalBusiness >= threshold) {
+//       if (finalLegs[0].totalBusiness >= required50A && 
+//           finalLegs[1].totalBusiness >= required50B) {
+//         await updateRewardForUser(user.id, reward_amount);
+//         return {
+//           userId: user.id,
+//           status: "reward_updated",
+//           message: "Reward updated successfully",
+//           totalBusiness,
+//           threshold,
+//           legs: finalLegs,
+//         };
+//       }
+//       return {
+//         userId: user.id,
+//         status: "distribution_not_met",
+//         message: "Threshold met but leg distribution not satisfied",
+//         totalBusiness,
+//         threshold,
+//         legs: finalLegs,
+//         requirements: { required50A, required50B },
+//       };
+//     }
+    
+//     return {
+//       userId: user.id,
+//       status: "threshold_not_met",
+//       message: "Threshold not met",
+//       totalBusiness,
+//       threshold,
+//       legs: finalLegs,
+//     };
+
+//   } catch (error) {
+//     console.error(`Error processing rewards for user ${userId}:`, error);
+//     return {
+//       userId: userId,
+//       status: "error",
+//       message: error.message,
+//     };
+//   }
+// };
+
 exports.rewardForSingleUser = catchAsyncErrors(async (req, res, next) => {
   try {
     const { userId } = req.params; // Get userId from request parameters
@@ -778,28 +882,29 @@ const updateRewardForUser = async (userId, reward) => {
   }
 };
 
-const updateRewardStatus = async (userId) => {
+
+exports.updateRewardStatus = async (req, res) => {
+  const userId = req.params.id;
+
   if (!userId) {
     console.error("Invalid user ID");
-    throw new Error("Invalid user ID");
+    return res.status(400).json({ message: "Invalid user ID" });
   }
 
   try {
-    // Find the current active reward
+    // Get current active reward
     const [currentActiveReward] = await db
       .promise()
-      .query(`SELECT * FROM user_rewards WHERE is_active = 1 AND user_id = ?`, [
-        userId,
-      ]);
+      .query(`SELECT * FROM user_rewards WHERE is_active = 1 AND user_id = ?`, [userId]);
 
     if (currentActiveReward.length === 0) {
       console.warn(`No active reward found for User ID: ${userId}`);
-      return null;
+      return res.status(404).json({ message: "No active reward found" });
     }
 
     const currentRewardId = currentActiveReward[0].id;
 
-    // Find the next reward
+    // Get next reward
     const [nextReward] = await db
       .promise()
       .query(
@@ -807,13 +912,12 @@ const updateRewardStatus = async (userId) => {
         [currentRewardId, userId]
       );
 
-    // If no next reward exists, log and return
     if (nextReward.length === 0) {
       console.warn(`No next reward found for User ID: ${userId}`);
-      return null;
+      return res.status(404).json({ message: "No next reward found" });
     }
 
-    // Clear start and end dates for current reward
+    // Mark current reward as completed
     await db
       .promise()
       .query(
@@ -821,7 +925,7 @@ const updateRewardStatus = async (userId) => {
         [currentRewardId]
       );
 
-    // Activate next reward and set start and end dates
+    // Activate next reward
     await db
       .promise()
       .query(
@@ -829,18 +933,82 @@ const updateRewardStatus = async (userId) => {
         [nextReward[0].id]
       );
 
-    console.log(`Reward status updated successfully for User ID: ${userId}`);
+    console.log(`Reward status updated for User ID: ${userId}`);
 
-    return {
+    return res.status(200).json({
+      message: "Reward status updated successfully",
       currentRewardId,
       nextRewardId: nextReward[0].id,
-    };
+    });
   } catch (error) {
     console.error(`Error updating reward status for User ID ${userId}:`, error);
-    throw error;
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 
+
+// exports.updateRewardStatus = async (req, res) => {
+//   const userId = req.params.id;
+
+//   if (!userId) {
+//     console.error("Invalid user ID");
+//     return res.status(400).json({ message: "Invalid user ID" });
+//   }
+
+//   try {
+//     // Get current active reward
+//     const [currentActiveReward] = await db
+//       .promise()
+//       .query(`SELECT * FROM user_rewards WHERE is_active = 1 AND user_id = ?`, [userId]);
+
+//     if (currentActiveReward.length === 0) {
+//       console.warn(`No active reward found for User ID: ${userId}`);
+//       return res.status(404).json({ message: "No active reward found" });
+//     }
+
+//     const currentRewardId = currentActiveReward[0].id;
+
+//     // Get next reward
+//     const [nextReward] = await db
+//       .promise()
+//       .query(
+//         "SELECT id FROM user_rewards WHERE id > ? AND user_id = ? ORDER BY id ASC LIMIT 1",
+//         [currentRewardId, userId]
+//       );
+
+//     if (nextReward.length === 0) {
+//       console.warn(`No next reward found for User ID: ${userId}`);
+//       return res.status(404).json({ message: "No next reward found" });
+//     }
+
+//     // Mark current reward as completed
+//     await db
+//       .promise()
+//       .query(
+//         "UPDATE user_rewards SET is_active = 0, is_completed = 1, completed_date = CURRENT_TIMESTAMP, start_date = NULL, end_date = NULL WHERE id = ?",
+//         [currentRewardId]
+//       );
+
+//     // Activate next reward
+//     await db
+//       .promise()
+//       .query(
+//         "UPDATE user_rewards SET is_active = 1, start_date = CURRENT_TIMESTAMP, end_date = DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 30 DAY) WHERE id = ?",
+//         [nextReward[0].id]
+//       );
+
+//     console.log(`Reward status updated for User ID: ${userId}`);
+
+//     return res.status(200).json({
+//       message: "Reward status updated successfully",
+//       currentRewardId,
+//       nextRewardId: nextReward[0].id,
+//     });
+//   } catch (error) {
+//     console.error(`Error updating reward status for User ID ${userId}:`, error);
+//     return res.status(500).json({ message: "Internal server error" });
+//   }
+// };
 const isRewardPeriodExpired = (end_date, userId) => {
   const currentDate = new Date();
   const endDate = new Date(end_date);

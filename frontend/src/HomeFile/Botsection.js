@@ -37,7 +37,7 @@ export const Botsection = () => {
           </p>
           <ul className="space-y-4 text-gray-300 text-base">
             <li>✅ Smart AI Bots – Trade automatically with real-time decisions</li>
-            <li>✅  Crypto-Friendly – Fast, global, and secure transactions</li>
+            <li>✅  Crypto-Friendly – Fast, globle, and secure transactions</li>
             <li>✅ 24/7 Auto-Trading – Earn even while you sleep</li>
           </ul>
           <button className="mt-8 px-6 py-3 bg-purple-600 hover:bg-purple-700 transition duration-300 rounded-xl font-semibold shadow-lg">

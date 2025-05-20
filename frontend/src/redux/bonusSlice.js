@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-const BASEURL = 'http://localhost:8000' 
+const BASEURL = 'https://api.r2rgloble.com' 
 // Change this as needed
 
 // Fetch all bonuses

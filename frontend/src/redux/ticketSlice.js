@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-const BASEURL  =`http://localhost:8000`; // Adjust the path based on your project structure
+const BASEURL  =`https://api.r2rgloble.com`; // Adjust the path based on your project structure
 
 // Create a ticket
 export const createTicket = createAsyncThunk(

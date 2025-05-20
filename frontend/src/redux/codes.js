@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8000/api/v1";
+const BASE_URL = "https://api.r2rgloble.com/api/v1";
 
 // Async thunk to create multiple codes
 export const createCodes = createAsyncThunk(

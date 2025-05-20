@@ -1,14 +1,14 @@
 // usersSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-const BASEURL = "http://localhost:8000";
+const BASEURL = "https://api.r2rgloble.com";
 
 export const getTransaction = createAsyncThunk(
   "transaction/getTransaction",
   async ({ table_name }, thunkAPI) => {
     try {
       // Your asynchronous logic to update student here
-      const response = await fetch(`http://localhost:8000/api/v1/tr/list`, {
+      const response = await fetch(`https://api.r2rgloble.com/api/v1/tr/list`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -37,7 +37,7 @@ export const getTransactionById = createAsyncThunk(
     try {
       console.log(table_name, user_id);
       const response = await fetch(
-        `http://localhost:8000/api/v1/tr/tr/${user_id}`,
+        `https://api.r2rgloble.com/api/v1/tr/tr/${user_id}`,
         {
           method: "POST",
           headers: {
@@ -67,8 +67,8 @@ export const fetchTransactionSummary = createAsyncThunk(
   async (month = null, { rejectWithValue }) => {
     try {
       const url = month 
-        ? `http://localhost:8000/api/v1/tr/matrix?month=${month}` 
-        : 'http://localhost:8000/api/v1/tr/matrix';
+        ? `https://api.r2rgloble.com/api/v1/tr/matrix?month=${month}` 
+        : 'https://api.r2rgloble.com/api/v1/tr/matrix';
       
       const response = await axios.get(url);
       return response.data;

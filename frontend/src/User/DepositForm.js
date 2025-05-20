@@ -8,7 +8,7 @@ export default function DepositForm({ transactions, user }) {
   const [fileName, setFileName] = useState("");
   const [formValues, setFormValues] = useState({
     amount: "",
-    currency: "USD",
+    currency: "USDT",
     hash: "",
   });
   const [errors, setErrors] = useState({});
@@ -16,11 +16,11 @@ export default function DepositForm({ transactions, user }) {
 
   // Available currencies
   const currencies = [
-    { value: "USD", label: "US Dollar (USD)" },
-    { value: "EUR", label: "Euro (EUR)" },
-    { value: "BTC", label: "Bitcoin (BTC)" },
-    { value: "ETH", label: "Ethereum (ETH)" },
-    { value: "USDT", label: "Tether (USDT)" },
+    { value: "USD", label: "USDT (Bep20)" },
+    // { value: "EUR", label: "Euro (EUR)" },
+    // { value: "BTC", label: "Bitcoin (BTC)" },
+    // { value: "ETH", label: "Ethereum (ETH)" },
+    { value: "USDT", label: "Tether (USDT Bep20)" },
   ];
 
   // Validation function
@@ -122,7 +122,7 @@ export default function DepositForm({ transactions, user }) {
       }
 
       const response = await fetch(
-        "http://localhost:8000/api/v1/deposite/manual",
+        "https://api.r2rgloble.com/api/v1/deposite/manual",
         {
           method: "POST",
           body: formData,
@@ -144,7 +144,7 @@ export default function DepositForm({ transactions, user }) {
   };
 
   return (
-    <div className="min-h-screen py-8">
+    <div className="">
       <div className="mx-auto">
         <div className="bg-white rounded-xl border overflow-hidden">
           {isSubmitted ? (
@@ -180,9 +180,9 @@ export default function DepositForm({ transactions, user }) {
               </button>
             </div>
           ) : (
-            <div className="flex flex-col md:flex-row">
+            <div className="flex flex-col lg:flex-row">
               {/* Left Side - Form */}
-              <div className="w-full md:w-3/5 p-8">
+              <div className="w-full lg:w-3/5 p-8">
                 <h2 className="text-2xl font-bold text-gray-800 mb-6">
                   Deposit Funds
                 </h2>
@@ -342,11 +342,11 @@ export default function DepositForm({ transactions, user }) {
                     </button>
                   </div>
                 </form>
-                  <WalletConnection />
+                  {/* <WalletConnection /> */}
               </div>
             
               {/* Right Side - Info and Preview */}
-              <div className="w-full md:w-2/5 bg-gray-50 p-8">
+              <div className="w-full lg:w-2/5 bg-gray-50 p-8">
                 <div className="space-y-6">
                   {/* Information */}
                   <div>
