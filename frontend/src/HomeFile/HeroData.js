@@ -1,0 +1,87 @@
+export const heroData = [
+  {
+    page: "Home",
+    title: "Maximize Earning Daily with BotEdgeTrade",
+    subtitle:
+      "Trade Forex, Crypto, and Stocks with our easy-to-use platform. Start earning today with minimal investment and automated trading solutions.",
+    badge: "Automated Crypto Trading Revolution",
+    image: "https://img.freepik.com/free-vector/geometric-neon-hexagonal-bipyramid-background_53876-97991.jpg?uid=R176823449&ga=GA1.1.1433286368.1718702777&w=740",
+    buttonText: "Join Now",
+    buttonLink: "/user/login",
+    badgeColor: "text-yellow-300",
+    badgeBorder: "border-yellow-400",
+    buttonBg: "bg-yellow-400",
+    buttonHover: "hover:bg-yellow-300",
+    buttonTextColor: "text-black"
+  },
+  {
+    page: "About",
+    title: "We'd Love to Hear From You",
+    subtitle: "Reach out for trading support, technical assistance, or account inquiries.",
+    badge: "Learn More About Bitronia",
+    image: "https://img.freepik.com/free-vector/geometric-neon-hexagonal-bipyramid-background_53876-97991.jpg?uid=R176823449&ga=GA1.1.1433286368.1718702777&w=740",
+    buttonText: "Get in Touch",
+    buttonLink: "/user/login",
+    badgeColor: "text-green-300",
+    badgeBorder: "border-green-400",
+    buttonBg: "bg-green-400",
+    buttonHover: "hover:bg-green-300",
+    buttonTextColor: "text-white"
+  },
+  {
+    page: "Contact",
+    title: "We'd Love to Hear From You",
+    subtitle: "Reach out for support or any queries.",
+    badge: "Connect with Our Team",
+    image: "https://img.freepik.com/free-vector/geometric-neon-hexagonal-bipyramid-background_53876-97991.jpg?uid=R176823449&ga=GA1.1.1433286368.1718702777&w=740",
+    buttonText: "Get in Touch",
+    buttonLink: "/user/login",
+    badgeColor: "text-blue-300",
+    badgeBorder: "border-blue-400",
+    buttonBg: "bg-blue-400",
+    buttonHover: "hover:bg-blue-300",
+    buttonTextColor: "text-white"
+  },
+  {
+    page: "Blog",
+    title: "Latest Updates & Insights",
+    subtitle: "Explore insights, stories and latest news from our team.",
+    badge: "From Our Blog",
+    image: "https://img.freepik.com/free-vector/geometric-neon-hexagonal-bipyramid-background_53876-97991.jpg?uid=R176823449&ga=GA1.1.1433286368.1718702777&w=740",
+    buttonText: "Read Now",
+    buttonLink: "/user/login",
+    badgeColor: "text-pink-300",
+    badgeBorder: "border-pink-400",
+    buttonBg: "bg-pink-400",
+    buttonHover: "hover:bg-pink-300",
+    buttonTextColor: "text-white"
+  },
+  {
+    page: "Privacy",
+    title: "Your Privacy, Our Priority",
+    subtitle: "At BotEdgeTrade (BET), we take your privacy seriously. This Privacy Policy explains how we collect, use, store, and protect your information when you use our trading platform and services.",
+    badge: "BotEdgeTrade Privacy Policy",
+    image: "https://img.freepik.com/free-vector/geometric-neon-hexagonal-bipyramid-background_53876-97991.jpg?uid=R176823449&ga=GA1.1.1433286368.1718702777&w=740",
+    buttonText: "View Policy",
+    buttonLink: "/user/login",
+    badgeColor: "text-purple-300",
+    badgeBorder: "border-purple-400",
+    buttonBg: "bg-purple-400",
+    buttonHover: "hover:bg-purple-300",
+    buttonTextColor: "text-white"
+  },
+  {
+    page: "Terms",
+    title: "Terms & Conditions",
+    subtitle: "Know the rules of using our platform.",
+    badge: "Our Legal Terms",
+    image: "https://img.freepik.com/free-vector/geometric-neon-hexagonal-bipyramid-background_53876-97991.jpg?uid=R176823449&ga=GA1.1.1433286368.1718702777&w=740",
+    buttonText: "Read Terms",
+    buttonLink: "/user/login",
+    badgeColor: "text-red-300",
+    badgeBorder: "border-red-400",
+    buttonBg: "bg-red-400",
+    buttonHover: "hover:bg-red-300",
+    buttonTextColor: "text-white"
+  }
+];
